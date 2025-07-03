@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.quanlytraigiam.view;
-import com.mycompany.quanlytraigiam.entity.Residents;
+import com.mycompany.quanlytraigiam.entity.Prison;
 import com.raven.chart.Chart;
 import com.raven.chart.ModelChart;
 import java.awt.event.ActionListener;
@@ -36,22 +36,22 @@ import javax.swing.table.TableColumnModel;
  *
  * @author PC
  */
-public class ResidentView extends javax.swing.JFrame {
+public class PrisonView extends javax.swing.JFrame {
 
     /**
-     * Creates new form ResidentView
+     * Creates new form PrisonView
      */
     private String [] columnNames = new String [] {
         "STT", "Số hộ khẩu", "Địa chỉ", "Vai trò", "Họ và tên", "Ngày sinh", "Liên hệ"};
     private SimpleDateFormat fDate=new SimpleDateFormat("dd/MM/yyyy");
     FlowLayout flowLayout = new FlowLayout();
-    public ResidentView() {
+    public PrisonView() {
         initComponents();
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
         btnSearch.setEnabled(true);
-        tableResident.setDefaultRenderer(Object.class, new ResidentView.MyRenderer());
+        tableResident.setDefaultRenderer(Object.class, new PrisonView.MyRenderer());
     }
     
     private static Image getCircleImage(Image image) {
@@ -997,20 +997,27 @@ public class ResidentView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ResidentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PrisonView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ResidentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PrisonView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ResidentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PrisonView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ResidentView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PrisonView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ResidentView().setVisible(true);
+                new PrisonView().setVisible(true);
             }
         });
     }
@@ -1019,13 +1026,13 @@ public class ResidentView extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, message);
     }
     
-    public Residents getResidentInfo() {
+    public Prison getResidentInfo() {
         // validate residents
         if (!validateIDFamily() || !validateName() || !validateSex() || !validateBirthday() || !validateAddress() || !validateTypeCMT() || !validateCMT()) {
             return null;
         }
         try {
-            Residents residents = new Residents();
+            Prison residents = new Prison();
             if (FieldID.getText() != null && !"".equals(FieldID.getText())) {
                 residents.setId(Integer.parseInt(FieldID.getText()));
             }
@@ -1148,7 +1155,7 @@ public class ResidentView extends javax.swing.JFrame {
         return true;
     }
     
-    public void showListResidents(List<Residents> list) {
+    public void showListResidents(List<Prison> list) {
         int size = list.size();
         // với bảng tableResident có 6 cột, 
         // khởi tạo mảng 2 chiều residents, trong đó:
@@ -1171,7 +1178,7 @@ public class ResidentView extends javax.swing.JFrame {
     }
     
     
-    public void showResidents(Residents resident) 
+    public void showResidents(Prison resident) 
     {
         FieldIDFamily.setText("" + resident.getIDFamily());
         FieldName.setText(resident.getName());
@@ -1201,12 +1208,12 @@ public class ResidentView extends javax.swing.JFrame {
         btnClear.setEnabled(true);
     }
     
-    public void fillResidentFromSelectedRow(List<Residents> list) throws ParseException {
+    public void fillResidentFromSelectedRow(List<Prison> list) throws ParseException {
         // lấy chỉ số của hàng được chọn 
         int row = tableResident.getSelectedRow();
         if (row >= 0) {
             int residentID = Integer.parseInt(tableResident.getModel().getValueAt(row, 0).toString());
-            Residents selectedResident = findResidentByID(list, residentID);
+            Prison selectedResident = findResidentByID(list, residentID);
 
             if (selectedResident != null) {
                 FieldID.setText(String.valueOf(selectedResident.getId()));
@@ -1260,8 +1267,8 @@ public class ResidentView extends javax.swing.JFrame {
         }
     }
 
-    private Residents findResidentByID(List<Residents> residentsList, int residentID) {
-        for (Residents resident : residentsList) {
+    private Prison findResidentByID(List<Prison> residentsList, int residentID) {
+        for (Prison resident : residentsList) {
             if (resident.getId() == residentID) {
                 return resident;
             }
@@ -1291,7 +1298,7 @@ public class ResidentView extends javax.swing.JFrame {
         btnAdd.setEnabled(true);
     }
     
-    public void showCountListResidents(List<Residents> list) {
+    public void showCountListResidents(List<Prison> list) {
         int size = list.size();
         FieldSum.setText(String.valueOf(size));
     }
@@ -1308,9 +1315,9 @@ public class ResidentView extends javax.swing.JFrame {
         return 0;
     }
     
-    public void showStatisticTypeCMT(List<Residents> list) {
+    public void showStatisticTypeCMT(List<Prison> list) {
         Map<String, Integer> countMap = new HashMap<>();
-        for (Residents person : list) {
+        for (Prison person : list) {
             if (countMap.containsKey(person.getTypeCMT())) {
                 int count = countMap.get(person.getTypeCMT());
                 countMap.put(person.getTypeCMT(), count + 1);
@@ -1339,10 +1346,10 @@ public class ResidentView extends javax.swing.JFrame {
         }
     }
     
-    public void showStatisticIDFamily(List<Residents> list) {
+    public void showStatisticIDFamily(List<Prison> list) {
         Map<String, Integer> countMapIDFamily = new HashMap<>();
 
-        for (Residents person : list) {
+        for (Prison person : list) {
             // Thống kê số hộ khẩu IDFamily
             if (countMapIDFamily.containsKey(person.getIDFamily())) {
                 int countIDFamily = countMapIDFamily.get(person.getIDFamily());

@@ -4,12 +4,12 @@
  */
 package com.mycompany.quanlytraigiam.controller;
 
-import com.mycompany.quanlytraigiam.action.ManagerSpecialPerson;
-import com.mycompany.quanlytraigiam.entity.SpecialPerson;
+import com.mycompany.quanlytraigiam.action.ManagerPrisoner;
+import com.mycompany.quanlytraigiam.entity.Prisoner;
 import com.mycompany.quanlytraigiam.view.LoginView;
 import com.mycompany.quanlytraigiam.view.MainView;
-import com.mycompany.quanlytraigiam.view.ManagerView;
-import com.mycompany.quanlytraigiam.view.ResidentView;
+import com.mycompany.quanlytraigiam.view.PrisonerView;
+import com.mycompany.quanlytraigiam.view.PrisonView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -21,38 +21,38 @@ import java.util.List;
 public class MainController 
 {
     private LoginView loginView;
-    private ManagerView managerView;
-    private ResidentView residentView;
+    private PrisonerView managerView;
+    private PrisonView prisonView;
     private MainView mainView;
     
     public MainController(MainView view)
     {
         this.mainView = view;
-        view.addChooseSpecialPersonListener(new ChooseSpecialPersonListener());
-        view.addChooseResidentsListener(new ChooseResidentListener());
+        view.addChoosePrisonerListener(new ChoosePrisonerListener());
+        view.addChoosePrisonListener(new ChoosePrisonListener());
     }
     public void showMainView() 
     {
         mainView.setVisible(true);
     }
-    class ChooseSpecialPersonListener implements ActionListener 
+    class ChoosePrisonerListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
         {
-            managerView = new ManagerView();
-            SpecialPersonController managerController = new SpecialPersonController(managerView);
+            managerView = new PrisonerView();
+            PrisonerController managerController = new PrisonerController(managerView);
             managerController.showManagerView();
             mainView.setVisible(false);
         }
     }
     
-    class ChooseResidentListener implements ActionListener 
+    class ChoosePrisonListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
         {
-            residentView = new ResidentView();
-            ResidentController residentController = new ResidentController(residentView);
-            residentController.showManagerView();
+            prisonView = new PrisonView();
+            PrisonController prisonController = new PrisonController(prisonView);
+            prisonController.showManagerView();
             mainView.setVisible(false);
         }
     }

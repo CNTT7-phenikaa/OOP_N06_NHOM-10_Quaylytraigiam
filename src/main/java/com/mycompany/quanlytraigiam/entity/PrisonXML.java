@@ -13,16 +13,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author PC
  */
-@XmlRootElement(name = "Residents")
+@XmlRootElement(name = "Prison")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ResidentXML {
-    private List<Residents> residents;
+public class PrisonXML {
+    private List<Prison> prisons;
 
-    public List<Residents> getResidents() {
-        return residents;
+    public List<Prison> getPrisons() {
+        return prisons;
     }
 
-    public void setResidents(List<Residents> residents) {
-        this.residents = residents;
-    } 
+    public void setPrisons(List<Prison> prisons) {
+        this.prisons = prisons;
+    }
 }

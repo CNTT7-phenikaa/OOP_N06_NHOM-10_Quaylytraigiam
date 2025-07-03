@@ -32,7 +32,7 @@ public class LoginView extends javax.swing.JFrame
 {
     private CheckLogin checkLogin;
     private LoginView loginView;
-    private ManagerView managerView;
+    private PrisonerView managerView;
     private MainView mainView;
     /**
      * Creates new form LoginView

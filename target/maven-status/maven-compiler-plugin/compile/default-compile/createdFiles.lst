@@ -93,6 +93,7 @@ com\mycompany\quanlytraigiam\controller\SpecialPersonController$CancelDialogSear
 com\mycompany\quanlytraigiam\utils\FileUtils.class
 com\mycompany\quanlytraigiam\view\ManagerView$8.class
 com\mycompany\quanlytraigiam\view\ResidentView$17.class
+com\mycompany\quanlytraigiam\view\MainView$4.class
 com\mycompany\quanlytraigiam\entity\User.class
 com\mycompany\quanlytraigiam\controller\SpecialPersonController$SortSpecialPersonIDListener.class
 com\raven\chart\Chart$1.class

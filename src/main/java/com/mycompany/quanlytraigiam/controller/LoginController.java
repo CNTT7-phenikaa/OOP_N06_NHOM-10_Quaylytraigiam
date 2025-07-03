@@ -8,7 +8,7 @@ import com.mycompany.quanlytraigiam.action.CheckLogin;
 import com.mycompany.quanlytraigiam.entity.User;
 import com.mycompany.quanlytraigiam.view.LoginView;
 import com.mycompany.quanlytraigiam.view.MainView;
-import com.mycompany.quanlytraigiam.view.ManagerView;
+import com.mycompany.quanlytraigiam.view.PrisonerView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
@@ -23,7 +23,7 @@ public class LoginController
 {
     private CheckLogin checkLogin;
     private LoginView loginView;
-    private ManagerView managerView;
+    private PrisonerView managerView;
     private MainView mainView;
     
     public LoginController(LoginView view) 

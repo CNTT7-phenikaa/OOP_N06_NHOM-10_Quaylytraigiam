@@ -4,14 +4,14 @@
  */
 package com.mycompany.quanlytraigiam.controller;
 
-import com.mycompany.quanlytraigiam.action.ManagerResidents;
-import com.mycompany.quanlytraigiam.action.ManagerResidents;
-import com.mycompany.quanlytraigiam.entity.Residents;
-import com.mycompany.quanlytraigiam.entity.Residents;
+import com.mycompany.quanlytraigiam.action.ManagerPrison;
+import com.mycompany.quanlytraigiam.action.ManagerPrison;
+import com.mycompany.quanlytraigiam.entity.Prison;
+import com.mycompany.quanlytraigiam.entity.Prison;
 import com.mycompany.quanlytraigiam.view.LoginView;
 import com.mycompany.quanlytraigiam.view.MainView;
-import com.mycompany.quanlytraigiam.view.ManagerView;
-import com.mycompany.quanlytraigiam.view.ResidentView;
+import com.mycompany.quanlytraigiam.view.PrisonerView;
+import com.mycompany.quanlytraigiam.view.PrisonView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -26,25 +26,25 @@ import javax.swing.event.ListSelectionListener;
  *
  * @author PC
  */
-public class ResidentController 
+public class PrisonController 
 {
     private LoginView loginView;
-    private ManagerView managerView;
-    private ResidentView residentView;
+    private PrisonerView managerView;
+    private PrisonView residentView;
     private MainView mainView;
-    private ManagerResidents managerResidents;
+    private ManagerPrison managerResidents;
     
-    public ResidentController(ResidentView view)
+    public PrisonController(PrisonView view)
     {
         this.residentView=view;
-        this.managerResidents = new ManagerResidents();
+        this.managerResidents = new ManagerPrison();
         view.addUndoListener(new UndoListener());
         view.addAddResidentListener(new AddResidentListener());
         view.addListResidentSelectionListener(new ListResidentsSelectionListener());
         view.addEditResidentListener(new EditResidentListener());
         view.addClearListener(new ClearResidentListener());
-        view.addDeleteSpecialPersonListener(new DeleteSpecialPersonListener());
-        view.addSortSpecialPersonListener(new SortResidentsListener());
+        view.addDeletePrisonerListener(new DeletePrisonerListener());
+        view.addSortPrisonerListener(new SortResidentsListener());
         view.addSearchListener(new SearchResidentViewListener());
         //view.addSearchListener(new SearchResidentViewListener());
         view.addSearchDialogListener(new SearchResidentListener());
@@ -54,7 +54,7 @@ public class ResidentController
     
     public void showManagerView() 
     {
-        List<Residents> residentsList = managerResidents.getListResidents();
+        List<Prison> residentsList = managerResidents.getListResidents();
         residentView.setVisible(true);
         residentView.showListResidents(residentsList);
         residentView.showCountListResidents(residentsList);
@@ -75,7 +75,7 @@ public class ResidentController
     
     class AddResidentListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            Residents residents = residentView.getResidentInfo();
+            Prison residents = residentView.getResidentInfo();
             if (residents != null) {
                 try {
                     if (!managerResidents.isCMTUnique(residents)) {
@@ -106,13 +106,13 @@ public class ResidentController
     {
         public void actionPerformed(ActionEvent e) 
         {
-            Residents resident = residentView.getResidentInfo();
+            Prison resident = residentView.getResidentInfo();
             if (resident != null) 
             {
                 try {
                     managerResidents.edit(resident);
                 } catch (ParseException ex) {
-                    Logger.getLogger(SpecialPersonController.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(PrisonerController.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 residentView.showResidents(resident);
                 residentView.showListResidents(managerResidents.getListResidents());
@@ -124,11 +124,11 @@ public class ResidentController
         }
     }
     
-    class DeleteSpecialPersonListener implements ActionListener 
+    class DeletePrisonerListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
         {
-            Residents resident = residentView.getResidentInfo();
+            Prison resident = residentView.getResidentInfo();
             if (resident != null) 
             {
                 managerResidents.delete(resident);
@@ -146,13 +146,13 @@ public class ResidentController
     {
         public void valueChanged(ListSelectionEvent e) 
         {
-            List<Residents> residentsList = managerResidents.getListResidents();
+            List<Prison> residentsList = managerResidents.getListResidents();
             try {
                 residentView.fillResidentFromSelectedRow(residentsList);
                 //residentView.fillResidentFromSelectedRow();
                 
             } catch (ParseException ex) {
-                Logger.getLogger(ResidentController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PrisonController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -168,7 +168,7 @@ public class ResidentController
     class SortResidentsListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             boolean kt = false;
-            List<Residents> temp = new ArrayList<>();
+            List<Prison> temp = new ArrayList<>();
             int check = residentView.getChooseSelectSort();
             if(check == 1){
                 managerResidents.sortResidentsByID();
@@ -212,7 +212,7 @@ public class ResidentController
     class SearchResidentListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
             boolean kt = false;
-            List<Residents> temp = new ArrayList<>();
+            List<Prison> temp = new ArrayList<>();
             int check = residentView.getChooseSelectSearch();
             String search = residentView.validateSearch();
             if(check == 1){

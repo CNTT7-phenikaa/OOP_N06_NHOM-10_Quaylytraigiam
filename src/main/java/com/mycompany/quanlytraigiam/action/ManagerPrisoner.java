@@ -5,9 +5,9 @@
 package com.mycompany.quanlytraigiam.action;
 
 import com.mycompany.quanlytraigiam.entity.SpecialPerson;
-import com.mycompany.quanlytraigiam.entity.SpecialPersonXML;
+import com.mycompany.quanlytraigiam.entity.PrisonerXML;
 import com.mycompany.quanlytraigiam.utils.FileUtils;
-import com.mycompany.quanlytraigiam.view.ManagerView;
+import com.mycompany.quanlytraigiam.view.PrisonerView;
 import java.text.Collator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,11 +21,11 @@ import java.util.Locale;
  *
  * @author PC
  */
-public class ManagerSpecialPerson 
+public class ManagerPrisoner 
 {
     private static final String SPECIALPERSON_FILE_NAME = "SpecialPerson.xml";
     private List<SpecialPerson> listSpecialPersons;
-    public ManagerSpecialPerson() {
+    public ManagerPrisoner() {
         this.listSpecialPersons = readListSpecialPersons();
         if (listSpecialPersons == null) {
             listSpecialPersons = new ArrayList<SpecialPerson>();
@@ -39,7 +39,7 @@ public class ManagerSpecialPerson
      */
     public void writeListSpecialPersons(List<SpecialPerson> specialPersons) 
     {
-        SpecialPersonXML specialPersonXML = new SpecialPersonXML();
+        PrisonerXML specialPersonXML = new PrisonerXML();
         specialPersonXML.setSpecialPerson(specialPersons);
         FileUtils.writeXMLtoFile(SPECIALPERSON_FILE_NAME, specialPersonXML);
     }
@@ -52,8 +52,7 @@ public class ManagerSpecialPerson
     public List<SpecialPerson> readListSpecialPersons() 
     {
         List<SpecialPerson> list = new ArrayList<SpecialPerson>();
-        SpecialPersonXML specialPersonXML = (SpecialPersonXML) FileUtils.readXMLFile(
-                SPECIALPERSON_FILE_NAME, SpecialPersonXML.class);
+        PrisonerXML specialPersonXML = (PrisonerXML) FileUtils.readXMLFile(SPECIALPERSON_FILE_NAME, PrisonerXML.class);
         if (specialPersonXML != null) 
         {
             list = specialPersonXML.getSpecialPerson();

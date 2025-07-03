@@ -37,10 +37,10 @@ import javax.swing.table.TableColumnModel;
  *
  * @author PC
  */
-public class ManagerView extends javax.swing.JFrame {
+public class PrisonerView extends javax.swing.JFrame {
 
     /**
-     * Creates new form ManagerView
+     * Creates new form PrisonerView
      */
     private SimpleDateFormat fDate=new SimpleDateFormat("dd/MM/yyyy");
     private String filename=null;
@@ -56,7 +56,7 @@ public class ManagerView extends javax.swing.JFrame {
     //private String search;
     //private int searchID;
     //private CircleLabel circlePanel = new CirclePanel(100);
-    public ManagerView() {
+    public PrisonerView() {
         initComponents();
         btnAdd.setEnabled(true);
         btnEdit.setEnabled(false);
@@ -964,20 +964,21 @@ public class ManagerView extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PrisonerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PrisonerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PrisonerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PrisonerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManagerView().setVisible(true);
+                new PrisonerView().setVisible(true);
             }
         });
     }
@@ -1125,14 +1126,14 @@ public class ManagerView extends javax.swing.JFrame {
     }
     
     public void searchNameSpecialPersonInfo() {
-        //FrameSearch = new ManagerView();
+        //FrameSearch = new PrisonerView();
         SearchDialog.setVisible(true);
     }
     
     public void displayStatisticView() {
-        //FrameSearch = new ManagerView();
+        //FrameSearch = new PrisonerView();
         StatisticView.setVisible(true);
-        ManagerView.this.setVisible(false);
+        PrisonerView.this.setVisible(false);
         StatisticView.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 StatisticView.dispose();
@@ -1142,7 +1143,7 @@ public class ManagerView extends javax.swing.JFrame {
     }
     
     public void cancelDialogSearchSpecialPersonInfo() {
-        //FrameSearch = new ManagerView();
+        //FrameSearch = new PrisonerView();
         SearchDialog.setVisible(false);
     }
     
@@ -1319,7 +1320,7 @@ public class ManagerView extends javax.swing.JFrame {
     public void UnderViewSpecialPerson()
     {
         StatisticView.setVisible(false);
-        ManagerView.this.setVisible(true);
+        PrisonerView.this.setVisible(true);
     }
     
     

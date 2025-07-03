@@ -4,10 +4,10 @@
  */
 package com.mycompany.quanlytraigiam.action;
 
-import com.mycompany.quanlytraigiam.entity.ResidentXML;
-import com.mycompany.quanlytraigiam.entity.Residents;
+import com.mycompany.quanlytraigiam.entity.PrisonXML;
+import com.mycompany.quanlytraigiam.entity.Prison;
 import com.mycompany.quanlytraigiam.utils.FileUtils;
-import com.mycompany.quanlytraigiam.view.ResidentView;
+import com.mycompany.quanlytraigiam.view.PrisonView;
 import java.text.Collator;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,42 +22,41 @@ import javax.swing.JOptionPane;
  *
  * @author PC
  */
-public class ManagerResidents 
+public class ManagerPrison 
 {
     private static final String RESIDENT_FILE_NAME = "Residents.xml";
-    private List<Residents> listResidents;
-    private ResidentView residentView;
+    private List<Prison> listResidents;
+    private PrisonView prisonView;
     
-    public ManagerResidents()
+    public ManagerPrison()
     {
         this.listResidents = readListResidents();
         if (listResidents == null) {
-            listResidents = new ArrayList<Residents>();
+            listResidents = new ArrayList<Prison>();
         }
     }
     
-    public List<Residents> readListResidents() 
+    public List<Prison> readListResidents() 
     {
-        List<Residents> list = new ArrayList<Residents>();
-        ResidentXML residentXML = (ResidentXML) FileUtils.readXMLFile(
-                RESIDENT_FILE_NAME, ResidentXML.class);
-        if (residentXML != null) 
+        List<Prison> list = new ArrayList<Prison>();
+        PrisonXML prisonXML = (PrisonXML) FileUtils.readXMLFile(RESIDENT_FILE_NAME, PrisonXML.class);
+        if (prisonXML != null) 
         {
-            list = residentXML.getResidents();
+            list = prisonXML.getResidents();
         }
         return list;
     }
     
-    public void writeListResidents(List<Residents> residents) 
+    public void writeListResidents(List<Prison> prisons) 
     {
-        ResidentXML residentXML = new ResidentXML();
-        residentXML.setResidents(residents);
-        FileUtils.writeXMLtoFile(RESIDENT_FILE_NAME, residentXML);
+        PrisonXML prisonXML = new PrisonXML();
+        prisonXML.setResidents(prisons);
+        FileUtils.writeXMLtoFile(RESIDENT_FILE_NAME, prisonXML);
     }
     
-    public List<Residents> searchResidentName(String search){
-        List<Residents>temp = new ArrayList<Residents>();
-        for(Residents person : listResidents){
+    public List<Prison> searchResidentName(String search){
+        List<Prison>temp = new ArrayList<Prison>();
+        for(Prison person : listResidents){
             if(person.getName().toLowerCase().contains(search.toLowerCase())){
                 temp.add(person);
             }
@@ -66,9 +65,9 @@ public class ManagerResidents
     }
     
     /* Hiển thị listSpecialPersons theo nơi ở */
-    public List<Residents> searchResidentAddress(String search){
-        List<Residents>temp = new ArrayList<Residents>();
-        for(Residents person : listResidents){
+    public List<Prison> searchResidentAddress(String search){
+        List<Prison>temp = new ArrayList<Prison>();
+        for(Prison person : listResidents){
             if(person.getAddress().toLowerCase().contains(search.toLowerCase())){
                 temp.add(person);
             }
@@ -76,9 +75,9 @@ public class ManagerResidents
         return temp;
     }
     
-    public List<Residents> searchResidentIDFamily(String search){
-        List<Residents>temp = new ArrayList<Residents>();
-        for(Residents person : listResidents){
+    public List<Prison> searchResidentIDFamily(String search){
+        List<Prison>temp = new ArrayList<Prison>();
+        for(Prison person : listResidents){
             if(person.getIDFamily().contains(search)){
                 temp.add(person);
             }
@@ -86,11 +85,11 @@ public class ManagerResidents
         return temp;
     }
      /* Hiển thị listSpecialPersons theo năm sinh */
-    public List<Residents> searchResidentYear(String year) {
-        List<Residents> temp = new ArrayList<>();
+    public List<Prison> searchResidentYear(String year) {
+        List<Prison> temp = new ArrayList<>();
         SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
 
-        for (Residents person : listResidents) {
+        for (Prison person : listResidents) {
             // Chuyển đổi ngày sinh thành chuỗi năm
             String personYearStr = yearFormat.format(person.getBirthday());
 
@@ -103,27 +102,27 @@ public class ManagerResidents
         return temp;
     }
     
-    public void add(Residents resident) 
+    public void add(Prison prison) 
     {
         int max = 0;
         for (int i=0;i<listResidents.size();i++)
         {
             if(listResidents.get(i).getId()>max) max=listResidents.get(i).getId();
         }
-        resident.setId(max+1);
-        listResidents.add(resident);
+        prison.setId(max+1);
+        listResidents.add(prison);
         writeListResidents(listResidents);
     }
     
-    /*public boolean validateAdd(Residents resident) {
+    /*public boolean validateAdd(Residents prison) {
         try {
             // Kiểm tra số CMT không trùng
-            if (!isCMTUnique(resident.getCMT())) {
+            if (!isCMTUnique(prison.getCMT())) {
                 throw new IllegalArgumentException("Số CMT đã tồn tại");
             }
 
             // Kiểm tra vai trò "Chủ hộ" không trùng số hộ khẩu
-            if ("Chủ hộ".equals(resident.getRole()) && !isHouseholdUnique(resident.getIDFamily())) {
+            if ("Chủ hộ".equals(prison.getRole()) && !isHouseholdUnique(prison.getIDFamily())) {
                 throw new IllegalArgumentException("Số hộ khẩu đã tồn tại cho vai trò 'Chủ hộ'");
             }
 
@@ -136,9 +135,9 @@ public class ManagerResidents
     }*/
     
     // Hàm kiểm tra số CMT không trùng
-    public boolean isCMTUnique(Residents resident) {
-        String cmt=resident.getCMT();
-        for (Residents existingResident : listResidents) {
+    public boolean isCMTUnique(Prison prison) {
+        String cmt=prison.getCMT();
+        for (Prison existingResident : listResidents) {
             if (existingResident.getCMT().equals(cmt)) {
                 return false; // Trùng số CMT
             }
@@ -147,10 +146,10 @@ public class ManagerResidents
     }
 
     // Hàm kiểm tra số hộ khẩu không trùng cho vai trò "Chủ hộ"
-    public boolean isHouseholdUnique(Residents resident) {
-        String IDFamily=resident.getIDFamily();
-        String role = resident.getRole();
-        for (Residents existingResident : listResidents) {
+    public boolean isHouseholdUnique(Prison prison) {
+        String IDFamily=prison.getIDFamily();
+        String role = prison.getRole();
+        for (Prison existingResident : listResidents) {
             if ("Chủ hộ".equals(role) && existingResident.getIDFamily().equals(IDFamily) && existingResident.getRole().equals(role)) {
                 return false; // Trùng số hộ khẩu cho vai trò "Chủ hộ"
             }
@@ -159,27 +158,27 @@ public class ManagerResidents
     }
     
     public void showMessage(String message) {
-        JOptionPane.showMessageDialog(residentView, message);
+        JOptionPane.showMessageDialog(prisonView, message);
     }
     
-    public void edit(Residents resident) throws ParseException 
+    public void edit(Prison prison) throws ParseException 
     {
         SimpleDateFormat fDate=new SimpleDateFormat("dd/MM/yyyy");
         int size = listResidents.size();
         for (int i = 0; i < size; i++) 
         {
-            if (listResidents.get(i).getId() == resident.getId()) 
+            if (listResidents.get(i).getId() == prison.getId()) 
             {
-                listResidents.get(i).setIDFamily(resident.getIDFamily());
-                listResidents.get(i).setName(resident.getName());
-                listResidents.get(i).setRole(resident.getRole());
-                listResidents.get(i).setBirthday(resident.getBirthday());
-                listResidents.get(i).setAddress(resident.getAddress());
-                listResidents.get(i).setSex(resident.getSex());
-                listResidents.get(i).setTypeCMT(resident.getTypeCMT());
-                listResidents.get(i).setCMT(resident.getCMT());
-                listResidents.get(i).setBirthPlace(resident.getBirthPlace());
-                listResidents.get(i).setPhoneNumber(resident.getPhoneNumber());
+                listResidents.get(i).setIDFamily(prison.getIDFamily());
+                listResidents.get(i).setName(prison.getName());
+                listResidents.get(i).setRole(prison.getRole());
+                listResidents.get(i).setBirthday(prison.getBirthday());
+                listResidents.get(i).setAddress(prison.getAddress());
+                listResidents.get(i).setSex(prison.getSex());
+                listResidents.get(i).setTypeCMT(prison.getTypeCMT());
+                listResidents.get(i).setCMT(prison.getCMT());
+                listResidents.get(i).setBirthPlace(prison.getBirthPlace());
+                listResidents.get(i).setPhoneNumber(prison.getPhoneNumber());
 
                 writeListResidents(listResidents);
                 break;
@@ -187,11 +186,11 @@ public class ManagerResidents
         }
     }
     
-    public boolean delete(Residents resident) {
+    public boolean delete(Prison prison) {
         boolean isFound = false;
         int size = listResidents.size();
         for (int i = 0; i < size; i++) {
-            if (listResidents.get(i).getId() == resident.getId()) {
+            if (listResidents.get(i).getId() == prison.getId()) {
                 listResidents.remove(i);
                 isFound = true;
                 break;
@@ -200,7 +199,7 @@ public class ManagerResidents
         if (isFound) {
             // Cập nhật lại ID của các đối tượng sau
             for (int i = 0; i < listResidents.size(); i++) {
-                if (listResidents.get(i).getId() > resident.getId()) {
+                if (listResidents.get(i).getId() > prison.getId()) {
                     listResidents.get(i).setId(listResidents.get(i).getId() - 1);
                 }
             }
@@ -212,8 +211,8 @@ public class ManagerResidents
     
     public void sortResidentsByName() 
     {
-        Collections.sort(listResidents, new Comparator<Residents>() {
-            public int compare(Residents p1, Residents p2) {
+        Collections.sort(listResidents, new Comparator<Prison>() {
+            public int compare(Prison p1, Prison p2) {
                 Collator collator = Collator.getInstance(new Locale("vi", "VN"));
                 // So sánh tên
                 int result = collator.compare(p1.getLastName(), p2.getLastName());
@@ -228,8 +227,8 @@ public class ManagerResidents
     }
     
     public void sortResidentsByIDFamily() {
-        Collections.sort(listResidents, new Comparator<Residents>() {
-            public int compare(Residents person1, Residents person2) {
+        Collections.sort(listResidents, new Comparator<Prison>() {
+            public int compare(Prison person1, Prison person2) {
                 return person1.getIDFamily().compareTo(person2.getIDFamily());
             }
         });
@@ -237,9 +236,9 @@ public class ManagerResidents
     
     public void sortResidentsByID() 
     {
-        Collections.sort(listResidents, new Comparator<Residents>() 
+        Collections.sort(listResidents, new Comparator<Prison>() 
         {
-            public int compare(Residents person1, Residents person2) 
+            public int compare(Prison person1, Prison person2) 
             {
                 if (person1.getId() > person2.getId()) 
                 {
@@ -250,7 +249,7 @@ public class ManagerResidents
         });
     }
     
-    public List<Residents> getListResidents() 
+    public List<Prison> getListResidents() 
     {
         return this.listResidents;
     }
