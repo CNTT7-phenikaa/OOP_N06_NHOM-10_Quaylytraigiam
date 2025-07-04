@@ -6,6 +6,6 @@ NHÓM 10
 
 THÀNH VIÊN:
   1. Nguyễn Quỳnh Trang - Msv: 23010651
-  2. Vũ Thị Khánh Vân - Msv:
-  3. Phạm Tiến Chiêu - Msv:
+  2. Vũ Thị Khánh Vân - Msv: 23010679
+  3. Phạm Tiến Chiêu - Msv: 23010526
 
