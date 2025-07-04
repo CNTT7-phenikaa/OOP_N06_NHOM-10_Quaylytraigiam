@@ -19,45 +19,107 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Prison {
     private String id;
-    private String name;
-    private String location;
-    private int capacity; //suc chua
-
+    private String maTraiGiam;
+    private String tenTraiGiam;
+    private String diaChi;
+    private String soDienThoai;
+    private String email;
+    private String sucChuaToiDa;
+    private String soLuongPhamNhanHienTai;
+    private Date ngayThanhLap;
+    private String quanLiTruong;
+    
     public Prison() {}
-
-    public Prison(String id, String name, String location, int capacity) {
+    public Prison(String id, String maTraiGiam, String tenTraiGiam, String diaChi, String soDienThoai, String email, String sucChuaToiDa, String soLuongPhamNhanHienTai, Date ngayThanhLap, String quanLiTruong) {
         this.id = id;
-        this.name = name;
-        this.location = location;
-        this.capacity = capacity;
+        this.maTraiGiam = maTraiGiam;
+        this.tenTraiGiam = tenTraiGiam;
+        this.diaChi = diaChi;
+        this.soDienThoai = soDienThoai;
+        this.email = email;
+        this.sucChuaToiDa = sucChuaToiDa;
+        this.soLuongPhamNhanHienTai = soLuongPhamNhanHienTai;
+        this.ngayThanhLap = ngayThanhLap;
+        this.quanLiTruong = quanLiTruong;
     }
-
-    // Getter & Setter
+    
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+    public String getMaTraiGiam() {
+        return maTraiGiam;
     }
 
-    public String getLocation() {
-        return location;
-    }
-    public void setLocation(String location) {
-        this.location = location;
+    public void setMaTraiGiam(String maTraiGiam) {
+        this.maTraiGiam = maTraiGiam;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getTenTraiGiam() {
+        return tenTraiGiam;
     }
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+
+    public void setTenTraiGiam(String tenTraiGiam) {
+        this.tenTraiGiam = tenTraiGiam;
+    }
+
+    public String getDiaChi() {
+        return diaChi;
+    }
+
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
+    }
+
+    public String getSoDienThoai() {
+        return soDienThoai;
+    }
+
+    public void setSoDienThoai(String soDienThoai) {
+        this.soDienThoai = soDienThoai;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSucChuaToiDa() {
+        return sucChuaToiDa;
+    }
+
+    public void setSucChuaToiDa(String sucChuaToiDa) {
+        this.sucChuaToiDa = sucChuaToiDa;
+    }
+
+    public String getSoLuongPhamNhanHienTai() {
+        return soLuongPhamNhanHienTai;
+    }
+
+    public void setSoLuongPhamNhanHienTai(String soLuongPhamNhanHienTai) {
+        this.soLuongPhamNhanHienTai = soLuongPhamNhanHienTai;
+    }
+
+    public Date getNgayThanhLap() {
+        return ngayThanhLap;
+    }
+
+    public void setNgayThanhLap(Date ngayThanhLap) {
+        this.ngayThanhLap = ngayThanhLap;
+    }
+
+    public String getQuanLiTruong() {
+        return quanLiTruong;
+    }
+
+    public void setQuanLiTruong(String quanLiTruong) {
+        this.quanLiTruong = quanLiTruong;
     }
 }
