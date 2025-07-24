@@ -27,18 +27,20 @@ public abstract class Person
     protected String name;
     protected Date birthday;
     protected String address;
+    protected String gender;
     //private SimpleDateFormat fDate=new SimpleDateFormat("dd/MM/yyyy");
     public Person() 
     {
         
     }
-    public Person(int id, String name, Date birthday, String address) throws ParseException 
+    public Person(int id, String name, Date birthday, String address, String gender) throws ParseException 
     {
         super();
         this.id = id;
         this.name = name;
         this.birthday = birthday;
         this.address = address;
+        this.gender = gender;
     }
 
     public int getId() 
@@ -93,4 +95,13 @@ public abstract class Person
     {
         this.address = address;
     } 
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    
 }

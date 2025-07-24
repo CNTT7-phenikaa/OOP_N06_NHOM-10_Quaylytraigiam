@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.quanlytraigiam.view;
-import com.mycompany.quanlytraigiam.entity.SpecialPerson;
+import com.mycompany.quanlytraigiam.entity.Prisoner;
 import com.raven.chart.Chart;
 import com.raven.chart.ModelChart;
 import java.awt.event.ActionListener;
@@ -11,6 +11,7 @@ import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Ellipse2D;
@@ -44,18 +45,15 @@ public class PrisonerView extends javax.swing.JFrame {
      */
     private SimpleDateFormat fDate=new SimpleDateFormat("dd/MM/yyyy");
     private String filename=null;
-    private byte[] specialPerson_image=null;
+    private byte[] prisoner_image=null;
     private byte[] image=null;
     private String [] columnNames = new String [] {
-        "STT", "Họ và tên", "Năm sinh", "Quê quán", "Ngày mở hồ sơ", "Loại đối tượng", "Ảnh"};
+        "STT", "Họ tên", "Ngày sinh", "Giới tính", "Quê quán", "Tội danh", "Ngày nhập trại" , "Kết án",
+        "Số năm lĩnh án" , "Trại giam", "Ảnh"};
     private String [] columnNames2 = new String [] {
         "<none>","Số lượng"};
     private Object data = new Object [][] {};
     Chart chart=new Chart();
-    //private int countSpecialPerson;
-    //private String search;
-    //private int searchID;
-    //private CircleLabel circlePanel = new CirclePanel(100);
     public PrisonerView() {
         initComponents();
         btnAdd.setEnabled(true);
@@ -63,14 +61,28 @@ public class PrisonerView extends javax.swing.JFrame {
         btnDelete.setEnabled(false);
         btnSearch.setEnabled(true);
         lblImage.setIcon(new ImageIcon("default-image.png"));
-        tableSpecialPerson.setDefaultRenderer(Object.class, new MyRenderer());
+        tablePrisoner.setDefaultRenderer(Object.class, new MyRenderer());
         tableStatistic.setDefaultRenderer(Object.class, new MyRenderer2());
         //jLabel14.setLablFor(new CircleLabel());      
         OpeningDateChooser.setBackground(new Color(0, 204, 255));
         chart1.addLegend("Số lượng", new Color(0, 178, 238));
+        
+        // Ẩn spinner và label ngay từ đầu nếu cần
+        spnSentenceYears.setVisible(true); // hoặc false, tùy chọn mặc định
+        lblYears.setVisible(true);
+
+        // Xử lý thay đổi lựa chọn án
+        cboSentenceType.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String selected = cboSentenceType.getSelectedItem().toString();
+                boolean isLimited = selected.equals("Tù có thời hạn");
+                spnSentenceYears.setVisible(isLimited);
+                lblYears.setVisible(isLimited);
+            }
+        });
     }
   
-    
+    //Xử lý phần ảnh 
     private static Image getCircleImage(Image image) {
         int width = image.getWidth(null);
         int height = image.getHeight(null);
@@ -97,18 +109,21 @@ public class PrisonerView extends javax.swing.JFrame {
     private String abbreviation(String name) {
         return name;
     }
-    
+    //Xử lý bảng hiển thị thông tin
     public class MyRenderer extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
             TableColumnModel columnModel=table.getColumnModel();
-            columnModel.getColumn(0).setPreferredWidth(10);
-            columnModel.getColumn(1).setPreferredWidth(150);
-            columnModel.getColumn(2).setPreferredWidth(10);
-            columnModel.getColumn(3).setPreferredWidth(270);
-            columnModel.getColumn(4).setPreferredWidth(50);
-            columnModel.getColumn(5).setPreferredWidth(80);
-            //columnModel.getColumn(0).setPreferredWidth(5);
+            columnModel.getColumn(0).setPreferredWidth(40);   // STT
+            columnModel.getColumn(1).setPreferredWidth(150);  // Họ tên
+            columnModel.getColumn(2).setPreferredWidth(100);  // Ngày sinh
+            columnModel.getColumn(3).setPreferredWidth(70);   // Giới tính
+            columnModel.getColumn(4).setPreferredWidth(120);  // Quê quán
+            columnModel.getColumn(5).setPreferredWidth(160);  // Tội danh
+            columnModel.getColumn(6).setPreferredWidth(100);  // Ngày nhập trại
+            columnModel.getColumn(7).setPreferredWidth(100);  // Kết án
+            columnModel.getColumn(8).setPreferredWidth(40);   // Số năm lĩnh án
+            columnModel.getColumn(9).setPreferredWidth(140);  // Trại giam
             JTableHeader header = table.getTableHeader();
             header.setBackground(new Color(0, 0, 139));
             header.setForeground(Color.WHITE);
@@ -127,7 +142,7 @@ public class PrisonerView extends javax.swing.JFrame {
             return c;
         }
     }
-    
+    //Xử lý bảng thống kê
     public class MyRenderer2 extends DefaultTableCellRenderer {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
@@ -151,7 +166,7 @@ public class PrisonerView extends javax.swing.JFrame {
             return c;
         }
     }
-    
+    //Xử lý viết hoa chữ cái đầu trong chuỗi
     public static String capitalizeWords(String str) {
         str = str.toLowerCase();
         String[] words = str.split("\\s+");
@@ -220,7 +235,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnSortByYear = new javax.swing.JButton();
         btnSortByID = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        ComboBoxType = new javax.swing.JComboBox<>();
+        cboCrime = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
         btnImage = new javax.swing.JButton();
         BirthdayChooser = new com.toedter.calendar.JDateChooser();
@@ -235,10 +250,18 @@ public class PrisonerView extends javax.swing.JFrame {
         FieldName = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableSpecialPerson = new javax.swing.JTable();
+        tablePrisoner = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         FieldID = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        cboGender = new javax.swing.JComboBox<>();
+        jLabel17 = new javax.swing.JLabel();
+        cboSentenceType = new javax.swing.JComboBox<>();
+        spnSentenceYears = new javax.swing.JSpinner();
+        lblYears = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        cboPrison = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
 
         SearchDialog.setResizable(false);
@@ -479,7 +502,7 @@ public class PrisonerView extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 204, 175));
 
-        btnAdd.setBackground(new java.awt.Color(0, 0, 102));
+        btnAdd.setBackground(new java.awt.Color(39, 97, 143));
         btnAdd.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
         btnAdd.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/add.png"));
@@ -492,7 +515,7 @@ public class PrisonerView extends javax.swing.JFrame {
             }
         });
 
-        btnCancelSearch.setBackground(new java.awt.Color(0, 0, 102));
+        btnCancelSearch.setBackground(new java.awt.Color(39, 97, 143));
         btnCancelSearch.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnCancelSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnCancelSearch.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/cancel.png"));
@@ -507,7 +530,7 @@ public class PrisonerView extends javax.swing.JFrame {
             }
         });
 
-        btnManagerUndo.setBackground(new java.awt.Color(0, 0, 102));
+        btnManagerUndo.setBackground(new java.awt.Color(39, 97, 143));
         btnManagerUndo.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnManagerUndo.setForeground(new java.awt.Color(255, 255, 255));
         btnManagerUndo.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/LogOut.png"));
@@ -521,7 +544,7 @@ public class PrisonerView extends javax.swing.JFrame {
             }
         });
 
-        btnDelete.setBackground(new java.awt.Color(0, 0, 102));
+        btnDelete.setBackground(new java.awt.Color(39, 97, 143));
         btnDelete.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
         btnDelete.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/delete.png"));
@@ -534,7 +557,7 @@ public class PrisonerView extends javax.swing.JFrame {
             }
         });
 
-        btnClear.setBackground(new java.awt.Color(0, 0, 102));
+        btnClear.setBackground(new java.awt.Color(39, 97, 143));
         btnClear.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
         btnClear.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/trash.png"));
@@ -548,7 +571,7 @@ public class PrisonerView extends javax.swing.JFrame {
             }
         });
 
-        btnSearch.setBackground(new java.awt.Color(0, 0, 102));
+        btnSearch.setBackground(new java.awt.Color(39, 97, 143));
         btnSearch.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
         btnSearch.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/search.png"));
@@ -562,7 +585,7 @@ public class PrisonerView extends javax.swing.JFrame {
             }
         });
 
-        btnEdit.setBackground(new java.awt.Color(0, 0, 102));
+        btnEdit.setBackground(new java.awt.Color(39, 97, 143));
         btnEdit.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/Edit.png"));
@@ -623,8 +646,9 @@ public class PrisonerView extends javax.swing.JFrame {
         jPanel2.setBounds(0, 0, 170, 660);
         //jPanel2.setOpaque(false);
 
-        btnSortByOpeningDate.setBackground(new java.awt.Color(51, 204, 255));
+        btnSortByOpeningDate.setBackground(new java.awt.Color(33, 91, 138));
         btnSortByOpeningDate.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        btnSortByOpeningDate.setForeground(new java.awt.Color(255, 255, 255));
         btnSortByOpeningDate.setText("Sắp xếp theo ngày mở hồ sơ");
         btnSortByOpeningDate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSortByOpeningDate.addActionListener(new java.awt.event.ActionListener() {
@@ -635,8 +659,9 @@ public class PrisonerView extends javax.swing.JFrame {
         jPanel1.add(btnSortByOpeningDate);
         btnSortByOpeningDate.setBounds(780, 330, 210, 40);
 
-        btnSortByName.setBackground(new java.awt.Color(51, 204, 255));
+        btnSortByName.setBackground(new java.awt.Color(33, 91, 138));
         btnSortByName.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        btnSortByName.setForeground(new java.awt.Color(255, 255, 255));
         btnSortByName.setText("Sắp xếp theo tên");
         btnSortByName.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSortByName.addActionListener(new java.awt.event.ActionListener() {
@@ -647,8 +672,9 @@ public class PrisonerView extends javax.swing.JFrame {
         jPanel1.add(btnSortByName);
         btnSortByName.setBounds(400, 330, 150, 40);
 
-        btnStatistic.setBackground(new java.awt.Color(51, 204, 255));
+        btnStatistic.setBackground(new java.awt.Color(33, 91, 138));
         btnStatistic.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        btnStatistic.setForeground(new java.awt.Color(255, 255, 255));
         btnStatistic.setText("Thống kê");
         btnStatistic.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnStatistic.addActionListener(new java.awt.event.ActionListener() {
@@ -660,8 +686,9 @@ public class PrisonerView extends javax.swing.JFrame {
         btnStatistic.setBounds(1010, 330, 150, 40);
         //btnSortByID.setOpaque(false);
 
-        btnSortByYear.setBackground(new java.awt.Color(51, 204, 255));
+        btnSortByYear.setBackground(new java.awt.Color(33, 91, 138));
         btnSortByYear.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        btnSortByYear.setForeground(new java.awt.Color(255, 255, 255));
         btnSortByYear.setText("Sắp xếp theo năm sinh");
         btnSortByYear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSortByYear.addActionListener(new java.awt.event.ActionListener() {
@@ -672,8 +699,9 @@ public class PrisonerView extends javax.swing.JFrame {
         jPanel1.add(btnSortByYear);
         btnSortByYear.setBounds(580, 330, 180, 40);
 
-        btnSortByID.setBackground(new java.awt.Color(51, 204, 255));
+        btnSortByID.setBackground(new java.awt.Color(33, 91, 138));
         btnSortByID.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
+        btnSortByID.setForeground(new java.awt.Color(255, 255, 255));
         btnSortByID.setText("Sắp xếp theo ID");
         btnSortByID.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSortByID.addActionListener(new java.awt.event.ActionListener() {
@@ -690,177 +718,258 @@ public class PrisonerView extends javax.swing.JFrame {
         jPanel1.add(jLabel5);
         jLabel5.setBounds(870, 60, 50, 42);
 
-        ComboBoxType.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        ComboBoxType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<none>", "Nghiện hút", "Xâm phạm ANQG", "Có tiền án", "Có tiền sự", "Thường xuyên đánh bạc", "Nhân thân đặc biệt", "Hay tụ tập khiếu kiện" }));
-        jPanel1.add(ComboBoxType);
-        ComboBoxType.setBounds(930, 270, 260, 45);
-        ComboBoxType.setOpaque(false);
+        cboCrime.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        cboCrime.setMaximumRowCount(10);
+        cboCrime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
+            "<none>",
+            "Giết người",
+            "Cướp tài sản",
+            "Trộm cắp tài sản",
+            "Lừa đảo chiếm đoạt tài sản",
+            "Buôn bán ma túy",
+            "Sản xuất, tàng trữ trái phép chất ma túy",
+            "Gây rối trật tự công cộng",
+            "Đánh bạc trái phép",
+            "Xâm phạm an ninh quốc gia",
+            "Tham nhũng",
+            "Chống người thi hành công vụ",
+            "Cưỡng đoạt tài sản",
+            "Cố ý gây thương tích",
+            "Hiếp dâm",
+            "Tàng trữ vũ khí trái phép",
+            "Làm giả giấy tờ, tài liệu",
+            "Tổ chức nhập cảnh trái phép",
+            "Tàng trữ văn hóa phẩm đồi trụy"
+        })
+    );
+    cboCrime.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            cboCrimeActionPerformed(evt);
+        }
+    });
+    jPanel1.add(cboCrime);
+    cboCrime.setBounds(270, 250, 240, 45);
+    cboCrime.setOpaque(false);
 
-        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel13.setText("Tổng số đối tượng:");
-        jPanel1.add(jLabel13);
-        jLabel13.setBounds(420, 50, 160, 21);
+    jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel13.setText("Tổng số phạm nhân:");
+    jPanel1.add(jLabel13);
+    jLabel13.setBounds(550, 20, 160, 21);
 
-        btnImage.setBackground(new java.awt.Color(255, 255, 255, 0));
-        btnImage.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        btnImage.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/green pin.png"));
-        btnImage.setText("<html>Thêm ảnh<br> ");
-        btnImage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnImage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImageActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnImage);
-        btnImage.setBounds(1093, 60, 100, 50);
-        btnImage.setOpaque(false);
-        btnImage.setBorder(new RoundedBorder(20));
+    btnImage.setBackground(new java.awt.Color(255, 255, 255, 0));
+    btnImage.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+    btnImage.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/green pin.png"));
+    btnImage.setText("<html>Thêm ảnh<br> ");
+    btnImage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+    btnImage.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            btnImageActionPerformed(evt);
+        }
+    });
+    jPanel1.add(btnImage);
+    btnImage.setBounds(1093, 60, 100, 50);
+    btnImage.setOpaque(false);
+    btnImage.setBorder(new RoundedBorder(20));
 
-        BirthdayChooser.setBackground(new java.awt.Color(0, 204, 255));
-        BirthdayChooser.setForeground(new java.awt.Color(102, 255, 255));
-        BirthdayChooser.setDateFormatString("dd/MM/yyyy");
-        BirthdayChooser.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        jPanel1.add(BirthdayChooser);
-        BirthdayChooser.setBounds(300, 180, 220, 40);
+    BirthdayChooser.setBackground(new java.awt.Color(0, 204, 255));
+    BirthdayChooser.setForeground(new java.awt.Color(102, 255, 255));
+    BirthdayChooser.setDateFormatString("dd/MM/yyyy");
+    BirthdayChooser.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+    jPanel1.add(BirthdayChooser);
+    BirthdayChooser.setBounds(270, 130, 220, 40);
 
-        OpeningDateChooser.setBackground(new java.awt.Color(0, 204, 255));
-        OpeningDateChooser.setForeground(new java.awt.Color(102, 255, 255));
-        OpeningDateChooser.setDateFormatString("dd/MM/yyyy");
-        OpeningDateChooser.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        jPanel1.add(OpeningDateChooser);
-        OpeningDateChooser.setBounds(450, 270, 250, 40);
+    OpeningDateChooser.setBackground(new java.awt.Color(0, 204, 255));
+    OpeningDateChooser.setForeground(new java.awt.Color(102, 255, 255));
+    OpeningDateChooser.setDateFormatString("dd/MM/yyyy");
+    OpeningDateChooser.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+    jPanel1.add(OpeningDateChooser);
+    OpeningDateChooser.setBounds(430, 200, 250, 40);
 
-        TextAreaAddress.setBackground(new java.awt.Color(255, 255, 255, 0));
-        TextAreaAddress.setColumns(20);
-        TextAreaAddress.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        TextAreaAddress.setRows(5);
-        TextAreaAddress.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 51, 153)));
-        jScrollPane2.setViewportView(TextAreaAddress);
-        TextAreaAddress.setOpaque(false);
+    TextAreaAddress.setBackground(new java.awt.Color(255, 255, 255, 0));
+    TextAreaAddress.setColumns(20);
+    TextAreaAddress.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+    TextAreaAddress.setRows(5);
+    TextAreaAddress.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 51, 153)));
+    jScrollPane2.setViewportView(TextAreaAddress);
+    TextAreaAddress.setOpaque(false);
 
-        jPanel1.add(jScrollPane2);
-        jScrollPane2.setBounds(930, 180, 260, 70);
-        jScrollPane2.setOpaque(false);
+    jPanel1.add(jScrollPane2);
+    jScrollPane2.setBounds(600, 110, 260, 70);
+    jScrollPane2.setOpaque(false);
 
-        FieldSum.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        FieldSum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        FieldSum.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 102)));
-        FieldSum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FieldSumActionPerformed(evt);
-            }
-        });
-        jPanel1.add(FieldSum);
-        FieldSum.setBounds(580, 40, 70, 40);
-        FieldSum.setOpaque(false);
-        FieldSum.setEditable(false);
+    FieldSum.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+    FieldSum.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    FieldSum.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 102)));
+    FieldSum.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            FieldSumActionPerformed(evt);
+        }
+    });
+    jPanel1.add(FieldSum);
+    FieldSum.setBounds(710, 10, 70, 40);
+    FieldSum.setOpaque(false);
+    FieldSum.setEditable(false);
 
-        jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel7.setText("Ngày mở hồ sơ: (dd/MM/yyyy)");
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(200, 270, 250, 42);
+    jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel7.setText("Ngày nhập trại: (dd/MM/yyyy)");
+    jPanel1.add(jLabel7);
+    jLabel7.setBounds(180, 200, 250, 42);
 
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel6.setText("Loại đối tượng:");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(790, 270, 130, 37);
+    jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel6.setText("Tội danh:");
+    jPanel1.add(jLabel6);
+    jLabel6.setBounds(180, 260, 80, 37);
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel1.setText("Họ và tên:");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(200, 114, 90, 30);
+    jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel1.setText("Họ và tên:");
+    jPanel1.add(jLabel1);
+    jLabel1.setBounds(180, 70, 90, 30);
 
-        lblImage.setBackground(new java.awt.Color(153, 153, 153));
-        lblImage.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)));
-        jPanel1.add(lblImage);
-        lblImage.setBounds(930, 10, 153, 153);
+    lblImage.setBackground(new java.awt.Color(153, 153, 153));
+    lblImage.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 51, 153)));
+    jPanel1.add(lblImage);
+    lblImage.setBounds(930, 10, 153, 153);
 
-        FieldName.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        FieldName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 51, 102)));
-        FieldName.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FieldNameActionPerformed(evt);
-            }
-        });
-        jPanel1.add(FieldName);
-        FieldName.setBounds(300, 110, 220, 40);
-        FieldName.setOpaque(false);
+    FieldName.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+    FieldName.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 51, 102)));
+    FieldName.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            FieldNameActionPerformed(evt);
+        }
+    });
+    jPanel1.add(FieldName);
+    FieldName.setBounds(270, 60, 220, 40);
+    FieldName.setOpaque(false);
 
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel2.setText("ID:");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(200, 50, 60, 21);
+    jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel2.setText("ID:");
+    jPanel1.add(jLabel2);
+    jLabel2.setBounds(180, 20, 60, 21);
 
-        jScrollPane1.setBackground(new java.awt.Color(0, 51, 153, 125));
+    jScrollPane1.setBackground(new java.awt.Color(0, 51, 153, 125));
 
-        tableSpecialPerson.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        tableSpecialPerson.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            }, columnNames
-        ));
-        tableSpecialPerson.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
-        tableSpecialPerson.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        tableSpecialPerson.setRowHeight(30);
-        jScrollPane1.setViewportView(tableSpecialPerson);
-        tableSpecialPerson.removeColumn(tableSpecialPerson.getColumnModel().getColumn(6));
+    tablePrisoner.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+    tablePrisoner.setModel(new javax.swing.table.DefaultTableModel(
+        new Object [][] {
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null},
+            {null, null, null, null, null, null, null}
+        }, columnNames
+    ));
+    tablePrisoner.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+    tablePrisoner.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+    tablePrisoner.setRowHeight(30);
+    jScrollPane1.setViewportView(tablePrisoner);
+    tablePrisoner.removeColumn(tablePrisoner.getColumnModel().getColumn(6));
 
-        jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(180, 380, 1020, 270);
+    jPanel1.add(jScrollPane1);
+    jScrollPane1.setBounds(180, 380, 1020, 270);
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel4.setText("Quê quán:");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(830, 190, 90, 42);
+    jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel4.setText("Quê quán:");
+    jPanel1.add(jLabel4);
+    jLabel4.setBounds(510, 130, 90, 42);
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel3.setText("Ngày sinh:");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(200, 180, 90, 42);
+    jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel3.setText("Ngày sinh:");
+    jPanel1.add(jLabel3);
+    jLabel3.setBounds(180, 130, 90, 42);
 
-        FieldID.setEditable(false);
-        FieldID.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        FieldID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        FieldID.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 102)));
-        FieldID.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FieldIDActionPerformed(evt);
-            }
-        });
-        jPanel1.add(FieldID);
-        FieldID.setBounds(260, 38, 70, 40);
-        FieldID.setOpaque(false);
+    FieldID.setEditable(false);
+    FieldID.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
+    FieldID.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+    FieldID.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 51, 102)));
+    FieldID.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            FieldIDActionPerformed(evt);
+        }
+    });
+    jPanel1.add(FieldID);
+    FieldID.setBounds(230, 10, 70, 40);
+    FieldID.setOpaque(false);
 
-        jLabel9.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/Lovepik_com-500330964-blue-blazed-background.jpg"));
-        jLabel9.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel1.add(jLabel9);
-        jLabel9.setBounds(-90, 0, 1640, 890);
+    jLabel16.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel16.setText("Giới tính:");
+    jLabel16.setMaximumSize(new java.awt.Dimension(25, 21));
+    jLabel16.setMinimumSize(new java.awt.Dimension(25, 21));
+    jLabel16.setPreferredSize(new java.awt.Dimension(25, 21));
+    jPanel1.add(jLabel16);
+    jLabel16.setBounds(510, 70, 80, 21);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1207, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
+    cboGender.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+    cboGender.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ", "Khác", " " }));
+    cboGender.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            cboGenderActionPerformed(evt);
+        }
+    });
+    jPanel1.add(cboGender);
+    cboGender.setBounds(610, 70, 77, 27);
 
-        pack();
+    jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel17.setText("Kết án:");
+    jPanel1.add(jLabel17);
+    jLabel17.setBounds(740, 210, 70, 30);
+
+    cboSentenceType.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+    cboSentenceType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] {
+        "<none>", "Tù có thời hạn", "Tù chung thân", "Tử hình"
+    })
+
+    );
+    cboSentenceType.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            cboSentenceTypeActionPerformed(evt);
+        }
+    });
+    jPanel1.add(cboSentenceType);
+    cboSentenceType.setBounds(810, 200, 150, 40);
+    jPanel1.add(spnSentenceYears);
+    spnSentenceYears.setBounds(1050, 210, 80, 30);
+
+    lblYears.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    lblYears.setText("Số năm:");
+    jPanel1.add(lblYears);
+    lblYears.setBounds(980, 210, 70, 30);
+
+    jLabel18.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+    jLabel18.setText("Trại giam:");
+    jPanel1.add(jLabel18);
+    jLabel18.setBounds(720, 270, 90, 30);
+
+    cboPrison.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+    cboPrison.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Chọn trại giam", " Trại giam A", "Trại giam ", " " }));
+    jPanel1.add(cboPrison);
+    cboPrison.setBounds(820, 260, 190, 40);
+
+    jLabel9.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/Lovepik_com-500330964-blue-blazed-background.jpg"));
+    jLabel9.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+    jPanel1.add(jLabel9);
+    jLabel9.setBounds(-60, 0, 1640, 890);
+
+    javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+    getContentPane().setLayout(layout);
+    layout.setHorizontalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1207, Short.MAX_VALUE)
+    );
+    layout.setVerticalGroup(
+        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .addGroup(layout.createSequentialGroup()
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 653, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(0, 0, Short.MAX_VALUE))
+    );
+
+    pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void CheckBoxNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckBoxNameActionPerformed
@@ -947,6 +1056,19 @@ public class PrisonerView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnStatisticAgeActionPerformed
 
+    private void cboCrimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCrimeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboCrimeActionPerformed
+
+    private void cboSentenceTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboSentenceTypeActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cboSentenceTypeActionPerformed
+
+    private void cboGenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboGenderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboGenderActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -982,11 +1104,11 @@ public class PrisonerView extends javax.swing.JFrame {
             }
         });
     }
-    
+    //Hiển thị một hộp thoại thông báo
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
-    
+    //bo góc cho thành phần Swing
     public class RoundedBorder implements Border {
         private int radius;
         RoundedBorder(int radius) {
@@ -1003,7 +1125,7 @@ public class PrisonerView extends javax.swing.JFrame {
         }
     }
     
-    public void SpecialPersonImage()
+    public void PrisonerImage()
     {
         String lastImagePath = "";
         JFileChooser chooser=new JFileChooser(lastImagePath);
@@ -1036,7 +1158,7 @@ public class PrisonerView extends javax.swing.JFrame {
             {
                 bos.write(buf, 0, readNum);
             }
-            specialPerson_image=bos.toByteArray();
+            prisoner_image=bos.toByteArray();
         }
         catch (Exception e)
         {
@@ -1045,55 +1167,63 @@ public class PrisonerView extends javax.swing.JFrame {
     }
     
     /**
-     * hiển thị list specialPerson vào bảng tableSpecialPerson
+     * hiển thị list prisoner vào bảng tablePrisoner
      * 
      * @param list
      */
-    public void showListSpecialPersons(List<SpecialPerson> list) {
+    public void showListPrisoner(List<Prisoner> list) {
         int size = list.size();
-        // với bảng tableSpecialPerson có 6 cột, 
-        // khởi tạo mảng 2 chiều specialPersons, trong đó:
-        // số hàng: là kích thước của list specialPerson 
-        // số cột: là 7
-        Object [][] specialPersons = new Object[size][7];
+        // với bảng tablePrisoner có 10 cột, 
+        // khởi tạo mảng 2 chiều prisoner, trong đó:
+        // số hàng: là kích thước của list prisoner 
+        // số cột: là 11
+        Object [][] prisoner = new Object[size][11];
         for (int i = 0; i < size; i++) {
-            specialPersons[i][0] = list.get(i).getId();
-            specialPersons[i][1] = list.get(i).getName();
-            specialPersons[i][2] = fDate.format(list.get(i).getBirthday());
-            specialPersons[i][3] = list.get(i).getAddress();
-            specialPersons[i][4] = fDate.format(list.get(i).getOpeningDate());
-            specialPersons[i][5] = list.get(i).getType();
-            specialPersons[i][6] = list.get(i).getImage();
+            prisoner[i][0] = list.get(i).getId();
+            prisoner[i][1] = list.get(i).getName();
+            prisoner[i][2] = fDate.format(list.get(i).getBirthday());
+            prisoner[i][3] = list.get(i).getGender();
+            prisoner[i][4] = list.get(i).getAddress();
+            prisoner[i][5] = list.get(i).getCrime();
+            prisoner[i][6] = fDate.format(list.get(i).getImprisonmentDate());
+            prisoner[i][7] = list.get(i).getSentenceType();
+            prisoner[i][8] = list.get(i).getSentenceYears();
+            prisoner[i][9] = list.get(i).getPrisonName();
+            prisoner[i][10] = list.get(i).getPicture();
         }
         //jLabel1.setLayout(null);
-        tableSpecialPerson.getColumnModel().getColumn(0).setWidth(3);
-        tableSpecialPerson.setModel(new DefaultTableModel(specialPersons, columnNames));
-        tableSpecialPerson.removeColumn(tableSpecialPerson.getColumnModel().getColumn(6));
+        tablePrisoner.getColumnModel().getColumn(0).setPreferredWidth(30);
+        tablePrisoner.setModel(new DefaultTableModel(prisoner, columnNames));
+        tablePrisoner.removeColumn(tablePrisoner.getColumnModel().getColumn(10));
     }
     
-    public void showCountListSpecialPersons(List<SpecialPerson> list) {
+    public void showCountListPrisoner(List<Prisoner> list) {
         int size = list.size();
         FieldSum.setText(String.valueOf(size));
     }
     /**
-     * điền thông tin của hàng được chọn từ bảng specialPerson 
-     * vào các trường tương ứng của specialPerson.
+     * điền thông tin của hàng được chọn từ bảng prisoner 
+     * vào các trường tương ứng của prisoner.
      */
-    public void fillSpecialPersonFromSelectedRow() throws ParseException {
+    public void fillPrisonerFromSelectedRow() throws ParseException {
         // lấy chỉ số của hàng được chọn 
-        int row = tableSpecialPerson.getSelectedRow();
+        int row = tablePrisoner.getSelectedRow();
         if (row >= 0) {
-            FieldID.setText(tableSpecialPerson.getModel().getValueAt(row, 0).toString());
-            FieldName.setText(tableSpecialPerson.getModel().getValueAt(row, 1).toString());
-            BirthdayChooser.setDate(fDate.parse(tableSpecialPerson.getModel().getValueAt(row, 2).toString()));
-            TextAreaAddress.setText(tableSpecialPerson.getModel().getValueAt(row, 3).toString());
-            //FieldOpeningDate.setText(tableSpecialPerson.getModel().getValueAt(row, 4).toString());
-            OpeningDateChooser.setDate(fDate.parse(tableSpecialPerson.getModel().getValueAt(row, 4).toString()));
-            ComboBoxType.setSelectedItem(tableSpecialPerson.getModel().getValueAt(row, 5).toString());
+            FieldID.setText(tablePrisoner.getModel().getValueAt(row, 0).toString());
+            FieldName.setText(tablePrisoner.getModel().getValueAt(row, 1).toString());
+            BirthdayChooser.setDate(fDate.parse(tablePrisoner.getModel().getValueAt(row, 2).toString()));
+            cboGender.setSelectedItem(tablePrisoner.getModel().getValueAt(row, 3).toString());
+            TextAreaAddress.setText(tablePrisoner.getModel().getValueAt(row, 4).toString());
+            cboCrime.setSelectedItem(tablePrisoner.getModel().getValueAt(row, 5).toString());
+            OpeningDateChooser.setDate(fDate.parse(tablePrisoner.getModel().getValueAt(row, 6).toString()));
+            cboSentenceType.setSelectedItem(tablePrisoner.getModel().getValueAt(row, 7).toString());
+            spnSentenceYears.setValue(Integer.parseInt(tablePrisoner.getModel().getValueAt(row, 8).toString()));
+            cboPrison.setSelectedItem(tablePrisoner.getModel().getValueAt(row, 9).toString());
+            
             //ImageIcon imageIcon=new ImageIcon(new ImageIcon(image).getImage().getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH));
-            //lblImage.setIcon((Icon) tableSpecialPerson.getModel().getValueAt(row, 6));
-            byte[] img=(byte[]) tableSpecialPerson.getModel().getValueAt(row, 6);
-            specialPerson_image=img;
+            //lblImage.setIcon((Icon) tablePrisoner.getModel().getValueAt(row, 6));
+            byte[] img=(byte[]) tablePrisoner.getModel().getValueAt(row, 10);
+            prisoner_image=img;
             ImageIcon imageIcon=new ImageIcon(new ImageIcon(img).getImage().getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH));
             lblImage.setIcon(imageIcon);
             // enable Edit and Delete buttons
@@ -1106,18 +1236,23 @@ public class PrisonerView extends javax.swing.JFrame {
     }
 
     /**
-     * xóa thông tin specialPerson
+     * xóa thông tin prisoner
      */
-    public void clearSpecialPersonInfo() {
+    public void clearPrisonerInfo() {
         FieldID.setText("");
         FieldName.setText("");
         BirthdayChooser.setDate(null);
+        cboGender.setSelectedItem("Nam");
         TextAreaAddress.setText("");
-        //FieldOpeningDate.setText("");
+        cboCrime.setSelectedItem("<none>");
         OpeningDateChooser.setDate(null);
+        cboSentenceType.setSelectedItem("<none>");
+        spnSentenceYears.setValue(0);
+        spnSentenceYears.setEnabled(false);
+        cboPrison.setSelectedItem("Chọn trại giam");
         lblImage.setIcon(new ImageIcon("default-image.png")); 
-        specialPerson_image=null;
-        ComboBoxType.setSelectedItem("<none>");
+        prisoner_image=null;
+        
         // disable Edit and Delete buttons
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
@@ -1125,46 +1260,56 @@ public class PrisonerView extends javax.swing.JFrame {
         btnAdd.setEnabled(true);
     }
     
-    public void searchNameSpecialPersonInfo() {
+    public void searchNamePrisonerInfo() {
         //FrameSearch = new PrisonerView();
         SearchDialog.setVisible(true);
     }
     
     public void displayStatisticView() {
-        //FrameSearch = new PrisonerView();
+     
         StatisticView.setVisible(true);
         PrisonerView.this.setVisible(false);
         StatisticView.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 StatisticView.dispose();
-                System.exit(0); // Optional: terminate the entire application
+                PrisonerView.this.setVisible(true);
             }
         });
     }
     
-    public void cancelDialogSearchSpecialPersonInfo() {
-        //FrameSearch = new PrisonerView();
+    public void cancelDialogSearchPrisonerInfo() {
         SearchDialog.setVisible(false);
     }
     
     /**
-     * hiện thị thông tin specialPerson
+     * hiện thị thông tin prisoner
      * 
-     * @param specialPerson
+     * @param prisoner
      */
-    public void showSpecialPerson(SpecialPerson specialPerson) 
+    public void showPrisoner(Prisoner prisoner) 
     {
-        FieldID.setText("" + specialPerson.getId());
-        FieldName.setText(specialPerson.getName());
-        BirthdayChooser.setDate(specialPerson.getBirthday());
-        TextAreaAddress.setText(specialPerson.getAddress());
-        //FieldOpeningDate.setText("" + fDate.format(specialPerson.getOpeningDate()));
-        OpeningDateChooser.setDate(specialPerson.getOpeningDate());
-        ComboBoxType.setSelectedItem(""+specialPerson.getType());
+        FieldID.setText("" + prisoner.getId());
+        FieldName.setText(prisoner.getName());
+        BirthdayChooser.setDate(prisoner.getBirthday());
+        cboGender.setSelectedItem(prisoner.getGender());
+        TextAreaAddress.setText(prisoner.getAddress());
+        OpeningDateChooser.setDate(prisoner.getImprisonmentDate());
+        cboCrime.setSelectedItem(""+prisoner.getCrime());
+        cboSentenceType.setSelectedItem(prisoner.getSentenceType());
+        spnSentenceYears.setValue(prisoner.getSentenceYears());
+        spnSentenceYears.setEnabled("Tù có thời hạn".equals(prisoner.getSentenceType()));
+        cboPrison.setSelectedItem(prisoner.getPrisonName());
+        byte[] img = prisoner.getPicture();
+        if (img != null) {
+            ImageIcon imageIcon = new ImageIcon(new ImageIcon(img).getImage()
+                .getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH));
+            lblImage.setIcon(imageIcon);
+        } else {
+            lblImage.setIcon(new ImageIcon("default-image.png")); // hoặc đặt ảnh mặc định
+        }
+
         // enable Edit and Delete buttons
-        byte[] img=specialPerson.getImage();
-        ImageIcon imageIcon=new ImageIcon(new ImageIcon(img).getImage().getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH));
-        lblImage.setIcon(imageIcon);
+        
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
         // disable Add button
@@ -1172,27 +1317,39 @@ public class PrisonerView extends javax.swing.JFrame {
     }
     
     /**
-     * lấy thông tin specialPerson
+     * lấy thông tin prisoner
      * 
      * @return
      */
-    public SpecialPerson getSpecialPersonInfo() {
-        // validate specialPerson
+    public Prisoner getPrisonerInfo() {
+        // validate prisoner
         if (!validateName() || !validateYear() || !validateAddress() || !validateImage() || !validateOpeningDate() || !validateType()) {
             return null;
         }
         try {
-            SpecialPerson specialPerson = new SpecialPerson();
+            Prisoner prisoner = new Prisoner();
             if (FieldID.getText() != null && !"".equals(FieldID.getText())) {
-                specialPerson.setId(Integer.parseInt(FieldID.getText()));
+                prisoner.setId(Integer.parseInt(FieldID.getText()));
             }
-            specialPerson.setName(capitalizeWords(FieldName.getText().trim()));
-            specialPerson.setBirthday(BirthdayChooser.getDate());
-            specialPerson.setAddress(capitalizeWords(TextAreaAddress.getText().trim()));
-            specialPerson.setOpeningDate(OpeningDateChooser.getDate());
-            specialPerson.setType(ComboBoxType.getSelectedItem().toString().trim());
-            specialPerson.setImage(specialPerson_image);
-            return specialPerson;
+            prisoner.setName(capitalizeWords(FieldName.getText().trim()));
+            prisoner.setBirthday(BirthdayChooser.getDate());
+            prisoner.setGender(cboGender.getSelectedItem().toString());
+            prisoner.setAddress(capitalizeWords(TextAreaAddress.getText().trim()));
+            prisoner.setCrime(cboCrime.getSelectedItem().toString().trim());
+            prisoner.setImprisonmentDate(OpeningDateChooser.getDate());
+            
+            // Xử lý kết án và số năm
+            String sentenceType = cboSentenceType.getSelectedItem().toString();
+            prisoner.setSentenceType(sentenceType);
+            if ("Tù có thời hạn".equals(sentenceType)) {
+                prisoner.setSentenceYears((int) spnSentenceYears.getValue());
+            } else {
+                prisoner.setSentenceYears(0);
+            }
+
+            prisoner.setPrisonName(cboPrison.getSelectedItem().toString());
+            prisoner.setPicture(prisoner_image);
+            return prisoner;
         } catch (Exception e) {
             showMessage(e.getMessage());
         }
@@ -1210,9 +1367,9 @@ public class PrisonerView extends javax.swing.JFrame {
     }
     
     private boolean validateType() {
-        String type = ComboBoxType.getSelectedItem().toString().trim();
+        String type = cboCrime.getSelectedItem().toString().trim();
         if (type.equals("<none>")) {
-            ComboBoxType.requestFocus();
+            cboCrime.requestFocus();
             showMessage("Bạn chưa chọn loại đối tượng");
             return false;
         }
@@ -1220,7 +1377,7 @@ public class PrisonerView extends javax.swing.JFrame {
     }
     
     public boolean validateImage() {
-        byte[]k=specialPerson_image;
+        byte[]k=prisoner_image;
         if (k == null) {
             showMessage("Bạn chưa tải ảnh lên!");
             return false;
@@ -1296,7 +1453,7 @@ public class PrisonerView extends javax.swing.JFrame {
         return search;
     }
     
-    public void cancelSearchSpecialPerson()
+    public void cancelSearchPrisoner()
     {
         String id=FieldID.getText();
         btnCancelSearch.setEnabled(false);
@@ -1317,7 +1474,7 @@ public class PrisonerView extends javax.swing.JFrame {
         }
     }
     
-    public void UnderViewSpecialPerson()
+    public void UnderViewPrisoner()
     {
         StatisticView.setVisible(false);
         PrisonerView.this.setVisible(true);
@@ -1340,7 +1497,7 @@ public class PrisonerView extends javax.swing.JFrame {
         return true;
     }*/
     
-    public void showStatisticTypeSpecialPersons(List<SpecialPerson> list) {
+    public void showStatisticTypePrisoner(List<Prisoner> list) {
         //tableStatistic=new JTable();
         lblTable.setText("Thống kê số lượng theo loại đối tượng");
         lblChart.setText("Biểu đồ thống kê số lượng theo loại đối tượng");
@@ -1350,15 +1507,15 @@ public class PrisonerView extends javax.swing.JFrame {
             size1 = size1 - (tableStatistic.getRowCount()-10);
         }
         chart1.setFont(new java.awt.Font("sansserif", 0, size1)); 
-        int size = ComboBoxType.getItemCount();
+        int size = cboCrime.getItemCount();
         columnNames2 = new String [] {
         "Loại đối tượng","Số lượng"};
-        // với bảng tableSpecialPerson có 6 cột, 
-        // khởi tạo mảng 2 chiều specialPersons, trong đó:
-        // số hàng: là kích thước của list specialPerson 
+        // với bảng tablePrisoner có 6 cột, 
+        // khởi tạo mảng 2 chiều prisoner, trong đó:
+        // số hàng: là kích thước của list prisoner 
         // số cột: là 7
         Map<String, Integer> countMap = new HashMap<>();
-        for (SpecialPerson person : list) {
+        for (Prisoner person : list) {
             if (countMap.containsKey(person.getType())) {
                 int count = countMap.get(person.getType());
                 countMap.put(person.getType(), count + 1);
@@ -1379,7 +1536,7 @@ public class PrisonerView extends javax.swing.JFrame {
         chart1.start();
     }
     
-    public void showStatisticAgeSpecialPersons(List<SpecialPerson> list) {
+    public void showStatisticAgePrisoner(List<Prisoner> list) {
         java.util.Date referenceDate=new java.util.Date();
         //tableStatistic=new JTable();
         lblTable.setText("Thống kê số lượng theo tuổi");
@@ -1392,10 +1549,10 @@ public class PrisonerView extends javax.swing.JFrame {
         chart1.setFont(new java.awt.Font("sansserif", 0, size1)); 
         LocalDate currentDate = LocalDate.now();
         int currentYear = currentDate.getYear();
-        int size = ComboBoxType.getItemCount();
+        int size = cboCrime.getItemCount();
         columnNames2 = new String[]{"Tuổi", "Số lượng"};
         Map<Integer, Integer> countMap = new HashMap<>();
-        for (SpecialPerson person : list) {
+        for (Prisoner person : list) {
             int age = calculateAge(person.getBirthday(), referenceDate);
             if (countMap.containsKey(age)) {
                 int count = countMap.get(age);
@@ -1438,15 +1595,15 @@ public class PrisonerView extends javax.swing.JFrame {
         return Double.valueOf(k.toString());
     }
     
-    public void addAddSpecialPersonListener(ActionListener listener) {
+    public void addAddPrisonerListener(ActionListener listener) {
         btnAdd.addActionListener(listener);
     }
     
-    public void addEditSpecialPersonListener(ActionListener listener) {
+    public void addEditPrisonerListener(ActionListener listener) {
         btnEdit.addActionListener(listener);
     }
     
-    public void addDeleteSpecialPersonListener(ActionListener listener) {
+    public void addDeletePrisonerListener(ActionListener listener) {
         btnDelete.addActionListener(listener);
     }
     
@@ -1478,19 +1635,19 @@ public class PrisonerView extends javax.swing.JFrame {
         btnSearchDialog.addActionListener(listener);
     }
     
-    public void addListSpecialPersonSelectionListener(ListSelectionListener listener) {
-        tableSpecialPerson.getSelectionModel().addListSelectionListener(listener);
+    public void addListPrisonerSelectionListener(ListSelectionListener listener) {
+        tablePrisoner.getSelectionModel().addListSelectionListener(listener);
     }
     
-    public void addSearchDiaLogSpecialPersonListener(ActionListener listener){
+    public void addSearchDiaLogPrisonerListener(ActionListener listener){
         btnSearchDialog.addActionListener(listener);
     }
     
-    public void addCancelSearchSpecialPersonListener(ActionListener listener){
+    public void addCancelSearchPrisonerListener(ActionListener listener){
         btnCancelSearch.addActionListener(listener);
     }
     
-    public void addImageSpecialPersonListener(ActionListener listener){
+    public void addImagePrisonerListener(ActionListener listener){
         btnImage.addActionListener(listener);
     }
     
@@ -1522,7 +1679,6 @@ public class PrisonerView extends javax.swing.JFrame {
     private javax.swing.JCheckBox CheckBoxAddress;
     private javax.swing.JCheckBox CheckBoxName;
     private javax.swing.JCheckBox CheckBoxYear;
-    private javax.swing.JComboBox<String> ComboBoxType;
     private javax.swing.JTextField FieldID;
     private javax.swing.JTextField FieldName;
     private javax.swing.JTextField FieldSearch;
@@ -1551,6 +1707,10 @@ public class PrisonerView extends javax.swing.JFrame {
     private javax.swing.JButton btnStatisticAge;
     private javax.swing.JButton btnStatisticType;
     private javax.swing.JButton btnStatisticUnder;
+    private javax.swing.JComboBox<String> cboCrime;
+    private javax.swing.JComboBox<String> cboGender;
+    private javax.swing.JComboBox<String> cboPrison;
+    private javax.swing.JComboBox<String> cboSentenceType;
     private com.raven.chart.Chart chart1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1559,6 +1719,9 @@ public class PrisonerView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1576,8 +1739,10 @@ public class PrisonerView extends javax.swing.JFrame {
     private javax.swing.JLabel lblChart;
     private javax.swing.JLabel lblImage;
     private javax.swing.JLabel lblTable;
+    private javax.swing.JLabel lblYears;
     private javax.swing.JPanel panelChart;
-    private javax.swing.JTable tableSpecialPerson;
+    private javax.swing.JSpinner spnSentenceYears;
+    private javax.swing.JTable tablePrisoner;
     private javax.swing.JTable tableStatistic;
     private org.jdesktop.animation.timing.TimingTargetAdapter timingTargetAdapter1;
     // End of variables declaration//GEN-END:variables

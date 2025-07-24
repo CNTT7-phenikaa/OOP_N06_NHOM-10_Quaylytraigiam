@@ -26,21 +26,29 @@ public class Prisoner extends Person implements Serializable {
 
     private String crime;     //tội danh
     private Date imprisonmentDate; //ngày nhập trại
-    private int sentenceYears; //năm lĩnh án
+    private String sentenceType; // "Tù có thời hạn", "Chung thân", "Tử hình"
+    private Integer sentenceYears; //năm lĩnh án
     private String prisonName; // tên trại giam
-
+    private byte[] picture;
     public Prisoner() {
         super();
     }
 
-    public Prisoner(int id, String name, Date birthday, String address,
-                    String crime, Date imprisonmentDate, int sentenceYears, String prisonName) throws ParseException {
-        super(id, name, birthday, address);
+    public Prisoner(String crime, Date imprisonmentDate, String sentenceType, Integer sentenceYears, String prisonName, byte[] picture, int id, String name, Date birthday, String address, String gender) throws ParseException {
+        super(id, name, birthday, address, gender);
         this.crime = crime;
         this.imprisonmentDate = imprisonmentDate;
+        this.sentenceType = sentenceType;
         this.sentenceYears = sentenceYears;
         this.prisonName = prisonName;
+        this.picture = picture;
     }
+
+    
+
+    
+
+    
 
     // Getter & Setter
     public String getCrime() {
@@ -59,13 +67,23 @@ public class Prisoner extends Person implements Serializable {
         this.imprisonmentDate = imprisonmentDate;
     }
 
-    public int getSentenceYears() {
+    public String getSentenceType() {
+        return sentenceType;
+    }
+
+    public void setSentenceType(String sentenceType) {
+        this.sentenceType = sentenceType;
+    }
+
+    public Integer getSentenceYears() {
         return sentenceYears;
     }
 
-    public void setSentenceYears(int sentenceYears) {
+    public void setSentenceYears(Integer sentenceYears) {
         this.sentenceYears = sentenceYears;
     }
+
+    
 
     public String getPrisonName() {
         return prisonName;
@@ -74,4 +92,13 @@ public class Prisoner extends Person implements Serializable {
     public void setPrisonName(String prisonName) {
         this.prisonName = prisonName;
     }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+    
 }
