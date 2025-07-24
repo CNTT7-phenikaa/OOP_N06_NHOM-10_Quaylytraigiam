@@ -50,7 +50,11 @@ public class ManagerPrison {
     }
 
     public boolean deletePrison(String id) {
-        return prisonList.removeIf(prison -> prison.getId().equals(id));
+        boolean result = prisonList.removeIf(prison -> prison.getId().equals(id));
+        if (result) {
+            writePrisonList();
+        }
+        return result;
     }
 
     public List<Prison> searchByName(String keyword) {
@@ -73,11 +77,38 @@ public class ManagerPrison {
         return result;
     }
 
+    public List<Prison> searchByWarden(String keyword) {
+        List<Prison> result = new ArrayList<>();
+        for (Prison prison : prisonList) {
+            if (prison.getQuanLiTruong().toLowerCase().contains(keyword.toLowerCase())) {
+                result.add(prison);
+            }
+        }
+        return result;
+    }
+
+    public void sortByName() {
+        Collections.sort(prisonList, Comparator.comparing(Prison::getTenTraiGiam));
+    }
+
     public void sortByCapacity() {
         Collections.sort(prisonList, Comparator.comparingInt(p -> Integer.parseInt(p.getSucChuaToiDa())));
+    }
+
+    public void sortByCurrentPrisoners() {
+        Collections.sort(prisonList, Comparator.comparingInt(p -> Integer.parseInt(p.getSoLuongPhamNhanHienTai())));
     }
 
     public List<Prison> getListPrisons() {
         return prisonList;
     }
-} 
+    
+    public Prison getPrisonById(String id) {
+        for (Prison prison : prisonList) {
+            if (prison.getId().equals(id)) {
+                return prison;
+            }
+        }
+        return null;
+    }
+}

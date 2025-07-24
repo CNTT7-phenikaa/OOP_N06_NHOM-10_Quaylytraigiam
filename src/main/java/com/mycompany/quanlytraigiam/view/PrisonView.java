@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.quanlytraigiam.view;
+import com.mycompany.quanlytraigiam.controller.PrisonController;
 import com.mycompany.quanlytraigiam.entity.Prison;
 import com.raven.chart.Chart;
 import com.raven.chart.ModelChart;
@@ -75,6 +76,26 @@ public class PrisonView extends javax.swing.JFrame {
         ImageIcon imageIcon=new ImageIcon(image);
         //jLabel14.setIcon(new ImageIcon(getCircleImage(imageIcon.getImage())));
         return imageIcon;
+    }
+
+    public void addAddPrisonListener(PrisonController.AddPrisonListener addPrisonListener) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void addListPrisonSelectionListener(PrisonController.ListPrisonSelectionListener listPrisonSelectionListener) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void addEditPrisonListener(PrisonController.EditPrisonListener editPrisonListener) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void addDeletePrisonListener(PrisonController.DeletePrisonListener deletePrisonListener) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void addSortPrisonListener(PrisonController.SortPrisonListener sortPrisonListener) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     public class MyRenderer extends DefaultTableCellRenderer {
@@ -180,23 +201,17 @@ public class PrisonView extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel16 = new javax.swing.JLabel();
         btnCancelSearch = new javax.swing.JButton();
-        FieldSumCMND = new javax.swing.JTextField();
         btnSort = new javax.swing.JButton();
         btnResidentUndo = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
-        FieldSumCCCD = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
         FieldSumFamily = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         FieldSum = new javax.swing.JTextField();
-        jLabel15 = new javax.swing.JLabel();
         CheckBoxSortID = new javax.swing.JCheckBox();
         CheckBoxSortName = new javax.swing.JCheckBox();
         CheckBoxSortIDFamily = new javax.swing.JCheckBox();
-        FieldSumDD = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableResident = new javax.swing.JTable();
         FieldCMT = new javax.swing.JTextField();
@@ -205,16 +220,10 @@ public class PrisonView extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         FieldIDFamily = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        ComboBoxCMT = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         TextAreaAddress = new javax.swing.JTextArea();
-        jLabel4 = new javax.swing.JLabel();
-        CheckBoxFemale = new javax.swing.JCheckBox();
-        CheckBoxMale = new javax.swing.JCheckBox();
         BirthdayChooser = new com.toedter.calendar.JDateChooser();
-        jLabel6 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        FieldBirthPlace = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         FieldPhone = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
@@ -225,6 +234,12 @@ public class PrisonView extends javax.swing.JFrame {
         btnDelete = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        sucChuaToiDa = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        soLuongPhamNhanHienTai = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
 
         SearchDialog.setResizable(false);
@@ -365,15 +380,6 @@ public class PrisonView extends javax.swing.JFrame {
         });
         btnCancelSearch.setEnabled(false);
 
-        FieldSumCMND.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        FieldSumCMND.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        FieldSumCMND.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 51, 102)));
-        FieldSumCMND.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FieldSumCMNDActionPerformed(evt);
-            }
-        });
-
         btnSort.setBackground(new java.awt.Color(0, 0, 102));
         btnSort.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnSort.setForeground(new java.awt.Color(255, 255, 255));
@@ -418,30 +424,14 @@ public class PrisonView extends javax.swing.JFrame {
             }
         });
 
-        FieldSumCCCD.setEditable(false);
-        FieldSumCCCD.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        FieldSumCCCD.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        FieldSumCCCD.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 51, 102)));
-        FieldSumCCCD.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FieldSumCCCDActionPerformed(evt);
-            }
-        });
-
         ImageIcon imageIcon = new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/logo.png");
         Image image = imageIcon.getImage().getScaledInstance(100,100, Image.SCALE_SMOOTH);
         imageIcon=new ImageIcon(image);
         jLabel14.setIcon(imageIcon);
         jLabel14.setOpaque(false);
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel3.setText("Số người có CCCD:");
-
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         jLabel12.setText("Tổng số hộ dân:");
-
-        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel13.setText("Số người có CMND:");
 
         FieldSumFamily.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         FieldSumFamily.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -453,7 +443,7 @@ public class PrisonView extends javax.swing.JFrame {
         });
 
         jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel17.setText("Tổng dân số:");
+        jLabel17.setText("Tổng số trại giam:");
 
         FieldSum.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
         FieldSum.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 51, 102)));
@@ -462,9 +452,6 @@ public class PrisonView extends javax.swing.JFrame {
                 FieldSumActionPerformed(evt);
             }
         });
-
-        jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        jLabel15.setText("Số người có định danh:");
 
         CheckBoxSortID.setBackground(new java.awt.Color(0, 102, 204, 175));
         btnGroupSort.add(CheckBoxSortID);
@@ -481,16 +468,12 @@ public class PrisonView extends javax.swing.JFrame {
 
         btnGroupSort.add(CheckBoxSortIDFamily);
         CheckBoxSortIDFamily.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
-        CheckBoxSortIDFamily.setText("Sắp xếp theo số hộ khẩu");
+        CheckBoxSortIDFamily.setText("Sắp xếp theo tên quản lý trưởng");
         CheckBoxSortIDFamily.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         CheckBoxSortIDFamily.setOpaque(false);
-
-        FieldSumDD.setFont(new java.awt.Font("Times New Roman", 1, 16)); // NOI18N
-        FieldSumDD.setHorizontalAlignment(javax.swing.JTextField.LEFT);
-        FieldSumDD.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 51, 102)));
-        FieldSumDD.addActionListener(new java.awt.event.ActionListener() {
+        CheckBoxSortIDFamily.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FieldSumDDActionPerformed(evt);
+                CheckBoxSortIDFamilyActionPerformed(evt);
             }
         });
 
@@ -498,6 +481,18 @@ public class PrisonView extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(FieldSumFamily, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(FieldSum, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(13, 13, 13))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -517,30 +512,6 @@ public class PrisonView extends javax.swing.JFrame {
                         .addComponent(CheckBoxSortIDFamily, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnSort, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(FieldSumDD, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(FieldSumCMND, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(FieldSumCCCD, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(16, 16, 16))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(FieldSumFamily, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel17)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(FieldSum, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(btnResidentUndo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCancelSearch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)))
@@ -573,33 +544,15 @@ public class PrisonView extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(FieldSumFamily, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(FieldSumCCCD, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(FieldSumCMND, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(FieldSumDD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(97, 97, 97)
                 .addComponent(btnResidentUndo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        FieldSumCMND.setOpaque(false);
-        FieldSumCMND.setEditable(false);
-        FieldSumCCCD.setOpaque(false);
-        FieldSumCCCD.setEditable(false);
         FieldSumFamily.setOpaque(false);
         FieldSumFamily.setEditable(false);
         FieldSum.setOpaque(false);
         FieldSum.setEditable(false);
-        FieldSumDD.setOpaque(false);
-        FieldSumDD.setEditable(false);
 
         jPanel1.add(jPanel2);
         jPanel2.setBounds(0, 0, 230, 780);
@@ -640,7 +593,7 @@ public class PrisonView extends javax.swing.JFrame {
             }
         });
         jPanel1.add(FieldCMT);
-        FieldCMT.setBounds(970, 250, 260, 40);
+        FieldCMT.setBounds(970, 260, 260, 40);
         FieldCMT.setOpaque(false);
 
         FieldName.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
@@ -661,9 +614,9 @@ public class PrisonView extends javax.swing.JFrame {
         ComboBoxRole.setOpaque(false);
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel1.setText("Vai trò:");
+        jLabel1.setText("Quản lý trưởng:");
         jPanel1.add(jLabel1);
-        jLabel1.setBounds(900, 100, 70, 40);
+        jLabel1.setBounds(830, 100, 140, 40);
 
         FieldIDFamily.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         FieldIDFamily.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 51, 102)));
@@ -681,12 +634,6 @@ public class PrisonView extends javax.swing.JFrame {
         jPanel1.add(jLabel2);
         jLabel2.setBounds(900, 170, 70, 40);
 
-        ComboBoxCMT.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        ComboBoxCMT.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "<none>", "CCCD", "CMND", "Định danh" }));
-        jPanel1.add(ComboBoxCMT);
-        ComboBoxCMT.setBounds(830, 250, 130, 40);
-        ComboBoxRole.setOpaque(false);
-
         TextAreaAddress.setBackground(new java.awt.Color(255, 255, 255, 0));
         TextAreaAddress.setColumns(20);
         TextAreaAddress.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
@@ -699,37 +646,6 @@ public class PrisonView extends javax.swing.JFrame {
         jScrollPane2.setBounds(970, 160, 260, 60);
         jScrollPane2.setOpaque(false);
 
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel4.setText("Nơi sinh:");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(610, 310, 80, 40);
-
-        btnGroupSex.add(CheckBoxFemale);
-        CheckBoxFemale.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        CheckBoxFemale.setText("Nữ");
-        CheckBoxFemale.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        CheckBoxFemale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckBoxFemaleActionPerformed(evt);
-            }
-        });
-        jPanel1.add(CheckBoxFemale);
-        CheckBoxFemale.setBounds(490, 260, 85, 20);
-        CheckBoxFemale.setOpaque(false);
-
-        btnGroupSex.add(CheckBoxMale);
-        CheckBoxMale.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        CheckBoxMale.setText("Nam");
-        CheckBoxMale.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        CheckBoxMale.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CheckBoxMaleActionPerformed(evt);
-            }
-        });
-        jPanel1.add(CheckBoxMale);
-        CheckBoxMale.setBounds(400, 260, 85, 20);
-        CheckBoxMale.setOpaque(false);
-
         BirthdayChooser.setBackground(new java.awt.Color(0, 204, 255));
         BirthdayChooser.setForeground(new java.awt.Color(102, 255, 255));
         BirthdayChooser.setDateFormatString("dd/MM/yyyy");
@@ -737,31 +653,15 @@ public class PrisonView extends javax.swing.JFrame {
         jPanel1.add(BirthdayChooser);
         BirthdayChooser.setBounds(390, 310, 160, 40);
 
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel6.setText("Giới tính:");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(310, 250, 80, 40);
-
         jLabel5.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel5.setText("Họ và tên:");
+        jLabel5.setText("Tên trại giam:");
         jPanel1.add(jLabel5);
-        jLabel5.setBounds(300, 170, 90, 40);
-
-        FieldBirthPlace.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        FieldBirthPlace.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 51, 102)));
-        FieldBirthPlace.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                FieldBirthPlaceActionPerformed(evt);
-            }
-        });
-        jPanel1.add(FieldBirthPlace);
-        FieldBirthPlace.setBounds(690, 310, 180, 40);
-        FieldBirthPlace.setOpaque(false);
+        jLabel5.setBounds(270, 170, 120, 40);
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel7.setText("Ngày sinh:");
+        jLabel7.setText("Ngày thành lập:");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(300, 310, 90, 40);
+        jLabel7.setBounds(260, 310, 130, 40);
 
         FieldPhone.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         FieldPhone.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 2, 0, new java.awt.Color(0, 51, 102)));
@@ -795,9 +695,9 @@ public class PrisonView extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(51, 51, 51));
-        jLabel10.setText("<html>Quản lý dân cư huyện X<br> ");
+        jLabel10.setText("<html>Quản Lý Trại Giam<br> ");
         jPanel1.add(jLabel10);
-        jLabel10.setBounds(580, 10, 390, 80);
+        jLabel10.setBounds(620, 10, 320, 80);
 
         btnAdd.setBackground(new java.awt.Color(0, 0, 102));
         btnAdd.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
@@ -861,14 +761,49 @@ public class PrisonView extends javax.swing.JFrame {
         btnClear.setBounds(1070, 370, 170, 44);
 
         jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
-        jLabel11.setText("Số hộ khẩu:");
+        jLabel11.setText("Mã trại giam:");
         jPanel1.add(jLabel11);
-        jLabel11.setBounds(290, 100, 100, 40);
+        jLabel11.setBounds(270, 100, 120, 40);
 
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel6.setText("ID:");
+        jPanel1.add(jLabel6);
+        jLabel6.setBounds(350, 50, 30, 21);
+
+        jLabel23.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel23.setText("Email:");
+        jPanel1.add(jLabel23);
+        jLabel23.setBounds(910, 270, 60, 21);
+
+        jLabel24.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel24.setText("Sức chứa tối đa:");
+        jPanel1.add(jLabel24);
+        jLabel24.setBounds(250, 240, 140, 21);
+
+        sucChuaToiDa.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        sucChuaToiDa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sucChuaToiDaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(sucChuaToiDa);
+        sucChuaToiDa.setBounds(390, 240, 100, 27);
+
+        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jLabel4.setText("Số lượng phạm nhân hiện tại:");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(247, 280, 240, 21);
+
+        soLuongPhamNhanHienTai.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jPanel1.add(soLuongPhamNhanHienTai);
+        soLuongPhamNhanHienTai.setBounds(490, 280, 64, 27);
+
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel9.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/Lovepik_com-500330964-blue-blazed-background.jpg"));
+        jLabel9.setText("Số lượng phạm nhân:");
         jLabel9.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel1.add(jLabel9);
-        jLabel9.setBounds(-30, 0, 1640, 890);
+        jLabel9.setBounds(0, 0, 1640, 890);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -888,14 +823,6 @@ public class PrisonView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAddActionPerformed
 
-    private void btnSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSortActionPerformed
-
-    private void btnResidentUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResidentUndoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnResidentUndoActionPerformed
-
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDeleteActionPerformed
@@ -903,10 +830,6 @@ public class PrisonView extends javax.swing.JFrame {
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnClearActionPerformed
-
-    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSearchActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
@@ -924,49 +847,13 @@ public class PrisonView extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_FieldIDFamilyActionPerformed
 
-    private void CheckBoxMaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckBoxMaleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CheckBoxMaleActionPerformed
-
-    private void CheckBoxFemaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckBoxFemaleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_CheckBoxFemaleActionPerformed
-
-    private void FieldBirthPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldBirthPlaceActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FieldBirthPlaceActionPerformed
-
     private void FieldPhoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldPhoneActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_FieldPhoneActionPerformed
 
-    private void FieldSumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldSumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FieldSumActionPerformed
-
     private void FieldIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldIDActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_FieldIDActionPerformed
-
-    private void btnCancelSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelSearchActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCancelSearchActionPerformed
-
-    private void FieldSumFamilyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldSumFamilyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FieldSumFamilyActionPerformed
-
-    private void FieldSumCCCDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldSumCCCDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FieldSumCCCDActionPerformed
-
-    private void FieldSumCMNDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldSumCMNDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FieldSumCMNDActionPerformed
-
-    private void FieldSumDDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldSumDDActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_FieldSumDDActionPerformed
 
     private void CheckBoxNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckBoxNameActionPerformed
         // TODO add your handling code here:
@@ -979,6 +866,38 @@ public class PrisonView extends javax.swing.JFrame {
     private void CheckBoxAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckBoxAddressActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CheckBoxAddressActionPerformed
+
+    private void sucChuaToiDaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sucChuaToiDaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_sucChuaToiDaActionPerformed
+
+    private void FieldSumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldSumActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FieldSumActionPerformed
+
+    private void FieldSumFamilyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FieldSumFamilyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_FieldSumFamilyActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnResidentUndoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResidentUndoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnResidentUndoActionPerformed
+
+    private void btnSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSortActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSortActionPerformed
+
+    private void btnCancelSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelSearchActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelSearchActionPerformed
+
+    private void CheckBoxSortIDFamilyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckBoxSortIDFamilyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CheckBoxSortIDFamilyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1467,17 +1386,13 @@ public class PrisonView extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser BirthdayChooser;
     private javax.swing.JCheckBox CheckBoxAddress;
-    private javax.swing.JCheckBox CheckBoxFemale;
     private javax.swing.JCheckBox CheckBoxIDFamily;
-    private javax.swing.JCheckBox CheckBoxMale;
     private javax.swing.JCheckBox CheckBoxName;
     private javax.swing.JCheckBox CheckBoxSortID;
     private javax.swing.JCheckBox CheckBoxSortIDFamily;
     private javax.swing.JCheckBox CheckBoxSortName;
     private javax.swing.JCheckBox CheckBoxYear;
-    private javax.swing.JComboBox<String> ComboBoxCMT;
     private javax.swing.JComboBox<String> ComboBoxRole;
-    private javax.swing.JTextField FieldBirthPlace;
     private javax.swing.JTextField FieldCMT;
     private javax.swing.JTextField FieldID;
     private javax.swing.JTextField FieldIDFamily;
@@ -1485,9 +1400,6 @@ public class PrisonView extends javax.swing.JFrame {
     private javax.swing.JTextField FieldPhone;
     private javax.swing.JTextField FieldSearch;
     private javax.swing.JTextField FieldSum;
-    private javax.swing.JTextField FieldSumCCCD;
-    private javax.swing.JTextField FieldSumCMND;
-    private javax.swing.JTextField FieldSumDD;
     private javax.swing.JTextField FieldSumFamily;
     private javax.swing.JDialog SearchDialog;
     private javax.swing.JTextArea TextAreaAddress;
@@ -1508,9 +1420,7 @@ public class PrisonView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -1519,7 +1429,8 @@ public class PrisonView extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1531,6 +1442,8 @@ public class PrisonView extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField soLuongPhamNhanHienTai;
+    private javax.swing.JTextField sucChuaToiDa;
     private javax.swing.JTable tableResident;
     // End of variables declaration//GEN-END:variables
 }
