@@ -649,7 +649,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnSortByOpeningDate.setBackground(new java.awt.Color(33, 91, 138));
         btnSortByOpeningDate.setFont(new java.awt.Font("Times New Roman", 0, 16)); // NOI18N
         btnSortByOpeningDate.setForeground(new java.awt.Color(255, 255, 255));
-        btnSortByOpeningDate.setText("Sắp xếp theo ngày mở hồ sơ");
+        btnSortByOpeningDate.setText("Sắp xếp theo ngày nhập trại");
         btnSortByOpeningDate.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnSortByOpeningDate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1323,7 +1323,9 @@ public class PrisonerView extends javax.swing.JFrame {
      */
     public Prisoner getPrisonerInfo() {
         // validate prisoner
-        if (!validateName() || !validateYear() || !validateAddress() || !validateImage() || !validateOpeningDate() || !validateType()) {
+        if (!validateName() || !validateYear() || !validateAddress() || !validateImage()
+                || !validateOpeningDate() || !validateCrime() || !validatePrison() || !validateSentenceType()
+                || !validateSentenceYears()) {
             return null;
         }
         try {
@@ -1355,7 +1357,7 @@ public class PrisonerView extends javax.swing.JFrame {
         }
         return null;
     }
-      
+     //Kiểm tra họ tên
     private boolean validateName() {
         String name = FieldName.getText();
         if (name == null || "".equals(name.trim())) {
@@ -1365,36 +1367,7 @@ public class PrisonerView extends javax.swing.JFrame {
         }
         return true;
     }
-    
-    private boolean validateType() {
-        String type = cboCrime.getSelectedItem().toString().trim();
-        if (type.equals("<none>")) {
-            cboCrime.requestFocus();
-            showMessage("Bạn chưa chọn loại đối tượng");
-            return false;
-        }
-        return true;
-    }
-    
-    public boolean validateImage() {
-        byte[]k=prisoner_image;
-        if (k == null) {
-            showMessage("Bạn chưa tải ảnh lên!");
-            return false;
-        }
-        return true;
-    }
-    
-    private boolean validateAddress() {
-        String address = TextAreaAddress.getText();
-        if (address == null || "".equals(address.trim())) {
-            TextAreaAddress.requestFocus();
-            showMessage("Quê quán không được trống.");
-            return false;
-        }
-        return true;
-    }
-    
+    //Ktra ngày sinh
     private boolean validateYear() {
         try {
             java.util.Date today=new java.util.Date();
@@ -1412,6 +1385,28 @@ public class PrisonerView extends javax.swing.JFrame {
         return true;
     }
     
+    //Kiểm tra tội danh
+    private boolean validateCrime() {
+        String type = cboCrime.getSelectedItem().toString().trim();
+        if (type.equals("<none>")) {
+            cboCrime.requestFocus();
+            showMessage("Bạn chưa chọn loại tội danh");
+            return false;
+        }
+        return true;
+    }
+    
+    //Kiểm tra quê quán
+    private boolean validateAddress() {
+        String address = TextAreaAddress.getText();
+        if (address == null || "".equals(address.trim())) {
+            TextAreaAddress.requestFocus();
+            showMessage("Quê quán không được trống.");
+            return false;
+        }
+        return true;
+    }
+    //Kiểm tra ngày nhập trại
     private boolean validateOpeningDate() {
         try {
             java.util.Date today=new java.util.Date();
@@ -1428,7 +1423,53 @@ public class PrisonerView extends javax.swing.JFrame {
         }
         return true;
     }
+    
+    //Kiểm tra kết án
+    private boolean validateSentenceType() {
+        String type = cboSentenceType.getSelectedItem().toString();
+        if (type == null || type.equals("<none>")) {
+            cboSentenceType.requestFocus();
+            showMessage("Bạn chưa chọn loại kết án.");
+            return false;
+        }
+        return true;
+    }
+    //Kiểm tra số năm lãnh án
+    private boolean validateSentenceYears() {
+        String type = cboSentenceType.getSelectedItem().toString();
+        int years = (int) spnSentenceYears.getValue();
 
+        if ("Tù có thời hạn".equals(type)) {
+            if (years <= 0) {
+                spnSentenceYears.requestFocus();
+                showMessage("Số năm kết án phải lớn hơn 0.");
+                return false;
+            }
+        }
+        return true;
+    }
+    //Kiểm tra trại giam
+    private boolean validatePrison() {
+        String prison = cboPrison.getSelectedItem().toString();
+        if (prison == null || prison.equals("Chọn trại giam")) {
+            cboPrison.requestFocus();
+            showMessage("Bạn chưa chọn trại giam.");
+            return false;
+        }
+        return true;
+    }
+    //Kiểm tra hình ảnh
+    public boolean validateImage() {
+        byte[]k=prisoner_image;
+        if (k == null) {
+            showMessage("Bạn chưa tải ảnh lên!");
+            return false;
+        }
+        return true;
+    }
+    
+    
+    //Xử lý phần tìm kiếm
     public int getChooseSelectSearch(){
         if(CheckBoxName.isSelected()) return 1;
         else if(CheckBoxAddress.isSelected()) return 2;
@@ -1479,28 +1520,11 @@ public class PrisonerView extends javax.swing.JFrame {
         StatisticView.setVisible(false);
         PrisonerView.this.setVisible(true);
     }
-    
-    
-    /*private boolean validateGPA() {
-        try {
-            Date prisonReleaseDate = fDate.parse(FieldOpeningDate.getText().trim());
-            if (gpa < 0 || gpa > 10) {
-                FieldOpeningDate.requestFocus();
-                showMessage("GPA không hợp lệ, gpa nên trong khoảng 0 đến 10.");
-                return false;
-            }
-        } catch (Exception e) {
-            FieldOpeningDate.requestFocus();
-            showMessage("GPA không hợp lệ!");
-            return false;
-        }
-        return true;
-    }*/
-    
+    //Bảng thống kê theo tội danh
     public void showStatisticTypePrisoner(List<Prisoner> list) {
         //tableStatistic=new JTable();
-        lblTable.setText("Thống kê số lượng theo loại đối tượng");
-        lblChart.setText("Biểu đồ thống kê số lượng theo loại đối tượng");
+        lblTable.setText("Thống kê số lượng theo tội danh");
+        lblChart.setText("Biểu đồ thống kê số lượng theo tội danh");
         chart1.clear();
         int size1 = 18;
         if (tableStatistic.getRowCount()>10){
@@ -1509,18 +1533,18 @@ public class PrisonerView extends javax.swing.JFrame {
         chart1.setFont(new java.awt.Font("sansserif", 0, size1)); 
         int size = cboCrime.getItemCount();
         columnNames2 = new String [] {
-        "Loại đối tượng","Số lượng"};
-        // với bảng tablePrisoner có 6 cột, 
+        "Loại tội danh","Số lượng"};
+        // với bảng tablePrisoner có 10 cột, 
         // khởi tạo mảng 2 chiều prisoner, trong đó:
         // số hàng: là kích thước của list prisoner 
-        // số cột: là 7
+        // số cột: là 11
         Map<String, Integer> countMap = new HashMap<>();
         for (Prisoner person : list) {
-            if (countMap.containsKey(person.getType())) {
-                int count = countMap.get(person.getType());
-                countMap.put(person.getType(), count + 1);
+            if (countMap.containsKey(person.getCrime())) {
+                int count = countMap.get(person.getCrime());
+                countMap.put(person.getCrime(), count + 1);
             } else {
-                countMap.put(person.getType(), 1);
+                countMap.put(person.getCrime(), 1);
             }
         }
         Object [][] statistic = new Object[countMap.size()][2];
@@ -1535,7 +1559,7 @@ public class PrisonerView extends javax.swing.JFrame {
         tableStatistic.setModel(new DefaultTableModel(statistic, columnNames2));
         chart1.start();
     }
-    
+    //Bảng thống kê theo số tuổi
     public void showStatisticAgePrisoner(List<Prisoner> list) {
         java.util.Date referenceDate=new java.util.Date();
         //tableStatistic=new JTable();
