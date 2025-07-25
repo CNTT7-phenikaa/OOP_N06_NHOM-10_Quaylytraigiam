@@ -1171,7 +1171,7 @@ public class PrisonerView extends javax.swing.JFrame {
      * 
      * @param list
      */
-    public void showListPrisoner(List<Prisoner> list) {
+    public void showListPrisoners(List<Prisoner> list) {
         int size = list.size();
         // với bảng tablePrisoner có 10 cột, 
         // khởi tạo mảng 2 chiều prisoner, trong đó:
@@ -1197,7 +1197,7 @@ public class PrisonerView extends javax.swing.JFrame {
         tablePrisoner.removeColumn(tablePrisoner.getColumnModel().getColumn(10));
     }
     
-    public void showCountListPrisoner(List<Prisoner> list) {
+    public void showCountListPrisoners(List<Prisoner> list) {
         int size = list.size();
         FieldSum.setText(String.valueOf(size));
     }
@@ -1521,7 +1521,7 @@ public class PrisonerView extends javax.swing.JFrame {
         PrisonerView.this.setVisible(true);
     }
     //Bảng thống kê theo tội danh
-    public void showStatisticTypePrisoner(List<Prisoner> list) {
+    public void showStatisticTypePrisoners(List<Prisoner> list) {
         //tableStatistic=new JTable();
         lblTable.setText("Thống kê số lượng theo tội danh");
         lblChart.setText("Biểu đồ thống kê số lượng theo tội danh");
@@ -1560,7 +1560,7 @@ public class PrisonerView extends javax.swing.JFrame {
         chart1.start();
     }
     //Bảng thống kê theo số tuổi
-    public void showStatisticAgePrisoner(List<Prisoner> list) {
+    public void showStatisticAgePrisoners(List<Prisoner> list) {
         java.util.Date referenceDate=new java.util.Date();
         //tableStatistic=new JTable();
         lblTable.setText("Thống kê số lượng theo tuổi");

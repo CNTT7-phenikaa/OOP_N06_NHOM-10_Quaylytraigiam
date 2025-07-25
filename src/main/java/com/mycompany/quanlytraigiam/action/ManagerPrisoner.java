@@ -4,7 +4,7 @@
  */
 package com.mycompany.quanlytraigiam.action;
 
-import com.mycompany.quanlytraigiam.entity.SpecialPerson;
+import com.mycompany.quanlytraigiam.entity.Prisoner;
 import com.mycompany.quanlytraigiam.entity.PrisonerXML;
 import com.mycompany.quanlytraigiam.utils.FileUtils;
 import com.mycompany.quanlytraigiam.view.PrisonerView;
@@ -23,47 +23,47 @@ import java.util.Locale;
  */
 public class ManagerPrisoner 
 {
-    private static final String SPECIALPERSON_FILE_NAME = "SpecialPerson.xml";
-    private List<SpecialPerson> listSpecialPersons;
+    private static final String PRISONER_FILE_NAME = "Prisoner.xml";
+    private List<Prisoner> listPrisoners;
     public ManagerPrisoner() {
-        this.listSpecialPersons = readListSpecialPersons();
-        if (listSpecialPersons == null) {
-            listSpecialPersons = new ArrayList<SpecialPerson>();
+        this.listPrisoners = readListPrisoners();
+        if (listPrisoners == null) {
+            listPrisoners = new ArrayList<Prisoner>();
         }
     }
 
     /**
-     * Lưu các đối tượng SpecialPerson vào file SpecialPerson.xml
+     * Lưu các đối tượng Prisoner vào file Prisoner.xml
      * 
-     * @param specialPersons
+     * @param prisoners
      */
-    public void writeListSpecialPersons(List<SpecialPerson> specialPersons) 
+    public void writeListPrisoners(List<Prisoner> prisoners) 
     {
-        PrisonerXML specialPersonXML = new PrisonerXML();
-        specialPersonXML.setSpecialPerson(specialPersons);
-        FileUtils.writeXMLtoFile(SPECIALPERSON_FILE_NAME, specialPersonXML);
+        PrisonerXML prisonerXML = new PrisonerXML();
+        prisonerXML.setPrisoner(prisoners);
+        FileUtils.writeXMLtoFile(PRISONER_FILE_NAME, prisonerXML);
     }
 
     /**
-     * Đọc các đối tượng SpecialPerson từ file SpecialPerson.xml
+     * Đọc các đối tượng Prisoner từ file Prisoner.xml
      * 
-     * @return list SpecialPerson
+     * @return list Prisoner
      */
-    public List<SpecialPerson> readListSpecialPersons() 
+    public List<Prisoner> readListPrisoners() 
     {
-        List<SpecialPerson> list = new ArrayList<SpecialPerson>();
-        PrisonerXML specialPersonXML = (PrisonerXML) FileUtils.readXMLFile(SPECIALPERSON_FILE_NAME, PrisonerXML.class);
-        if (specialPersonXML != null) 
+        List<Prisoner> list = new ArrayList<Prisoner>();
+        PrisonerXML prisonerXML = (PrisonerXML) FileUtils.readXMLFile(PRISONER_FILE_NAME, PrisonerXML.class);
+        if (prisonerXML != null) 
         {
-            list = specialPersonXML.getSpecialPerson();
+            list = prisonerXML.getPrisoner();
         }
         return list;
     }
     
-    /* Hiển thị listSpecialPersons theo tên */
-    public List<SpecialPerson> searchSpecialPersonName(String search){
-        List<SpecialPerson>temp = new ArrayList<SpecialPerson>();
-        for(SpecialPerson person : listSpecialPersons){
+    /* Hiển thị listPrisoners theo tên */
+    public List<Prisoner> searchPrisonerName(String search){
+        List<Prisoner>temp = new ArrayList<Prisoner>();
+        for(Prisoner person : listPrisoners){
             if(person.getName().toLowerCase().contains(search.toLowerCase())){
                 temp.add(person);
             }
@@ -71,22 +71,22 @@ public class ManagerPrisoner
         return temp;
     }
     
-    /* Hiển thị listSpecialPersons theo nơi ở */
-    public List<SpecialPerson> searchSpecialPersonAddress(String search){
-        List<SpecialPerson>temp = new ArrayList<SpecialPerson>();
-        for(SpecialPerson person : listSpecialPersons){
+    /* Hiển thị listPrisoners theo nơi ở */
+    public List<Prisoner> searchPrisonerAddress(String search){
+        List<Prisoner>temp = new ArrayList<Prisoner>();
+        for(Prisoner person : listPrisoners){
             if(person.getAddress().toLowerCase().contains(search.toLowerCase())){
                 temp.add(person);
             }
         }
         return temp;
     }
-     /* Hiển thị listSpecialPersons theo năm sinh */
-    public List<SpecialPerson> searchSpecialPersonYear(String year) {
-        List<SpecialPerson> temp = new ArrayList<>();
+     /* Hiển thị listPrisoners theo năm sinh */
+    public List<Prisoner> searchPrisonerYear(String year) {
+        List<Prisoner> temp = new ArrayList<>();
         SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
 
-        for (SpecialPerson person : listSpecialPersons) {
+        for (Prisoner person : listPrisoners) {
             // Chuyển đổi ngày sinh thành chuỗi năm
             String personYearStr = yearFormat.format(person.getBirthday());
 
@@ -100,74 +100,74 @@ public class ManagerPrisoner
     }
     
     /**
-     * thêm SpecialPerson vào listSpecialPersons và lưu listSpecialPersons vào file
+     * thêm Prisoner vào listPrisoners và lưu listPrisoners vào file
      * 
-     * @param SpecialPerson
+     * @param Prisoner
      */
-    public void add(SpecialPerson specialPerson) 
+    public void add(Prisoner prisoner) 
     {
         int max = 0;
-        for (int i=0;i<listSpecialPersons.size();i++)
+        for (int i=0;i<listPrisoners.size();i++)
         {
-            if(listSpecialPersons.get(i).getId()>max) max=listSpecialPersons.get(i).getId();
+            if(listPrisoners.get(i).getId()>max) max=listPrisoners.get(i).getId();
         }
-        specialPerson.setId(max+1);
-        listSpecialPersons.add(specialPerson);
-        writeListSpecialPersons(listSpecialPersons);
+        prisoner.setId(max+1);
+        listPrisoners.add(prisoner);
+        writeListPrisoners(listPrisoners);
     }
 
     /**
-     * cập nhật SpecialPerson vào listSpecialPersons và lưu listSpecialPersons vào file
+     * cập nhật Prisoner vào listPrisoners và lưu listPrisoners vào file
      * 
-     * @param SpecialPerson
+     * @param Prisoner
      */
-    public void edit(SpecialPerson specialPerson) throws ParseException 
+    public void edit(Prisoner prisoner) throws ParseException 
     {
         SimpleDateFormat fDate=new SimpleDateFormat("dd/MM/yyyy");
-        int size = listSpecialPersons.size();
+        int size = listPrisoners.size();
         for (int i = 0; i < size; i++) 
         {
-            if (listSpecialPersons.get(i).getId() == specialPerson.getId()) 
+            if (listPrisoners.get(i).getId() == prisoner.getId()) 
             {
-                listSpecialPersons.get(i).setName(specialPerson.getName());
-                listSpecialPersons.get(i).setBirthday(specialPerson.getBirthday());
-                listSpecialPersons.get(i).setAddress(specialPerson.getAddress());
-                listSpecialPersons.get(i).setOpeningDate(specialPerson.getOpeningDate());
-                listSpecialPersons.get(i).setType(specialPerson.getType());
-                listSpecialPersons.get(i).setImage(specialPerson.getImage());
-                writeListSpecialPersons(listSpecialPersons);
+                listPrisoners.get(i).setName(prisoner.getName());
+                listPrisoners.get(i).setBirthday(prisoner.getBirthday());
+                listPrisoners.get(i).setAddress(prisoner.getAddress());
+                listPrisoners.get(i).setOpeningDate(prisoner.getOpeningDate());
+                listPrisoners.get(i).setType(prisoner.getType());
+                listPrisoners.get(i).setImage(prisoner.getImage());
+                writeListPrisoners(listPrisoners);
                 break;
             }
         }
     }
 
     /**
-     * xóa SpecialPerson từ listSpecialPersons và lưu listSpecialPersons vào file
+     * xóa Prisoner từ listPrisoners và lưu listPrisoners vào file
      * 
-     * @param SpecialPerson
+     * @param Prisoner
      */
     
-    public void image(SpecialPerson specialPerson) 
+    public void image(Prisoner prisoner) 
     {
         
     }
       
-    public boolean delete(SpecialPerson specialPerson) {
+    public boolean delete(Prisoner prisoner) {
          boolean isFound = false;
-        int size = listSpecialPersons.size();
+        int size = listPrisoners.size();
         for (int i = 0; i < size; i++) 
         {
-            if (listSpecialPersons.get(i).getId() == specialPerson.getId()) 
+            if (listPrisoners.get(i).getId() == prisoner.getId()) 
             {
-                specialPerson = listSpecialPersons.get(i);
+                prisoner = listPrisoners.get(i);
                 isFound = true;
                 break;
             }
         }
         if (isFound) 
         {
-            listSpecialPersons.remove(specialPerson);
-            writeListSpecialPersons(listSpecialPersons);
+            listPrisoners.remove(prisoner);
+            writeListPrisoners(listPrisoners);
             return true;
         }
         return false;
@@ -176,14 +176,14 @@ public class ManagerPrisoner
     
     
     /**
-     * sắp xếp danh sách SpecialPerson theo name theo tứ tự tăng dần
+     * sắp xếp danh sách Prisoner theo name theo tứ tự tăng dần
      */
     
     
-    public void sortSpecialPersonByName() 
+    public void sortPrisonerByName() 
     {
-        Collections.sort(listSpecialPersons, new Comparator<SpecialPerson>() {
-            public int compare(SpecialPerson p1, SpecialPerson p2) {
+        Collections.sort(listPrisoners, new Comparator<Prisoner>() {
+            public int compare(Prisoner p1, Prisoner p2) {
                 Collator collator = Collator.getInstance(new Locale("vi", "VN"));
                 // So sánh tên
                 int result = collator.compare(p1.getLastName(), p2.getLastName());
@@ -194,16 +194,16 @@ public class ManagerPrisoner
                 return result;
             }
         });
-        //Collections.sort(listSpecialPersons, (p1, p2) -> collator.compare(p1.getLastName(), p2.getLastName()));
+        //Collections.sort(listPrisoners, (p1, p2) -> collator.compare(p1.getLastName(), p2.getLastName()));
     }
     
-    public void sortSpecialPersonByID() 
+    public void sortPrisonerByID() 
     {
-        Collections.sort(listSpecialPersons, new Comparator<SpecialPerson>() 
+        Collections.sort(listPrisoners, new Comparator<Prisoner>() 
         {
-            public int compare(SpecialPerson SpecialPerson1, SpecialPerson SpecialPerson2) 
+            public int compare(Prisoner Prisoner1, Prisoner Prisoner2) 
             {
-                if (SpecialPerson1.getId() > SpecialPerson2.getId()) 
+                if (Prisoner1.getId() > Prisoner2.getId()) 
                 {
                     return 1;
                 }
@@ -212,35 +212,35 @@ public class ManagerPrisoner
         });
     }
     
-    public void sortSpecialPersonByOpeningDate() 
+    public void sortPrisonerByOpeningDate() 
     {
-        Collections.sort(listSpecialPersons, new Comparator<SpecialPerson>() 
+        Collections.sort(listPrisoners, new Comparator<Prisoner>() 
         {
-            public int compare(SpecialPerson SpecialPerson1, SpecialPerson SpecialPerson2) 
+            public int compare(Prisoner Prisoner1, Prisoner Prisoner2) 
             {
-                return SpecialPerson1.getOpeningDate().compareTo(SpecialPerson2.getOpeningDate());
+                return Prisoner1.getOpeningDate().compareTo(Prisoner2.getOpeningDate());
             }
         });
     }
     
     /**
-     * sắp xếp danh sách SpecialPerson theo năm sinh theo tứ tự tăng dần
+     * sắp xếp danh sách Prisoner theo năm sinh theo tứ tự tăng dần
      */
-    public void sortSpecialPersonByBirthDay() {
-        Collections.sort(listSpecialPersons, new Comparator<SpecialPerson>() {
-            public int compare(SpecialPerson person1, SpecialPerson person2) {
+    public void sortPrisonerByBirthDay() {
+        Collections.sort(listPrisoners, new Comparator<Prisoner>() {
+            public int compare(Prisoner person1, Prisoner person2) {
                 return person1.getBirthday().compareTo(person2.getBirthday());
             }
         });
     }
 
-    public List<SpecialPerson> getListSpecialPersons() 
+    public List<Prisoner> getListPrisoners() 
     {
-        return listSpecialPersons;
+        return listPrisoners;
     }
 
-    public void setListSpecialPersons(List<SpecialPerson> listSpecialPersons) 
+    public void setListPrisoners(List<Prisoner> listPrisoners) 
     {
-        this.listSpecialPersons = listSpecialPersons;
+        this.listPrisoners = listPrisoners;
     }
 }

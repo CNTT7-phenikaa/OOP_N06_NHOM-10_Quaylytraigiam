@@ -49,7 +49,6 @@ public class PrisonerController
         //view.addSearchTypeListener(new SearchTypePrisonerViewListener());
         view.addSearchListener(new SearchPrisonerViewListener());
         view.addSearchDialogListener(new SearchPrisonerListener());
-        //view.addSearchDialogListener(new SearchPrisonerListener());
         view.addSortByYearListener(new SortPrisonerYearListener());
         view.addSortByIDListener(new SortPrisonerIDListener());
         view.addSortByOpeningDateListener(new SortPrisonerOpeningDateListener());
@@ -62,59 +61,59 @@ public class PrisonerController
         view.addStatisticAgeListener(new StatisticPrisonerAgeListener());
         view.addStatisticUnderListener(new StatisticClearListener());
     }
-
-    public void showManagerView() 
+    //Hàm hiển thị giao diện PrisonerView với dữ liệu 
+    public void showPrisonerView() 
     {
-        List<Prisoner> PrisonerList = managerPrisoner.getListPrisoners();
+        List<Prisoner> prisonerList = managerPrisoner.getListPrisoners();
         PrisonerView.setVisible(true);
-        PrisonerView.showListPrisoners(PrisonerList);
-        PrisonerView.showCountListPrisoners(PrisonerList);
+        PrisonerView.showListPrisoners(prisonerList);
+        PrisonerView.showCountListPrisoners(prisonerList);
     }
-
+    //Xử lý sự kiện thêm phạm nhân
     class AddPrisonerListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
         {
-            Prisoner Prisoner = PrisonerView.getPrisonerInfo();
-            if (Prisoner != null) 
+            Prisoner prisoner = PrisonerView.getPrisonerInfo();
+            if (prisoner != null) 
             {
-                managerPrisoner.add(Prisoner);
-                PrisonerView.showPrisoner(Prisoner);
+                managerPrisoner.add(prisoner);
+                PrisonerView.showPrisoner(prisoner);
                 PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
                 PrisonerView.showCountListPrisoners(managerPrisoner.getListPrisoners());
                 PrisonerView.showMessage("Thêm thành công!");
             }
         }
     }
-    
+    //Xử lý phần sửa thông tin phạm nhân
     class EditPrisonerListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
         {
-            Prisoner Prisoner = PrisonerView.getPrisonerInfo();
-            if (Prisoner != null) 
+            Prisoner prisoner = PrisonerView.getPrisonerInfo();
+            if (prisoner != null) 
             {
                 try {
-                    managerPrisoner.edit(Prisoner);
+                    managerPrisoner.edit(prisoner);
                 } catch (ParseException ex) {
                     Logger.getLogger(PrisonerController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                PrisonerView.showPrisoner(Prisoner);
+                PrisonerView.showPrisoner(prisoner);
                 PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
                 PrisonerView.showCountListPrisoners(managerPrisoner.getListPrisoners());
                 PrisonerView.showMessage("Cập nhật thành công!");
             }
         }
     }
-    
+    //Xử lý phần xóa phạm nhân
     class DeletePrisonerListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
         {
-            Prisoner Prisoner = PrisonerView.getPrisonerInfo();
-            if (Prisoner != null) 
+            Prisoner prisoner = PrisonerView.getPrisonerInfo();
+            if (prisoner != null) 
             {
-                managerPrisoner.delete(Prisoner);
+                managerPrisoner.delete(prisoner);
                 PrisonerView.clearPrisonerInfo();
                 PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
                 PrisonerView.showCountListPrisoners(managerPrisoner.getListPrisoners());
@@ -123,7 +122,7 @@ public class PrisonerController
         }
     }
     
-    
+    //Xử lý chọn ảnh phạm nhân
     class ImagePrisonerListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -135,7 +134,6 @@ public class PrisonerController
      * Lớp ClearPrisonerListener 
      * chứa cài đặt cho sự kiện click button "Clear"
      * 
-     * @author viettuts.vn
      */
     class ClearPrisonerListener implements ActionListener 
     {
@@ -145,18 +143,8 @@ public class PrisonerController
         }
     }
 
-    /**
-     * Lớp SortPrisonerGPAListener 
-     * chứa cài đặt cho sự kiện click button "Sort By GPA"
-     * 
-     * @author viettuts.vn
-     *
-    /**
-     * Lớp SortPrisonerGPAListener 
-     * chứa cài đặt cho sự kiện click button "Sort By Name"
-     * 
-     * @author viettuts.vn
-     */
+    
+   //Sắp xếp phạm nhân theo tên
     class SortPrisonerNameListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -165,7 +153,7 @@ public class PrisonerController
             PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
         }
     }
-    
+    //Sắp xếp phạm nhân theo năm sinh
     class SortPrisonerYearListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -174,7 +162,7 @@ public class PrisonerController
             PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
         }
     }
-    
+    //Sắp xếp phạm nhân theo ID
     class SortPrisonerIDListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -183,7 +171,7 @@ public class PrisonerController
             PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
         }
     }
-    
+    //Sắp xếp theo ngày nhập trại
     class SortPrisonerOpeningDateListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -192,7 +180,7 @@ public class PrisonerController
             PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
         }
     }
-    
+    //Xử lý mở giao diện tình kiếm phạm nhân
     class SearchPrisonerViewListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -200,7 +188,7 @@ public class PrisonerController
             PrisonerView.searchNamePrisonerInfo();
         }
     }
-    
+    //Mở phần giao diện thống kê
     class StatisticViewListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -208,10 +196,9 @@ public class PrisonerController
             PrisonerView.displayStatisticView();
         }
     }
-    
+    //Xử lý logic tìm kiếm phạm nhân
     class SearchPrisonerListener implements ActionListener{
         public void actionPerformed(ActionEvent e){
-            boolean kt = false;
             List<Prisoner> temp = new ArrayList<>();
             int check = PrisonerView.getChooseSelectSearch();
             String search = PrisonerView.validateSearch();
@@ -222,14 +209,14 @@ public class PrisonerController
                 // Tìm kiếm theo địa chỉ
                 temp = managerPrisoner.searchPrisonerAddress(search);
             }else if(check == 3){
-                // Tìm kiếm theo loại đối tượng
+                // Tìm kiếm theo năm sinh
                 temp = managerPrisoner.searchPrisonerYear(search);
             }
             if(!temp.isEmpty())PrisonerView.showListPrisoners(temp);
             else PrisonerView.showMessage("Không tìm thấy kết quả!");
         }
     }
-    
+    //Xử lý phần hủy tìm kiếm
     class CancelDialogSearchPrisonerListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -237,7 +224,7 @@ public class PrisonerController
             PrisonerView.cancelDialogSearchPrisonerInfo();
         }
     }
-    
+ 
     class CancelSearchPrisonerListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -246,7 +233,7 @@ public class PrisonerController
             PrisonerView.cancelSearchPrisoner();
         }
     }
-    
+    //Quay về giao diện chính
     class UndoListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
@@ -272,32 +259,30 @@ public class PrisonerController
             }
         }
     }
-    
+    //Xử lý thống kê phạm nhân theo loại án
     class StatisticPrisonerTypeListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
         {
             PrisonerView.displayStatisticView();
-            //managerPrisoner.sortPrisonerByID();
             PrisonerView.showStatisticTypePrisoners(managerPrisoner.getListPrisoners());
         }
     }
+    //Xử lý thống kê phạm nhân theo tuổi
     class StatisticPrisonerAgeListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
         {
             PrisonerView.displayStatisticView();
-            //managerPrisoner.sortPrisonerByID();
             PrisonerView.showStatisticAgePrisoners(managerPrisoner.getListPrisoners());
         }
     }
+    //Ẩn giao diện thống kê
     class StatisticClearListener implements ActionListener 
     {
         public void actionPerformed(ActionEvent e) 
         {
             PrisonerView.UnderViewPrisoner();
-            //managerPrisoner.sortPrisonerByID();
-            //PrisonerView.showStatisticAgePrisoners(managerPrisoner.getListPrisoners());
         }
     }
 }
