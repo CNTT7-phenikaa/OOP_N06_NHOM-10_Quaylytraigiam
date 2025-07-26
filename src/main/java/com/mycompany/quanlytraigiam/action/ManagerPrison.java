@@ -92,11 +92,11 @@ public class ManagerPrison {
     }
 
     public void sortByCapacity() {
-        Collections.sort(prisonList, Comparator.comparingInt(p -> Integer.parseInt(p.getSucChuaToiDa())));
+        Collections.sort(prisonList, Comparator.comparingInt(p ->(p.getSucChuaToiDa())));
     }
 
     public void sortByCurrentPrisoners() {
-        Collections.sort(prisonList, Comparator.comparingInt(p -> Integer.parseInt(p.getSoLuongPhamNhanHienTai())));
+        Collections.sort(prisonList, Comparator.comparingInt(p ->(p.getSoLuongPhamNhanHienTai())));
     }
 
     public List<Prison> getListPrisons() {
