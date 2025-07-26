@@ -39,138 +39,162 @@ import javax.swing.table.TableColumnModel;
  */
 public class PrisonView extends javax.swing.JFrame {
 
-    /**
-     * Creates new form PrisonView
-     */
-    private String [] columnNames = new String [] {
-        "STT", "Số hộ khẩu", "Địa chỉ", "Vai trò", "Họ và tên", "Ngày sinh", "Liên hệ"};
-    private SimpleDateFormat fDate=new SimpleDateFormat("dd/MM/yyyy");
-    FlowLayout flowLayout = new FlowLayout();
+    private String[] columnNames = new String[] {
+        "STT", "Mã trại giam", "Tên trại giam", "Địa chỉ", "Sức chứa", "Số phạm nhân", "Quản lý trưởng", "Số điện thoại", "Email", "Ngày Thành Lập"
+    };
+    private JTable tablePrison;
+    private JTextField FieldMaTraiGiam;
+    private JTextField FieldTenTraiGiam;
+    private JTextField FieldQuanLiTruong;
+    private JTextField FieldEmail;
+    
+    private javax.swing.JButton btnUndo;
     public PrisonView() {
-        initComponents();
-        btnAdd.setEnabled(true);
+        tablePrison = new JTable();
+
+        JScrollPane scrollPane = new JScrollPane(tablePrison);
+        add(scrollPane); 
+    }
+    public void showListPrisons(List<Prison> list) {
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        list.stream().forEach(prison -> {
+            model.addRow(new Object[]{
+                prison.getId(),
+                prison.getMaTraiGiam(),
+                prison.getTenTraiGiam(),
+                prison.getDiaChi(),
+                prison.getSucChuaToiDa(),
+                prison.getSoLuongPhamNhanHienTai(),
+                prison.getQuanLiTruong(),
+                prison.getSoDienThoai(),
+                prison.getEmail()
+            });
+        });
+        tablePrison.setModel(model);
+        customizeTableAppearance();
+    }   
+    private void customizeTableAppearance() {
+    
+        tablePrison.setRowHeight(30);
+
+
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+        tablePrison.getColumnModel().getColumn(4).setCellRenderer(rightRenderer); 
+        tablePrison.getColumnModel().getColumn(5).setCellRenderer(rightRenderer); 
+
+
+        tablePrison.getColumnModel().getColumn(0).setPreferredWidth(50); 
+        tablePrison.getColumnModel().getColumn(1).setPreferredWidth(100); 
+        tablePrison.getColumnModel().getColumn(2).setPreferredWidth(150); 
+    }
+    public Prison getPrisonInfo() {
+        if (!validatePrisonFields()) {
+            return null;
+        }
+        try {
+            Prison prison = new Prison();
+            if (FieldID.getText() != null && !FieldID.getText().isEmpty()) {
+                prison.setId(FieldID.getText());
+            }
+            prison.setMaTraiGiam(FieldMaTraiGiam.getText().trim());
+            prison.setTenTraiGiam(FieldTenTraiGiam.getText().trim());
+            prison.setDiaChi(TextAreaAddress.getText().trim());
+            
+            // Xử lý số nguyên cho sức chứa
+            try {
+                prison.setSucChuaToiDa(sucChuaToiDa.getText().trim());
+            } catch (NumberFormatException e) {
+                showMessage("Sức chứa phải là số nguyên");
+                return null;
+            }
+            
+            // Xử lý số nguyên cho số lượng phạm nhân
+            try {
+                prison.setSoLuongPhamNhanHienTai(soLuongPhamNhanHienTai.getText().trim());
+            } catch (NumberFormatException e) {
+                showMessage("Số lượng phạm nhân phải là số nguyên");
+                return null;
+            }
+            
+            // Xử lý ngày thành lập
+            Date ngayThanhLap = BirthdayChooser.getDate();
+            if (ngayThanhLap != null) {
+                prison.setNgayThanhLap(ngayThanhLap);
+            }
+            
+            prison.setQuanLiTruong(FieldQuanLiTruong.getText().trim());
+            prison.setSoDienThoai(FieldPhone.getText().trim());
+            prison.setEmail(FieldEmail.getText().trim());
+            return prison;
+        } catch (Exception e) {
+            showMessage("Lỗi khi lấy thông tin trại giam: " + e.getMessage());
+        }
+        return null;
+    }
+    private boolean validatePrisonFields() {
+        if (FieldMaTraiGiam.getText().trim().isEmpty()) {
+            showMessage("Mã trại giam không được trống");
+            return false;
+        }
+        if (FieldTenTraiGiam.getText().trim().isEmpty()) {
+            showMessage("Tên trại giam không được trống");
+            return false;
+        }
+        if (TextAreaAddress.getText().trim().isEmpty()) {
+            showMessage("Địa chỉ không được trống");
+            return false;
+        }
+        if (sucChuaToiDa.getText().trim().isEmpty()) {
+            showMessage("Sức chứa không được trống");
+            return false;
+        }
+        if (soLuongPhamNhanHienTai.getText().trim().isEmpty()) {
+            showMessage("Số lượng phạm nhân không được trống");
+            return false;
+        }
+        return true;
+    }
+    public void showPrison(Prison prison) {
+        FieldID.setText(prison.getId());
+        FieldMaTraiGiam.setText(prison.getMaTraiGiam());
+        FieldTenTraiGiam.setText(prison.getTenTraiGiam());
+        TextAreaAddress.setText(prison.getDiaChi());
+        sucChuaToiDa.setText(String.valueOf(prison.getSucChuaToiDa()));
+        soLuongPhamNhanHienTai.setText(String.valueOf(prison.getSoLuongPhamNhanHienTai()));
+        
+        if (prison.getNgayThanhLap() != null) {
+            BirthdayChooser.setDate(prison.getNgayThanhLap());
+        }
+        
+        FieldQuanLiTruong.setText(prison.getQuanLiTruong());
+        FieldPhone.setText(prison.getSoDienThoai());
+        FieldEmail.setText(prison.getEmail());
+        
+        btnEdit.setEnabled(true);
+        btnDelete.setEnabled(true);
+        btnAdd.setEnabled(false);
+    }
+    public void clearPrisonInfo() {
+        FieldID.setText("");
+        FieldMaTraiGiam.setText("");
+        FieldTenTraiGiam.setText("");
+        TextAreaAddress.setText("");
+        sucChuaToiDa.setText("");
+        soLuongPhamNhanHienTai.setText("");
+        BirthdayChooser.setDate(null);
+        FieldQuanLiTruong.setText("");
+        FieldPhone.setText("");
+        FieldEmail.setText("");
+        
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
-        btnSearch.setEnabled(true);
-        tableResident.setDefaultRenderer(Object.class, new PrisonView.MyRenderer());
-    }
-    
-    private static Image getCircleImage(Image image) {
-        int width = image.getWidth(null);
-        int height = image.getHeight(null);
-        BufferedImage circleImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D graphics = circleImage.createGraphics();
-        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        Ellipse2D.Double circle = new Ellipse2D.Double(0, 0, width, height);
-        graphics.setClip(circle);
-        graphics.drawImage(image, 0, 0, null);
-        graphics.setColor(Color.WHITE);
-        graphics.setStroke(new BasicStroke(2));
-        graphics.draw(circle);
-        return circleImage;
-    }
-    
-    private ImageIcon ImageIconSize(JLabel label, String filename)
-    {
-        Image image = new ImageIcon(filename).getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon imageIcon=new ImageIcon(image);
-        //jLabel14.setIcon(new ImageIcon(getCircleImage(imageIcon.getImage())));
-        return imageIcon;
+        btnAdd.setEnabled(true);
+    }  
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
 
-    public void addAddPrisonListener(PrisonController.AddPrisonListener addPrisonListener) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void addListPrisonSelectionListener(PrisonController.ListPrisonSelectionListener listPrisonSelectionListener) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void addEditPrisonListener(PrisonController.EditPrisonListener editPrisonListener) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void addDeletePrisonListener(PrisonController.DeletePrisonListener deletePrisonListener) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public void addSortPrisonListener(PrisonController.SortPrisonListener sortPrisonListener) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    public class MyRenderer extends DefaultTableCellRenderer {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-            TableColumnModel columnModel=table.getColumnModel();
-            columnModel.getColumn(0).setPreferredWidth(10);
-            columnModel.getColumn(1).setPreferredWidth(60);
-            columnModel.getColumn(2).setPreferredWidth(250);
-            columnModel.getColumn(3).setPreferredWidth(50);
-            columnModel.getColumn(4).setPreferredWidth(130);
-            columnModel.getColumn(5).setPreferredWidth(60);
-            columnModel.getColumn(5).setPreferredWidth(50);
-            //columnModel.getColumn(0).setPreferredWidth(5);
-            JTableHeader header = table.getTableHeader();
-            header.setBackground(new Color(0, 0, 139));
-            header.setForeground(Color.WHITE);
-            header.setFont(new java.awt.Font("Times New Roman", 0, 18));
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-            if (!isSelected) {
-                if (row % 2 == 0) {
-                    c.setBackground(new Color(191, 239, 255));
-                } else {
-                    c.setBackground(new Color(135, 206, 250));
-                }
-            } else {
-                c.setBackground(new Color(193, 255, 193));
-            }
-
-            return c;
-        }
-    }
-    
-    public class MyRenderer2 extends DefaultTableCellRenderer {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
-            TableColumnModel columnModel=table.getColumnModel();
-            //columnModel.getColumn(0).setPreferredWidth(5);
-            JTableHeader header = table.getTableHeader();
-            header.setBackground(new Color(0, 0, 139));
-            header.setForeground(Color.WHITE);
-            header.setFont(new java.awt.Font("Times New Roman", 0, 18));
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-            if (!isSelected) {
-                if (row % 2 == 0) {
-                    c.setBackground(new Color(191, 239, 255));
-                } else {
-                    c.setBackground(new Color(135, 206, 250));
-                }
-            } else {
-                c.setBackground(new Color(193, 255, 193));
-            }
-
-            return c;
-        }
-    }
-    
-    public static String capitalizeWords(String str) {
-        str = str.toLowerCase();
-        String[] words = str.split("\\s+");
-        StringBuilder sb = new StringBuilder();
-        for (String word : words) {
-            if (word.length() > 0) {
-                if (word.equals("tt") || word.equals("tp") || word.equals("tx")) {
-                    sb.append(word.toUpperCase());
-                } else {
-                    sb.append(Character.toUpperCase(word.charAt(0)));
-                    sb.append(word.substring(1));
-                }
-                sb.append(" ");
-            }
-        }
-        return sb.toString().trim();
-    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -941,36 +965,62 @@ public class PrisonView extends javax.swing.JFrame {
         });
     }
     
-    public void showMessage(String message) {
+    public void showPopupMessage(String message) {
         JOptionPane.showMessageDialog(this, message);
     }
     
-    public Prison getResidentInfo() {
-        // validate residents
-        if (!validateIDFamily() || !validateName() || !validateSex() || !validateBirthday() || !validateAddress() || !validateTypeCMT() || !validateCMT()) {
-            return null;
-        }
+    public Prison getPrisontInfo() {
+        // validate prisons
+        if (!validateID() || !validateMaTraiGiam() || !validateTenTraiGiam() ||
+        !validateAddress() || !validatePhone() || !validateEmail() ||
+        !validateSucChua() || !validateSoLuong() || !validateNgayThanhLap() ||
+        !validateQuanLiTruong()) {
+    return null;
+}
         try {
-            Prison residents = new Prison();
+            Prison prisons = new Prison();
             if (FieldID.getText() != null && !"".equals(FieldID.getText())) {
-                residents.setId(Integer.parseInt(FieldID.getText()));
+                prisons.setId(FieldID.getText().trim());
             }
-            if (CheckBoxMale.isSelected()) residents.setSex("Nam"); else residents.setSex("Nữ");
-            residents.setIDFamily(FieldIDFamily.getText().trim());
-            residents.setRole(ComboBoxRole.getSelectedItem().toString().trim());
-            residents.setName(capitalizeWords(FieldName.getText().trim()));
-            //residents.setYear(Integer.parseInt(FieldYear.getText().trim()));
-            residents.setAddress(capitalizeWords(TextAreaAddress.getText().trim()));
-            residents.setBirthday(BirthdayChooser.getDate());
-            residents.setTypeCMT(ComboBoxCMT.getSelectedItem().toString().trim());
-            residents.setCMT(FieldCMT.getText().trim());
-            residents.setBirthPlace(capitalizeWords(FieldBirthPlace.getText().trim()));
-            residents.setPhoneNumber(FieldPhone.getText().trim());           
-            return residents;
+            prisons.setMaTraiGiam(FieldMaTraiGiam.getText().trim());
+            prisons.setTenTraiGiam(FieldTenTraiGiam.getText().trim());
+            prisons.setDiaChi(TextAreaAddress.getText().trim());
+            prisons.setSoDienThoai(FieldPhone.getText().trim());
+            prisons.setEmail(FieldEmail.getText().trim());
+            prisons.setSucChuaToiDa(sucChuaToiDa.getText().trim());
+            prisons.setSoLuongPhamNhanHienTai(soLuongPhamNhanHienTai.getText().trim());
+            prisons.setNgayThanhLap(BirthdayChooser.getDate());
+            prisons.setQuanLiTruong(FieldQuanLiTruong.getText().trim());
+
+        return prisons;
         } catch (Exception e) {
             showMessage(e.getMessage());
         }
         return null;
+    }
+
+    public void cancelSearch() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void closeSearchDialog() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public int getSelectedSearchOption() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public String getSearchKeyword() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public void showSearchDialog() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public int getSelectedSortOption() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
     public class RoundedBorder implements Border {
@@ -989,63 +1039,35 @@ public class PrisonView extends javax.swing.JFrame {
         }
     }
     
-    private boolean validateIDFamily() {
-        try {
-            String idText = FieldIDFamily.getText().trim();
-            if (idText.isEmpty() || !idText.matches("\\d+")) {
-                showMessage("Số hộ khẩu không hợp lệ");
-                return false;
-            }
-        } catch (Exception e) {
-            FieldIDFamily.requestFocus();
-            showMessage("Số hộ khẩu không được trống");
-            return false;
-        }
-        return true;
+    private boolean validateID() {
+    String id = FieldID.getText().trim();
+    if (id.isEmpty() || !id.matches("\\d+")) {
+        showMessage("ID không hợp lệ");
+        FieldID.requestFocus();
+        return false;
     }
+    return true;
+}
     
-    private boolean validateCMT() {
-        try {
-            String idText = FieldCMT.getText().trim();
-            if (idText.isEmpty() || !idText.matches("\\d+")) {
-                showMessage("Số chứng minh thư không hợp lệ");
-                return false;
-            }
-        } catch (Exception e) {
-            FieldCMT.requestFocus();
-            showMessage("Số chứng minh thư không được trống");
-            return false;
-        }
-        return true;
+   private boolean validateMaTraiGiam() {
+    String ma = FieldMaTraiGiam.getText().trim();
+    if (ma.isEmpty()) {
+        showMessage("Mã trại giam không được để trống");
+        FieldMaTraiGiam.requestFocus();
+        return false;
     }
+    return true;
+}
     
-    private boolean validateSex() {
-        if (!CheckBoxMale.isSelected() && !CheckBoxFemale.isSelected()) {
-            showMessage("Bạn chưa chọn giới tính");
-            return false;
-        }
-        return true;
+    private boolean validateTenTraiGiam() {
+    String name = FieldTenTraiGiam.getText().trim();
+    if (name.isEmpty()) {
+        showMessage("Tên trại giam không được để trống");
+        FieldTenTraiGiam.requestFocus();
+        return false;
     }
-      
-    private boolean validateName() {
-        String name = FieldName.getText();
-        if (name == null || "".equals(name.trim())) {
-            FieldName.requestFocus();
-            showMessage("Họ và tên không được trống.");
-            return false;
-        }
-        return true;
-    }
-    
-    private boolean validateTypeCMT() {
-        String type = ComboBoxCMT.getSelectedItem().toString().trim();
-        if (type.equals("<none>")) {
-            ComboBoxCMT.requestFocus();
-            showMessage("Bạn chưa chọn loại chứng minh thư");
-            return false;
-        }
-        return true;
-    }
+    return true;
+}
     
     private boolean validateAddress() {
         String address = TextAreaAddress.getText();
@@ -1056,69 +1078,154 @@ public class PrisonView extends javax.swing.JFrame {
         }
         return true;
     }
-    
-    private boolean validateBirthday() {
-        try {
-            java.util.Date today=new java.util.Date();
-            Date date=BirthdayChooser.getDate();
-            if (date.compareTo(today)==1) {
-                BirthdayChooser.requestFocus();
-                showMessage("Ngày nhập không tồn tại hoặc lớn hơn ngày hôm nay");
-                return false;
-            }
-        } catch (Exception e) {
-            BirthdayChooser.requestFocus();
-            showMessage("Bạn đã nhập ngày sai định dạng");
+    private boolean validatePhone() {
+    String phone = FieldPhone.getText().trim();
+    if (phone.isEmpty()) {
+        showMessage("Số điện thoại không được để trống");
+        FieldPhone.requestFocus();
+        return false;
+    }
+    if (!phone.matches("\\d{9,11}")) {
+        showMessage("Số điện thoại không hợp lệ (phải là 9-11 chữ số)");
+        FieldPhone.requestFocus();
+        return false;
+    }
+    return true;
+}
+    private boolean validateEmail() {
+    String email = FieldEmail.getText().trim();
+    if (email.isEmpty()) {
+        showMessage("Email không được để trống");
+        FieldEmail.requestFocus();
+        return false;
+    }
+    if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
+        showMessage("Email không hợp lệ");
+        FieldEmail.requestFocus();
+        return false;
+    }
+    return true;
+}
+    private boolean validateSucChua() {
+    String capacity = sucChuaToiDa.getText().trim();
+    if (capacity.isEmpty()) {
+        showMessage("Sức chứa tối đa không được để trống");
+        sucChuaToiDa.requestFocus();
+        return false;
+    }
+    try {
+        int val = Integer.parseInt(capacity);
+        if (val <= 0) {
+            showMessage("Sức chứa phải là số nguyên dương");
+            sucChuaToiDa.requestFocus();
             return false;
         }
-        return true;
+    } catch (NumberFormatException e) {
+        showMessage("Sức chứa không hợp lệ (phải là số)");
+        sucChuaToiDa.requestFocus();
+        return false;
     }
+    return true;
+}
+    private boolean validateSoLuong() {
+    String count = soLuongPhamNhanHienTai.getText().trim();
+    if (count.isEmpty()) {
+        showMessage("Số lượng phạm nhân hiện tại không được để trống");
+        soLuongPhamNhanHienTai.requestFocus();
+        return false;
+    }
+    try {
+        int val = Integer.parseInt(count);
+        if (val < 0) {
+            showMessage("Số lượng không thể âm");
+            soLuongPhamNhanHienTai.requestFocus();
+            return false;
+        }
+    } catch (NumberFormatException e) {
+        showMessage("Số lượng không hợp lệ (phải là số)");
+        soLuongPhamNhanHienTai.requestFocus();
+        return false;
+    }
+    return true;
+}
+    private boolean validateNgayThanhLap() {
+    try {
+        Date today = new Date();
+        Date selectedDate = BirthdayChooser.getDate();
+
+        if (selectedDate == null) {
+            showMessage("Vui lòng chọn ngày thành lập");
+            BirthdayChooser.requestFocus();
+            return false;
+        }
+
+        if (selectedDate.after(today)) {
+            showMessage("Ngày thành lập không được lớn hơn ngày hiện tại");
+            BirthdayChooser.requestFocus();
+            return false;
+        }
+    } catch (Exception e) {
+        showMessage("Lỗi định dạng ngày thành lập");
+        BirthdayChooser.requestFocus();
+        return false;
+    }
+    return true;
+}
+
+    private boolean validateQuanLiTruong() {
+    String manager = FieldQuanLiTruong.getText().trim();
+    if (manager.isEmpty()) {
+        showMessage("Quản lý trưởng không được để trống");
+        FieldQuanLiTruong.requestFocus();
+        return false;
+    }
+    return true;
+}
+
     
-    public void showListResidents(List<Prison> list) {
+    public void showListPrisonsTable(List<Prison> list) {
+        if (list == null) {
+        showMessage("Danh sách trại giam trống");
+        return;
+    }
         int size = list.size();
-        // với bảng tableResident có 6 cột, 
+        // với bảng tableResident có 9 cột, 
         // khởi tạo mảng 2 chiều residents, trong đó:
         // số hàng: là kích thước của list resident 
-        // số cột: là 7
-        Object [][] residents = new Object[size][7];
+        // số cột: là 9
+        Object [][] residents = new Object[size][9];
         for (int i = 0; i < size; i++) {
-            residents[i][0] = list.get(i).getId();
-            residents[i][1] = list.get(i).getIDFamily();
-            residents[i][2] = list.get(i).getAddress();
-            residents[i][3] = list.get(i).getRole();
-            residents[i][4] = list.get(i).getName();
-            residents[i][5] = fDate.format(list.get(i).getBirthday());
-            residents[i][6] = list.get(i).getPhoneNumber();
+        Prison p = list.get(i);
+        residents[i][0] = p.getId();
+        residents[i][1] = p.getMaTraiGiam();
+        residents[i][2] = p.getTenTraiGiam();
+        residents[i][3] = p.getDiaChi();
+        residents[i][4] = p.getSucChuaToiDa();
+        residents[i][5] = p.getSoLuongPhamNhanHienTai();
+        residents[i][6] = p.getQuanLiTruong();
+        residents[i][7] = p.getSoDienThoai();
+        residents[i][8] = p.getEmail();
         }
         //jLabel1.setLayout(null);
-        tableResident.getColumnModel().getColumn(0).setWidth(3);
-        tableResident.setModel(new DefaultTableModel(residents, columnNames));
+        tablePrison.getColumnModel().getColumn(0).setWidth(3);
+        tablePrison.setModel(new DefaultTableModel(residents, columnNames));
         //tableResident.removeColumn(tableResident.getColumnModel().getColumn(6));
     }
     
     
-    public void showResidents(Prison resident) 
+    public void showPrisons(Prison prison) 
     {
-        FieldIDFamily.setText("" + resident.getIDFamily());
-        FieldName.setText(resident.getName());
-        BirthdayChooser.setDate(resident.getBirthday());
-        TextAreaAddress.setText(resident.getAddress());
+        FieldID.setText(String.valueOf(prison.getId()));
+        FieldMaTraiGiam.setText(prison.getMaTraiGiam());
+        FieldTenTraiGiam.setText(prison.getTenTraiGiam());
+        TextAreaAddress.setText(prison.getDiaChi());
         //FieldOpeningDate.setText("" + fDate.format(resident.getOpeningDate()));
-        ComboBoxRole.setSelectedItem(""+resident.getRole());
-        FieldPhone.setText(""+resident.getPhoneNumber());
-        FieldBirthPlace.setText(""+resident.getBirthPlace());
-        if ("Nam".equals(resident.getSex())) {
-            CheckBoxMale.setSelected(true);
-            CheckBoxFemale.setSelected(false);
-        } else if ("Nữ".equals(resident.getSex())) {
-            CheckBoxMale.setSelected(false);
-            CheckBoxFemale.setSelected(true);
-        } else {
-            CheckBoxMale.setSelected(false);
-            CheckBoxFemale.setSelected(false);
-        }
-        ComboBoxCMT.setSelectedItem(""+resident.getTypeCMT());
-        FieldCMT.setText(resident.getCMT());
+        sucChuaToiDa.setText(String.valueOf(prison.getSucChuaToiDa()));
+        soLuongPhamNhanHienTai.setText(String.valueOf(prison.getSoLuongPhamNhanHienTai()));
+        FieldQuanLiTruong.setText(prison.getQuanLiTruong());
+        FieldPhone.setText(prison.getSoDienThoai());
+        FieldEmail.setText(prison.getEmail());
+        BirthdayChooser.setDate(prison.getNgayThanhLap());
         // enable Edit and Delete buttons
         btnEdit.setEnabled(true);
         btnDelete.setEnabled(true);
@@ -1127,35 +1234,25 @@ public class PrisonView extends javax.swing.JFrame {
         btnClear.setEnabled(true);
     }
     
-    public void fillResidentFromSelectedRow(List<Prison> list) throws ParseException {
+    public void fillPrisonFromSelectedRow(List<Prison> list) throws ParseException {
         // lấy chỉ số của hàng được chọn 
         int row = tableResident.getSelectedRow();
         if (row >= 0) {
-            int residentID = Integer.parseInt(tableResident.getModel().getValueAt(row, 0).toString());
-            Prison selectedResident = findResidentByID(list, residentID);
+            int prisonID = Integer.parseInt(tableResident.getModel().getValueAt(row, 0).toString());
+            Prison selectedPrison = findPrisonByID(list, prisonID);
 
-            if (selectedResident != null) {
-                FieldID.setText(String.valueOf(selectedResident.getId()));
-                FieldIDFamily.setText(selectedResident.getIDFamily());
-                FieldName.setText(selectedResident.getName());
-                BirthdayChooser.setDate(selectedResident.getBirthday());
-                TextAreaAddress.setText(selectedResident.getAddress());
-                //FieldOpeningDate.setText("" + fDate.format(resident.getOpeningDate()));
-                ComboBoxRole.setSelectedItem(selectedResident.getRole());
-                FieldPhone.setText(selectedResident.getPhoneNumber());
-                FieldBirthPlace.setText(selectedResident.getBirthPlace());
-                if ("Nam".equals(selectedResident.getSex())) {
-                    CheckBoxMale.setSelected(true);
-                    CheckBoxFemale.setSelected(false);
-                } else if ("Nữ".equals(selectedResident.getSex())) {
-                    CheckBoxMale.setSelected(false);
-                    CheckBoxFemale.setSelected(true);
-                } else {
-                    CheckBoxMale.setSelected(false);
-                    CheckBoxFemale.setSelected(false);
-                }
-                ComboBoxCMT.setSelectedItem(selectedResident.getTypeCMT());
-                FieldCMT.setText(selectedResident.getCMT());
+            if (selectedPrison != null) {
+                FieldID.setText(String.valueOf(selectedPrison.getId()));
+                FieldMaTraiGiam.setText(selectedPrison.getMaTraiGiam());
+                FieldTenTraiGiam.setText(selectedPrison.getTenTraiGiam());
+                TextAreaAddress.setText(selectedPrison.getDiaChi());
+                sucChuaToiDa.setText(String.valueOf(selectedPrison.getSucChuaToiDa()));
+                soLuongPhamNhanHienTai.setText(String.valueOf(selectedPrison.getSoLuongPhamNhanHienTai()));
+                FieldQuanLiTruong.setText(selectedPrison.getQuanLiTruong());
+                FieldPhone.setText(selectedPrison.getSoDienThoai());
+                FieldEmail.setText(selectedPrison.getEmail());
+                BirthdayChooser.setDate(selectedPrison.getNgayThanhLap());
+
                 // enable Edit and Delete buttons
                 btnEdit.setEnabled(true);
                 btnDelete.setEnabled(true);
@@ -1166,16 +1263,19 @@ public class PrisonView extends javax.swing.JFrame {
         }
     }
     
-    public void fillResidentFromSelectedRow() throws ParseException {
+    public void fillPrisonFromSelectedRow() throws ParseException {
         // lấy chỉ số của hàng được chọn 
-        int row = tableResident.getSelectedRow();
+        int row = tablePrison.getSelectedRow();
         if (row >= 0) {
-            FieldIDFamily.setText(tableResident.getModel().getValueAt(row, 1).toString());
-            TextAreaAddress.setText(tableResident.getModel().getValueAt(row, 2).toString());
-            ComboBoxRole.setSelectedItem(tableResident.getModel().getValueAt(row, 3).toString());
-            FieldName.setText(tableResident.getModel().getValueAt(row, 4).toString());
-            BirthdayChooser.setDate(fDate.parse(tableResident.getModel().getValueAt(row, 5).toString()));
-            FieldPhone.setText(tableResident.getModel().getValueAt(row, 6).toString());
+            FieldID.setText(tablePrison.getModel().getValueAt(row, 0).toString()); // STT hoặc ID
+            FieldMaTraiGiam.setText(tablePrison.getModel().getValueAt(row, 1).toString());
+            FieldTenTraiGiam.setText(tablePrison.getModel().getValueAt(row, 2).toString());
+            TextAreaAddress.setText(tablePrison.getModel().getValueAt(row, 3).toString());
+            sucChuaToiDa.setText(tablePrison.getModel().getValueAt(row, 4).toString());
+            soLuongPhamNhanHienTai.setText(tablePrison.getModel().getValueAt(row, 5).toString());
+            FieldQuanLiTruong.setText(tablePrison.getModel().getValueAt(row, 6).toString());
+            FieldPhone.setText(tablePrison.getModel().getValueAt(row, 7).toString());
+            FieldEmail.setText(tablePrison.getModel().getValueAt(row, 8).toString());
             
             // enable Edit and Delete buttons
             btnEdit.setEnabled(true);
@@ -1186,30 +1286,27 @@ public class PrisonView extends javax.swing.JFrame {
         }
     }
 
-    private Prison findResidentByID(List<Prison> residentsList, int residentID) {
-        for (Prison resident : residentsList) {
-            if (resident.getId() == residentID) {
-                return resident;
+    private Prison findPrisonByID(List<Prison> prisonList, int prisonID) {
+        for (Prison prison : prisonList) {
+            if (Integer.parseInt(prison.getId()) == prisonID) {
+                return prison;
             }
         }
         return null; // Trả về null nếu không tìm thấy đối tượng
     }
     
-    public void clearResidentInfo() {
+    public void resetPrisonForm() {
         FieldID.setText("");
-        FieldIDFamily.setText("");
-        ComboBoxRole.setSelectedItem("<none>");
-        FieldName.setText("");
-        BirthdayChooser.setDate(null);
+        FieldMaTraiGiam.setText("");
+        FieldTenTraiGiam.setText("");
         TextAreaAddress.setText("");
-        //FieldOpeningDate.setText("");
-        CheckBoxMale.setSelected(false);
-        CheckBoxFemale.setSelected(false);
-        ComboBoxCMT.setSelectedItem("<none>");
-        FieldCMT.setText("");
-        FieldBirthPlace.setText("");
+        sucChuaToiDa.setText("");
+        soLuongPhamNhanHienTai.setText("");
+        FieldQuanLiTruong.setText("");
         FieldPhone.setText("");
-        
+        FieldEmail.setText("");
+        BirthdayChooser.setDate(null);
+
         // disable Edit and Delete buttons
         btnEdit.setEnabled(false);
         btnDelete.setEnabled(false);
@@ -1217,12 +1314,12 @@ public class PrisonView extends javax.swing.JFrame {
         btnAdd.setEnabled(true);
     }
     
-    public void showCountListResidents(List<Prison> list) {
+    public void showCountListPrisons(List<Prison> list) {
         int size = list.size();
         FieldSum.setText(String.valueOf(size));
     }
     
-    public void SearchResidentInfo() {
+    public void SearchPrisonInfo() {
         //FrameSearch = new ManagerView();
         SearchDialog.setVisible(true);
     }
@@ -1233,56 +1330,17 @@ public class PrisonView extends javax.swing.JFrame {
         else if(CheckBoxSortIDFamily.isSelected()) return 3;
         return 0;
     }
-    
-    public void showStatisticTypeCMT(List<Prison> list) {
-        Map<String, Integer> countMap = new HashMap<>();
-        for (Prison person : list) {
-            if (countMap.containsKey(person.getTypeCMT())) {
-                int count = countMap.get(person.getTypeCMT());
-                countMap.put(person.getTypeCMT(), count + 1);
-            } else {
-                countMap.put(person.getTypeCMT(), 1);
-            }
-        }
-
-        for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
-            String typeCMT = entry.getKey();
-            int count = entry.getValue();
-
-            // Tìm trường tương ứng với loại CMT và gán giá trị
-            switch (typeCMT) {
-                case "CMND":
-                    FieldSumCMND.setText(String.valueOf(count));
-                    break;
-                case "CCCD":
-                    FieldSumCCCD.setText(String.valueOf(count));
-                    break;
-                case "Định danh":
-                    FieldSumDD.setText(String.valueOf(count));
-                    break;
-
-            }
-        }
+    public void showStatisticQuanLi(List<Prison> list) {
+    Map<String, Integer> countMap = new HashMap<>();
+    for (Prison prison : list) {
+        String quanli = prison.getQuanLiTruong();
+        countMap.put(quanli, countMap.getOrDefault(quanli, 0) + 1);
     }
-    
-    public void showStatisticIDFamily(List<Prison> list) {
-        Map<String, Integer> countMapIDFamily = new HashMap<>();
 
-        for (Prison person : list) {
-            // Thống kê số hộ khẩu IDFamily
-            if (countMapIDFamily.containsKey(person.getIDFamily())) {
-                int countIDFamily = countMapIDFamily.get(person.getIDFamily());
-                countMapIDFamily.put(person.getIDFamily(), countIDFamily + 1);
-            } else {
-                countMapIDFamily.put(person.getIDFamily(), 1);
-            }
-        }
-
-        // Gán giá trị thống kê số hộ khẩu IDFamily
-        FieldSumFamily.setText(String.valueOf(countMapIDFamily.size()));
+    for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+        System.out.println("Quản lý: " + entry.getKey() + ", Số trại: " + entry.getValue());
     }
-    
-    
+}
     public void searchResidentInfo() {
         //FrameSearch = new ManagerView();
         SearchDialog.setVisible(true);
@@ -1340,18 +1398,18 @@ public class PrisonView extends javax.swing.JFrame {
     }
     
     public void addUndoListener(ActionListener listener){
-        btnResidentUndo.addActionListener(listener);
+        btnUndo.addActionListener(listener);
     }
     
-    public void addAddResidentListener(ActionListener listener) {
+    public void addAddPrisonListener(ActionListener listener) {
         btnAdd.addActionListener(listener);
     }
     
-    public void addListResidentSelectionListener(ListSelectionListener listener) {
-        tableResident.getSelectionModel().addListSelectionListener(listener);
+    public void addListPrisonSelectionListener(ListSelectionListener listener) {
+        tablePrison.getSelectionModel().addListSelectionListener(listener);
     }
     
-    public void addEditResidentListener(ActionListener listener) {
+    public void addEditPrisonListener(ActionListener listener) {
         btnEdit.addActionListener(listener);
     }
     
@@ -1359,11 +1417,11 @@ public class PrisonView extends javax.swing.JFrame {
         btnClear.addActionListener(listener);
     }
     
-    public void addDeleteSpecialPersonListener(ActionListener listener) {
+    public void addDeletePrisonListener(ActionListener listener) {
         btnDelete.addActionListener(listener);
     }
     
-    public void addSortSpecialPersonListener(ActionListener listener) {
+    public void addSortPrisonListener(ActionListener listener) {
         btnSort.addActionListener(listener);
     }
     
@@ -1375,12 +1433,15 @@ public class PrisonView extends javax.swing.JFrame {
         btnSearchDialog.addActionListener(listener);
     }
     
-    public void addCancelSearchResidentListener(ActionListener listener){
+    public void addCancelSearchPrisonListener(ActionListener listener){
         btnCancelSearch.addActionListener(listener);
     }
     
     public void addCancelDialogListener(ActionListener listener){
         btnCancelDialog.addActionListener(listener);
+    }   
+    public void showTotalPrisons(int total) {
+        JOptionPane.showMessageDialog(this, "Tong so trai giam: " + total);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

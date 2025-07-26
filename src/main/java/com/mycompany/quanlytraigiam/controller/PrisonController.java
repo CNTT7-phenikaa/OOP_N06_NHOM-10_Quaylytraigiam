@@ -6,6 +6,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.mycompany.quanlytraigiam.controller;
 
 import com.mycompany.quanlytraigiam.action.ManagerPrison;
@@ -17,6 +25,8 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -104,7 +114,11 @@ public class PrisonController {
     class ListPrisonSelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             List<Prison> prisonList = managerPrison.getListPrisons();
-            prisonView.fillPrisonFromSelectedRow(prisonList);
+            try {
+                prisonView.fillPrisonFromSelectedRow(prisonList);
+            } catch (ParseException ex) {
+                Logger.getLogger(PrisonController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     

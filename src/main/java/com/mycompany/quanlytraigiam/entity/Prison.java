@@ -24,8 +24,8 @@ public class Prison {
     private String diaChi;
     private String soDienThoai;
     private String email;
-    private String sucChuaToiDa;
-    private String soLuongPhamNhanHienTai;
+    private int sucChuaToiDa;
+    private int soLuongPhamNhanHienTai;
     private Date ngayThanhLap;
     private String quanLiTruong;
     
@@ -37,8 +37,8 @@ public class Prison {
         this.diaChi = diaChi;
         this.soDienThoai = soDienThoai;
         this.email = email;
-        this.sucChuaToiDa = sucChuaToiDa;
-        this.soLuongPhamNhanHienTai = soLuongPhamNhanHienTai;
+        this.sucChuaToiDa = Integer.parseInt(sucChuaToiDa);
+        this.soLuongPhamNhanHienTai = Integer.parseInt(soLuongPhamNhanHienTai);
         this.ngayThanhLap = ngayThanhLap;
         this.quanLiTruong = quanLiTruong;
     }
@@ -80,6 +80,9 @@ public class Prison {
     }
 
     public void setSoDienThoai(String soDienThoai) {
+        if (soDienThoai == null || !soDienThoai.matches("^[0-9]{10,15}$")) {
+        throw new IllegalArgumentException("Số điện thoại không hợp lệ");
+        }
         this.soDienThoai = soDienThoai;
     }
 
@@ -88,23 +91,34 @@ public class Prison {
     }
 
     public void setEmail(String email) {
+        if (email != null && !email.isEmpty() && !email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            throw new IllegalArgumentException("Email không hợp lệ");
+        }
         this.email = email;
     }
 
-    public String getSucChuaToiDa() {
+    public int getSucChuaToiDa() {
         return sucChuaToiDa;
     }
 
     public void setSucChuaToiDa(String sucChuaToiDa) {
-        this.sucChuaToiDa = sucChuaToiDa;
+            try {
+            this.sucChuaToiDa = Integer.parseInt(sucChuaToiDa);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Sức chứa tối đa phải là số nguyên", e);
+        }
     }
 
-    public String getSoLuongPhamNhanHienTai() {
+    public int getSoLuongPhamNhanHienTai() {
         return soLuongPhamNhanHienTai;
     }
 
     public void setSoLuongPhamNhanHienTai(String soLuongPhamNhanHienTai) {
-        this.soLuongPhamNhanHienTai = soLuongPhamNhanHienTai;
+        try {
+            this.soLuongPhamNhanHienTai = Integer.parseInt(soLuongPhamNhanHienTai);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Số lượng phạm nhân hiện tại phải là số nguyên", e);
+        }
     }
 
     public Date getNgayThanhLap() {
@@ -122,4 +136,14 @@ public class Prison {
     public void setQuanLiTruong(String quanLiTruong) {
         this.quanLiTruong = quanLiTruong;
     }
+    @Override
+    public String toString() {
+        return "Prison{" +
+                "id='" + id + '\'' +
+                ", tenTraiGiam='" + tenTraiGiam + '\'' +
+                ", sucChuaToiDa=" + sucChuaToiDa +
+                ", soLuongPhamNhanHienTai=" + soLuongPhamNhanHienTai +
+                '}';
+    }
 }
+
