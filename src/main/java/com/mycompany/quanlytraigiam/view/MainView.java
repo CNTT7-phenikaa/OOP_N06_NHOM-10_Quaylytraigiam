@@ -6,6 +6,7 @@ package com.mycompany.quanlytraigiam.view;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 
+
 /**
  *
  * @author PC
@@ -16,7 +17,9 @@ public class MainView extends javax.swing.JFrame {
      * Creates new form MainView
      */
     public MainView() {
+        
         initComponents();
+
     }
 
     /**
@@ -29,27 +32,33 @@ public class MainView extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
+        btnChooseVisit = new javax.swing.JButton();
         btnChoosePrisoner = new javax.swing.JButton();
         btnChoosePrison = new javax.swing.JButton();
-        btnChooseVisit = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("<html>Quản lý trại giam<br> ");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1101, 659));
         setSize(new java.awt.Dimension(960, 679));
 
+        btnChooseVisit.setBackground(new java.awt.Color(0, 0, 102));
+        btnChooseVisit.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        btnChooseVisit.setForeground(new java.awt.Color(255, 255, 255));
+        btnChooseVisit.setText("Quản lý thăm nuôi");
+        btnChooseVisit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChooseVisitActionPerformed(evt);
+            }
+        });
+
         btnChoosePrisoner.setBackground(new java.awt.Color(0, 0, 102));
-        btnChoosePrisoner.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
+        btnChoosePrisoner.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         btnChoosePrisoner.setForeground(new java.awt.Color(255, 255, 255));
-        btnChoosePrisoner.setText("<html><div style='text-align: center;'>Quản lý thông tin phạm nhân<br></div>");
-        btnChoosePrisoner.setToolTipText("");
-        btnChoosePrisoner.setBorder(null);
-        btnChoosePrisoner.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnChoosePrisoner.setOpaque(true);
+        btnChoosePrisoner.setText("Quản lý phạm nhân");
         btnChoosePrisoner.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnChoosePrisonerActionPerformed(evt);
@@ -57,85 +66,61 @@ public class MainView extends javax.swing.JFrame {
         });
 
         btnChoosePrison.setBackground(new java.awt.Color(0, 0, 102));
-        btnChoosePrison.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
+        btnChoosePrison.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         btnChoosePrison.setForeground(new java.awt.Color(255, 255, 255));
-        btnChoosePrison.setText("<html><div style='text-align: center;'> Quản lý thông tin trại giam<br></div>");
-        btnChoosePrison.setToolTipText("");
-        btnChoosePrison.setBorder(null);
-        btnChoosePrison.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnChoosePrison.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnChoosePrison.setText("Quản lý trại giam");
         btnChoosePrison.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnChoosePrisonActionPerformed(evt);
             }
         });
 
-        btnChooseVisit.setBackground(new java.awt.Color(0, 0, 102));
-        btnChooseVisit.setFont(new java.awt.Font("Times New Roman", 0, 36)); // NOI18N
-        btnChooseVisit.setForeground(new java.awt.Color(255, 255, 255));
-        btnChooseVisit.setText("<html><div style='text-align: center;'>Quản lý thăm nuôi<br></div>");
-        btnChooseVisit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnChooseVisitActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setBackground(new java.awt.Color(51, 51, 51));
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("<html>Quản lý trại giam<br> ");
-        jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        jLabel9.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/nentraigiam2.jpg"));
-        jLabel9.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jLabel1.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel1.setText("Quản lý trại giam thành phố X");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(btnChoosePrison, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnChoosePrisoner, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnChooseVisit, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(383, 383, 383))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 1056, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 319, Short.MAX_VALUE)))
+                        .addGap(59, 59, 59)
+                        .addComponent(btnChoosePrison)
+                        .addGap(21, 21, 21)
+                        .addComponent(btnChoosePrisoner)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnChooseVisit))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(301, 301, 301)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 476, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 69, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(116, 116, 116)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnChoosePrison, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnChooseVisit, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnChoosePrisoner, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(205, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(53, 53, 53)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(59, 59, 59)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnChooseVisit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnChoosePrisoner, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                    .addComponent(btnChoosePrison, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(259, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnChoosePrisonerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChoosePrisonerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnChoosePrisonerActionPerformed
-
     private void btnChoosePrisonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChoosePrisonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnChoosePrisonActionPerformed
+
+    private void btnChoosePrisonerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChoosePrisonerActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnChoosePrisonerActionPerformed
 
     private void btnChooseVisitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseVisitActionPerformed
         // TODO add your handling code here:
@@ -183,14 +168,15 @@ public class MainView extends javax.swing.JFrame {
     public void addChoosePrisonListener(ActionListener listener){
         btnChoosePrison.addActionListener(listener);
     }
-    
+    public void addChooseVisitListener(ActionListener listener){
+        btnChooseVisit.addActionListener(listener);
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnChoosePrison;
     private javax.swing.JButton btnChoosePrisoner;
     private javax.swing.JButton btnChooseVisit;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel9;
     // End of variables declaration//GEN-END:variables
 }

@@ -41,7 +41,7 @@ public class MainController
         {
             managerView = new PrisonerView();
             PrisonerController managerController = new PrisonerController(managerView);
-            managerController.showManagerView();
+            managerController.showPrisonerView();
             mainView.setVisible(false);
         }
     }
@@ -52,7 +52,7 @@ public class MainController
         {
             prisonView = new PrisonView();
             PrisonController prisonController = new PrisonController(prisonView);
-            prisonController.showManagerView();
+            prisonController.showPrisonView();
             mainView.setVisible(false);
         }
     }

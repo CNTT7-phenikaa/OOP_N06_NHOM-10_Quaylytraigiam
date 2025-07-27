@@ -23,7 +23,7 @@ import java.util.Locale;
  */
 public class ManagerPrisoner 
 {
-    private static final String PRISONER_FILE_NAME = "Prisoner.xml";
+    private static final String PRISONER_FILE_NAME = "Prisoners.xml";
     private List<Prisoner> listPrisoners;
     public ManagerPrisoner() {
         this.listPrisoners = readListPrisoners();
@@ -101,6 +101,7 @@ public class ManagerPrisoner
     
     /**
      * thêm Prisoner vào listPrisoners và lưu listPrisoners vào file
+     * tự động tăng ID
      * 
      * @param Prisoner
      */
@@ -131,10 +132,14 @@ public class ManagerPrisoner
             {
                 listPrisoners.get(i).setName(prisoner.getName());
                 listPrisoners.get(i).setBirthday(prisoner.getBirthday());
+                listPrisoners.get(i).setGender(prisoner.getGender());
                 listPrisoners.get(i).setAddress(prisoner.getAddress());
-                listPrisoners.get(i).setOpeningDate(prisoner.getOpeningDate());
-                listPrisoners.get(i).setType(prisoner.getType());
-                listPrisoners.get(i).setImage(prisoner.getImage());
+                listPrisoners.get(i).setCrime(prisoner.getCrime());
+                listPrisoners.get(i).setImprisonmentDate(prisoner.getImprisonmentDate());
+                listPrisoners.get(i).setSentenceType(prisoner.getSentenceType());
+                listPrisoners.get(i).setSentenceYears(prisoner.getSentenceYears());
+                listPrisoners.get(i).setPrisonName(prisoner.getPrisonName());
+                listPrisoners.get(i).setPicture(prisoner.getPicture());
                 writeListPrisoners(listPrisoners);
                 break;
             }
@@ -147,10 +152,10 @@ public class ManagerPrisoner
      * @param Prisoner
      */
     
-    public void image(Prisoner prisoner) 
-    {
-        
-    }
+//    public void image(Prisoner prisoner) 
+//    {
+//        
+//    }
       
     public boolean delete(Prisoner prisoner) {
          boolean isFound = false;
@@ -196,7 +201,9 @@ public class ManagerPrisoner
         });
         //Collections.sort(listPrisoners, (p1, p2) -> collator.compare(p1.getLastName(), p2.getLastName()));
     }
-    
+    /**
+     * sắp xếp danh sách Prisoner theo ID theo tứ tự tăng dần
+     */
     public void sortPrisonerByID() 
     {
         Collections.sort(listPrisoners, new Comparator<Prisoner>() 
@@ -211,14 +218,14 @@ public class ManagerPrisoner
             }
         });
     }
-    
+    //Sắp xếp theo ngày nhập trại
     public void sortPrisonerByOpeningDate() 
     {
         Collections.sort(listPrisoners, new Comparator<Prisoner>() 
         {
             public int compare(Prisoner Prisoner1, Prisoner Prisoner2) 
             {
-                return Prisoner1.getOpeningDate().compareTo(Prisoner2.getOpeningDate());
+                return Prisoner1.getImprisonmentDate().compareTo(Prisoner2.getImprisonmentDate());
             }
         });
     }

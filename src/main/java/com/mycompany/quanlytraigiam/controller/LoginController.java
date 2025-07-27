@@ -51,7 +51,7 @@ public class LoginController
             User user = loginView.getUser();
             if (checkLogin.checkUser(user)) 
             {
-                // nếu đăng nhập thành công, mở màn hình quản lý sinh viên
+                // nếu đăng nhập thành công, mở màn hình quản lý trại giam
                 mainView = new MainView();
                 MainController mainController = new MainController(mainView);
                 mainController.showMainView();
