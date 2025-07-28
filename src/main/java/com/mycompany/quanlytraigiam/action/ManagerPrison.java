@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ManagerPrison {
-    private static final String PRISON_FILE_NAME = "Prisons.xml";
+    private static final String PRISON_FILE_NAME = "./Prisons.xml";
     private List<Prison> prisonList;
 
     public ManagerPrison() {
@@ -35,6 +35,18 @@ public class ManagerPrison {
     }
 
     public void addPrison(Prison prison) {
+        int maxId = 0;
+        for (Prison p : prisonList) {
+            try {
+                int currentId = Integer.parseInt(p.getId());
+                if (currentId > maxId) {
+                    maxId = currentId;
+                }
+            } catch (NumberFormatException e) {
+                // Bỏ qua nếu id không phải số
+            }
+        }
+        prison.setId(String.valueOf(maxId + 1));
         prisonList.add(prison);
         writePrisonList();
     }
@@ -53,6 +65,16 @@ public class ManagerPrison {
         boolean result = prisonList.removeIf(prison -> prison.getId().equals(id));
         if (result) {
             writePrisonList();
+        }
+        return result;
+    }
+
+    public List<Prison> searchById(String id) {
+        List<Prison> result = new ArrayList<>();
+        for (Prison prison : getListPrisons()) {
+            if (prison.getMaTraiGiam().toLowerCase().contains(id.toLowerCase())) {
+                result.add(prison);
+            }
         }
         return result;
     }
@@ -88,21 +110,39 @@ public class ManagerPrison {
     }
 
     public void sortByName() {
-        Collections.sort(prisonList, Comparator.comparing(Prison::getTenTraiGiam));
+        Collections.sort(prisonList,
+                Comparator.comparing(Prison::getTenTraiGiam, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
+        writePrisonList();
     }
 
     public void sortByCapacity() {
-        Collections.sort(prisonList, Comparator.comparingInt(p ->(p.getSucChuaToiDa())));
+        Collections.sort(prisonList, (p1, p2) -> {
+            int cap1 = p1.getSucChuaToiDa() != null ? p1.getSucChuaToiDa() : 0;
+            int cap2 = p2.getSucChuaToiDa() != null ? p2.getSucChuaToiDa() : 0;
+            return Integer.compare(cap2, cap1); // Đổi cap1, cap2 để sắp xếp giảm dần
+        });
+        writePrisonList();
     }
 
-    public void sortByCurrentPrisoners() {
-        Collections.sort(prisonList, Comparator.comparingInt(p ->(p.getSoLuongPhamNhanHienTai())));
+    public void sortByWarden() {
+        Collections.sort(prisonList,
+                Comparator.comparing(Prison::getQuanLiTruong, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)));
+        writePrisonList();
+    }
+
+    private void printPrisonList() {
+        for (Prison prison : prisonList) {
+            System.out.println("ID: " + prison.getId() +
+                    ", Tên: " + prison.getTenTraiGiam() +
+                    ", Sức chứa: " + prison.getSucChuaToiDa() +
+                    ", Quản lý: " + prison.getQuanLiTruong());
+        }
     }
 
     public List<Prison> getListPrisons() {
         return prisonList;
     }
-    
+
     public Prison getPrisonById(String id) {
         for (Prison prison : prisonList) {
             if (prison.getId().equals(id)) {

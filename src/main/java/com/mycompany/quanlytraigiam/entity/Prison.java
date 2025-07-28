@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.quanlytraigiam.entity;
 
 import java.text.SimpleDateFormat;
@@ -14,7 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  *
  * @author PC
  */
-
 @XmlRootElement(name = "Prison")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Prison {
@@ -24,25 +19,30 @@ public class Prison {
     private String diaChi;
     private String soDienThoai;
     private String email;
-    private int sucChuaToiDa;
-    private int soLuongPhamNhanHienTai;
+    private Integer sucChuaToiDa;
+    private Integer soLuongPhamNhanHienTai;
     private Date ngayThanhLap;
     private String quanLiTruong;
-    
-    public Prison() {}
-    public Prison(String id, String maTraiGiam, String tenTraiGiam, String diaChi, String soDienThoai, String email, String sucChuaToiDa, String soLuongPhamNhanHienTai, Date ngayThanhLap, String quanLiTruong) {
+
+    public Prison() {
+    }
+
+    public Prison(String id, String maTraiGiam, String tenTraiGiam, String diaChi, String soDienThoai, String email,
+            Integer sucChuaToiDa, Integer soLuongPhamNhanHienTai, Date ngayThanhLap, String quanLiTruong) {
         this.id = id;
         this.maTraiGiam = maTraiGiam;
         this.tenTraiGiam = tenTraiGiam;
         this.diaChi = diaChi;
         this.soDienThoai = soDienThoai;
         this.email = email;
-        this.sucChuaToiDa = Integer.parseInt(sucChuaToiDa);
-        this.soLuongPhamNhanHienTai = Integer.parseInt(soLuongPhamNhanHienTai);
+        this.sucChuaToiDa = sucChuaToiDa;
+        this.soLuongPhamNhanHienTai = soLuongPhamNhanHienTai;
         this.ngayThanhLap = ngayThanhLap;
         this.quanLiTruong = quanLiTruong;
+        setSoDienThoai(soDienThoai); // Sử dụng setter để kiểm tra định dạng
+        setEmail(email); // Sử dụng setter để kiểm tra định dạng
     }
-    
+
     public String getId() {
         return id;
     }
@@ -56,7 +56,10 @@ public class Prison {
     }
 
     public void setMaTraiGiam(String maTraiGiam) {
-        this.maTraiGiam = maTraiGiam;
+        if (maTraiGiam == null || maTraiGiam.trim().isEmpty()) {
+            throw new IllegalArgumentException("Mã trại giam không được trống");
+        }
+        this.maTraiGiam = maTraiGiam.trim();
     }
 
     public String getTenTraiGiam() {
@@ -64,7 +67,10 @@ public class Prison {
     }
 
     public void setTenTraiGiam(String tenTraiGiam) {
-        this.tenTraiGiam = tenTraiGiam;
+        if (tenTraiGiam == null || tenTraiGiam.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tên trại giam không được trống");
+        }
+        this.tenTraiGiam = tenTraiGiam.trim();
     }
 
     public String getDiaChi() {
@@ -72,7 +78,10 @@ public class Prison {
     }
 
     public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
+        if (diaChi == null || diaChi.trim().isEmpty()) {
+            throw new IllegalArgumentException("Địa chỉ không được trống");
+        }
+        this.diaChi = diaChi.trim();
     }
 
     public String getSoDienThoai() {
@@ -81,7 +90,7 @@ public class Prison {
 
     public void setSoDienThoai(String soDienThoai) {
         if (soDienThoai == null || !soDienThoai.matches("^[0-9]{10,15}$")) {
-        throw new IllegalArgumentException("Số điện thoại không hợp lệ");
+            throw new IllegalArgumentException("Số điện thoại không hợp lệ, phải là 10-15 chữ số");
         }
         this.soDienThoai = soDienThoai;
     }
@@ -97,28 +106,26 @@ public class Prison {
         this.email = email;
     }
 
-    public int getSucChuaToiDa() {
+    public Integer getSucChuaToiDa() {
         return sucChuaToiDa;
     }
 
-    public void setSucChuaToiDa(String sucChuaToiDa) {
-            try {
-            this.sucChuaToiDa = Integer.parseInt(sucChuaToiDa);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Sức chứa tối đa phải là số nguyên", e);
+    public void setSucChuaToiDa(Integer sucChuaToiDa) {
+        if (sucChuaToiDa < 0) {
+            throw new IllegalArgumentException("Sức chứa tối đa phải là số nguyên không âm");
         }
+        this.sucChuaToiDa = sucChuaToiDa;
     }
 
-    public int getSoLuongPhamNhanHienTai() {
+    public Integer getSoLuongPhamNhanHienTai() {
         return soLuongPhamNhanHienTai;
     }
 
-    public void setSoLuongPhamNhanHienTai(String soLuongPhamNhanHienTai) {
-        try {
-            this.soLuongPhamNhanHienTai = Integer.parseInt(soLuongPhamNhanHienTai);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Số lượng phạm nhân hiện tại phải là số nguyên", e);
+    public void setSoLuongPhamNhanHienTai(Integer soLuongPhamNhanHienTai) {
+        if (soLuongPhamNhanHienTai < 0) {
+            throw new IllegalArgumentException("Số lượng phạm nhân hiện tại phải là số nguyên không âm");
         }
+        this.soLuongPhamNhanHienTai = soLuongPhamNhanHienTai;
     }
 
     public Date getNgayThanhLap() {
@@ -134,16 +141,23 @@ public class Prison {
     }
 
     public void setQuanLiTruong(String quanLiTruong) {
-        this.quanLiTruong = quanLiTruong;
+        if (quanLiTruong == null || quanLiTruong.trim().isEmpty()) {
+            throw new IllegalArgumentException("Quản lý trưởng không được trống");
+        }
+        this.quanLiTruong = quanLiTruong.trim();
     }
+
     @Override
     public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String ngayThanhLapStr = (ngayThanhLap != null) ? dateFormat.format(ngayThanhLap) : "N/A";
         return "Prison{" +
                 "id='" + id + '\'' +
                 ", tenTraiGiam='" + tenTraiGiam + '\'' +
                 ", sucChuaToiDa=" + sucChuaToiDa +
                 ", soLuongPhamNhanHienTai=" + soLuongPhamNhanHienTai +
+                ", ngayThanhLap=" + ngayThanhLapStr +
+                ", quanLiTruong='" + quanLiTruong + '\'' +
                 '}';
     }
 }
-

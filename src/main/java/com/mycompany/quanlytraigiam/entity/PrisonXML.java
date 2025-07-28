@@ -11,15 +11,18 @@ package com.mycompany.quanlytraigiam.entity;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author PC
  */
-@XmlRootElement(name = "Prison")
+// sửa lại cấu trúc XML
+@XmlRootElement(name = "Prisons")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class PrisonXML {
+    @XmlElement(name = "Prison")
     private List<Prison> prisons;
 
     public List<Prison> getPrisons() {

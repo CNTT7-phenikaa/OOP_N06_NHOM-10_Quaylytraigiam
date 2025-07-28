@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Prisons>
+    <Prison>
+        <id>2</id>
+        <maTraiGiam>MTG02</maTraiGiam>
+        <tenTraiGiam>Trại giam A</tenTraiGiam>
+        <diaChi>Hồ Chí Minh1</diaChi>
+        <soDienThoai>0978123456</soDienThoai>
+        <email>xyz@gmail.com</email>
+        <sucChuaToiDa>450</sucChuaToiDa>
+        <soLuongPhamNhanHienTai>180</soLuongPhamNhanHienTai>
+        <ngayThanhLap>2020-03-15T07:00:00+07:00</ngayThanhLap>
+        <quanLiTruong>Nguyễn Văn B</quanLiTruong>
+    </Prison>
+    <Prison>
+        <id>4</id>
+        <maTraiGiam>MTG04</maTraiGiam>
+        <tenTraiGiam>Trại giam B</tenTraiGiam>
+        <diaChi>Gia Lai</diaChi>
+        <soDienThoai>0356153002</soDienThoai>
+        <email>test@gmail.com</email>
+        <sucChuaToiDa>500</sucChuaToiDa>
+        <soLuongPhamNhanHienTai>300</soLuongPhamNhanHienTai>
+        <ngayThanhLap>2025-07-17T16:30:05.387+07:00</ngayThanhLap>
+        <quanLiTruong>Trần Văn C</quanLiTruong>
+    </Prison>
+    <Prison>
+        <id>5</id>
+        <maTraiGiam>MTG01</maTraiGiam>
+        <tenTraiGiam>Trại giam C</tenTraiGiam>
+        <diaChi>Quận 12, HCM</diaChi>
+        <soDienThoai>0356153002</soDienThoai>
+        <email>henry@digityze.asia</email>
+        <sucChuaToiDa>300</sucChuaToiDa>
+        <soLuongPhamNhanHienTai>200</soLuongPhamNhanHienTai>
+        <ngayThanhLap>2025-07-23T20:15:39.834+07:00</ngayThanhLap>
+        <quanLiTruong>Vũ Văn D</quanLiTruong>
+    </Prison>
+    <Prison>
+        <id>6</id>
+        <maTraiGiam>MGT03</maTraiGiam>
+        <tenTraiGiam>Trại giam D</tenTraiGiam>
+        <diaChi>Quốc Oai, Hà Nội</diaChi>
+        <soDienThoai>0655362548</soDienThoai>
+        <email>abc@gmail.com</email>
+        <sucChuaToiDa>500</sucChuaToiDa>
+        <soLuongPhamNhanHienTai>350</soLuongPhamNhanHienTai>
+        <ngayThanhLap>1983-08-05T00:00:00+07:00</ngayThanhLap>
+        <quanLiTruong>Phạm Văn A</quanLiTruong>
+    </Prison>
+</Prisons>

@@ -1,19 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.quanlytraigiam.controller;
 
 import com.mycompany.quanlytraigiam.action.ManagerPrison;
@@ -34,11 +18,11 @@ public class PrisonController {
     private PrisonView prisonView;
     private MainView mainView;
     private ManagerPrison managerPrison;
-    
+
     public PrisonController(PrisonView view) {
         this.prisonView = view;
         this.managerPrison = new ManagerPrison();
-        
+
         view.addUndoListener(new UndoListener());
         view.addAddPrisonListener(new AddPrisonListener());
         view.addListPrisonSelectionListener(new ListPrisonSelectionListener());
@@ -50,15 +34,16 @@ public class PrisonController {
         view.addSearchDialogListener(new SearchPrisonDialogListener());
         view.addCancelSearchPrisonListener(new CancelSearchPrisonListener());
         view.addCancelDialogListener(new CancelDialogListener());
+        view.addBackListener(new BackListener());
     }
-    
+
     public void showPrisonView() {
         List<Prison> prisonList = managerPrison.getListPrisons();
         prisonView.setVisible(true);
         prisonView.showListPrisons(prisonList);
         prisonView.showTotalPrisons(prisonList.size());
     }
-    
+
     class UndoListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             mainView = new MainView();
@@ -67,7 +52,7 @@ public class PrisonController {
             prisonView.setVisible(false);
         }
     }
-    
+
     class AddPrisonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             Prison prison = prisonView.getPrisonInfo();
@@ -80,7 +65,7 @@ public class PrisonController {
             }
         }
     }
-    
+
     class EditPrisonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             Prison prison = prisonView.getPrisonInfo();
@@ -93,7 +78,7 @@ public class PrisonController {
             }
         }
     }
-    
+
     class DeletePrisonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             Prison prison = prisonView.getPrisonInfo();
@@ -110,7 +95,7 @@ public class PrisonController {
             }
         }
     }
-    
+
     class ListPrisonSelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             List<Prison> prisonList = managerPrison.getListPrisons();
@@ -121,16 +106,17 @@ public class PrisonController {
             }
         }
     }
-    
+
     class ClearPrisonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             prisonView.clearPrisonInfo();
         }
     }
-    
+
     class SortPrisonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             int sortOption = prisonView.getSelectedSortOption();
+
             switch (sortOption) {
                 case 1: // Sắp xếp theo tên
                     managerPrison.sortByName();
@@ -138,62 +124,87 @@ public class PrisonController {
                 case 2: // Sắp xếp theo sức chứa
                     managerPrison.sortByCapacity();
                     break;
-                case 3: // Sắp xếp theo số lượng phạm nhân hiện tại
-                    managerPrison.sortByCurrentPrisoners();
+                case 3: // Sắp xếp theo tên quản lý
+                    managerPrison.sortByWarden();
                     break;
                 default:
                     prisonView.showMessage("Vui lòng chọn tiêu chí sắp xếp");
                     return;
             }
-            prisonView.showListPrisons(managerPrison.getListPrisons());
+
+            // Hiển thị danh sách sau khi sắp xếp
+            List<Prison> sortedList = managerPrison.getListPrisons();
+            prisonView.showListPrisons(sortedList);
         }
     }
-    
+
     class SearchPrisonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             prisonView.showSearchDialog();
         }
     }
-    
+
     class SearchPrisonDialogListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             int searchOption = prisonView.getSelectedSearchOption();
             String keyword = prisonView.getSearchKeyword();
+            System.out.println("Nút Tìm kiếm được nhấn vào lúc: " + searchOption);
+            if (keyword == null || keyword.trim().isEmpty()) {
+                prisonView.showMessage("Vui lòng nhập từ khóa tìm kiếm!");
+                return;
+            }
+
             List<Prison> result = new ArrayList<>();
-            
+
             switch (searchOption) {
-                case 1: // Tìm theo tên trại
+                case 1: // Tìm theo mã trại giam
+                    result = managerPrison.searchById(keyword);
+                    break;
+                case 2: // Tìm theo tên trại giam
                     result = managerPrison.searchByName(keyword);
                     break;
-                case 2: // Tìm theo địa chỉ
+                case 3: // Tìm theo địa chỉ
                     result = managerPrison.searchByAddress(keyword);
                     break;
-                case 3: // Tìm theo quản lý trưởng
+                case 4: // Tìm theo quản lý trưởng
                     result = managerPrison.searchByWarden(keyword);
                     break;
                 default:
-                    prisonView.showMessage("Vui lòng chọn tiêu chí tìm kiếm");
+                    prisonView.showMessage("Vui lòng chọn tiêu chí tìm kiếm!");
                     return;
             }
-            
+
+            // Hiển thị kết quả
             if (!result.isEmpty()) {
                 prisonView.showListPrisons(result);
+                prisonView.showMessage("Tìm thấy " + result.size() + " kết quả!");
             } else {
-                prisonView.showMessage("Không tìm thấy kết quả phù hợp");
+                prisonView.showMessage("Không tìm thấy kết quả phù hợp!");
             }
         }
     }
-    
+
     class CancelSearchPrisonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             prisonView.showListPrisons(managerPrison.getListPrisons());
             prisonView.cancelSearch();
         }
     }
-    
+
     class CancelDialogListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            prisonView.closeSearchDialog();
+            prisonView.closeSearchDialog(); // Đóng dialog
+            prisonView.cancelSearch(); // Hủy tìm kiếm (nếu có)
+            prisonView.showListPrisons(managerPrison.getListPrisons()); // Hiển thị lại danh sách ban đầu
+        }
+    }
+
+    class BackListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            mainView = new MainView();
+            MainController mainController = new MainController(mainView);
+            mainController.showMainView();
+            prisonView.setVisible(false);
         }
     }
 }
