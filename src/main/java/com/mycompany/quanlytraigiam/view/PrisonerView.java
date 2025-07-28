@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package com.mycompany.quanlytraigiam.view;
+import com.mycompany.quanlytraigiam.entity.PrisonXML;
 import com.mycompany.quanlytraigiam.entity.Prisoner;
 import com.raven.chart.Chart;
 import com.raven.chart.ModelChart;
@@ -66,20 +67,29 @@ public class PrisonerView extends javax.swing.JFrame {
         //jLabel14.setLablFor(new CircleLabel());      
         OpeningDateChooser.setBackground(new Color(0, 204, 255));
         chart1.addLegend("Số lượng", new Color(0, 178, 238));
-        
-        // Ẩn spinner và label ngay từ đầu nếu cần
-        spnSentenceYears.setVisible(true); // hoặc false, tùy chọn mặc định
+        loadPrisonNamesToComboBox(); // Nạp dữ liệu trại giam vào ComboBox
+        // Thiết lập hiển thị ban đầu (có thể điều chỉnh tùy mặc định)
+        spnSentenceYears.setVisible(true); 
         lblYears.setVisible(true);
+        spnSentenceYears.setEnabled(false); // Mặc định không cho nhập
+        lblYears.setEnabled(false);
 
         // Xử lý thay đổi lựa chọn án
         cboSentenceType.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String selected = cboSentenceType.getSelectedItem().toString();
                 boolean isLimited = selected.equals("Tù có thời hạn");
+
+                // Hiển thị hoặc ẩn thành phần
                 spnSentenceYears.setVisible(isLimited);
                 lblYears.setVisible(isLimited);
+
+                // Cho phép hoặc không cho nhập liệu
+                spnSentenceYears.setEnabled(isLimited);
+                lblYears.setEnabled(isLimited);
             }
         });
+
     }
   
     //Xử lý phần ảnh 
@@ -292,7 +302,7 @@ public class PrisonerView extends javax.swing.JFrame {
         CheckBoxName.setBounds(20, 230, 85, 20);
         CheckBoxName.setOpaque(false);
 
-        jLabel11.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/search.png"));
+        jLabel11.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/search.png"));
         jPanel3.add(jLabel11);
         jLabel11.setBounds(30, 130, 30, 30);
 
@@ -341,7 +351,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnSearchDialog.setBorder(new RoundedBorder(20));
         btnSearchDialog.setOpaque(false);
 
-        jLabel15.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/viewSearchView.png"));
+        jLabel15.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/viewSearchView.png"));
         jLabel15.setText("=");
         jPanel3.add(jLabel15);
         jLabel15.setBounds(0, 0, 450, 360);
@@ -394,7 +404,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnStatisticAge.setBackground(new java.awt.Color(0, 0, 102));
         btnStatisticAge.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnStatisticAge.setForeground(new java.awt.Color(255, 255, 255));
-        btnStatisticAge.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/Calendar.png"));
+        btnStatisticAge.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/Calendar.png"));
         btnStatisticAge.setText("Tuổi");
         btnStatisticAge.setBorder(null);
         btnStatisticAge.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -407,7 +417,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnStatisticUnder.setBackground(new java.awt.Color(0, 0, 102));
         btnStatisticUnder.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnStatisticUnder.setForeground(new java.awt.Color(255, 255, 255));
-        btnStatisticUnder.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/Undo.png"));
+        btnStatisticUnder.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/Undo.png"));
         btnStatisticUnder.setText("Quay lại");
         btnStatisticUnder.setBorder(null);
         btnStatisticUnder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -420,7 +430,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnStatisticType.setBackground(new java.awt.Color(0, 0, 102));
         btnStatisticType.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnStatisticType.setForeground(new java.awt.Color(255, 255, 255));
-        btnStatisticType.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/People.png"));
+        btnStatisticType.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/People.png"));
         btnStatisticType.setText("Loại đối tượng");
         btnStatisticType.setBorder(null);
         btnStatisticType.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -493,7 +503,7 @@ public class PrisonerView extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Quản lý các đối tượng đặc biệt trong khu vực");
+        setTitle("Quản lý phạm nhân");
         setName("ManagerFrame"); // NOI18N
         setResizable(false);
 
@@ -505,7 +515,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnAdd.setBackground(new java.awt.Color(39, 97, 143));
         btnAdd.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnAdd.setForeground(new java.awt.Color(255, 255, 255));
-        btnAdd.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/add.png"));
+        btnAdd.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/add.png"));
         btnAdd.setText("Thêm");
         btnAdd.setBorder(null);
         btnAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -518,7 +528,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnCancelSearch.setBackground(new java.awt.Color(39, 97, 143));
         btnCancelSearch.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnCancelSearch.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancelSearch.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/cancel.png"));
+        btnCancelSearch.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/cancel.png"));
         btnCancelSearch.setText("Hủy tìm kiếm");
         btnCancelSearch.setEnabled(false);
         btnCancelSearch.setToolTipText("");
@@ -533,7 +543,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnManagerUndo.setBackground(new java.awt.Color(39, 97, 143));
         btnManagerUndo.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnManagerUndo.setForeground(new java.awt.Color(255, 255, 255));
-        btnManagerUndo.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/LogOut.png"));
+        btnManagerUndo.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/LogOut.png"));
         btnManagerUndo.setText("Quay lại");
         btnManagerUndo.setToolTipText("");
         btnManagerUndo.setBorder(null);
@@ -547,7 +557,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnDelete.setBackground(new java.awt.Color(39, 97, 143));
         btnDelete.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnDelete.setForeground(new java.awt.Color(255, 255, 255));
-        btnDelete.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/delete.png"));
+        btnDelete.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/delete.png"));
         btnDelete.setText("Xóa");
         btnDelete.setBorder(null);
         btnDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -560,7 +570,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnClear.setBackground(new java.awt.Color(39, 97, 143));
         btnClear.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnClear.setForeground(new java.awt.Color(255, 255, 255));
-        btnClear.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/trash.png"));
+        btnClear.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/trash.png"));
         btnClear.setText("Làm mới");
         btnClear.setToolTipText("");
         btnClear.setBorder(null);
@@ -574,7 +584,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnSearch.setBackground(new java.awt.Color(39, 97, 143));
         btnSearch.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
-        btnSearch.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/search.png"));
+        btnSearch.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/search.png"));
         btnSearch.setText("Tìm kiếm");
         btnSearch.setBorder(null);
         btnSearch.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -588,7 +598,7 @@ public class PrisonerView extends javax.swing.JFrame {
         btnEdit.setBackground(new java.awt.Color(39, 97, 143));
         btnEdit.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         btnEdit.setForeground(new java.awt.Color(255, 255, 255));
-        btnEdit.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/Edit.png"));
+        btnEdit.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/Edit.png"));
         btnEdit.setText("Sửa");
         btnEdit.setBorder(null);
         btnEdit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -758,7 +768,7 @@ public class PrisonerView extends javax.swing.JFrame {
 
     btnImage.setBackground(new java.awt.Color(255, 255, 255, 0));
     btnImage.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-    btnImage.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/green pin.png"));
+    btnImage.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/green pin.png"));
     btnImage.setText("<html>Thêm ảnh<br> ");
     btnImage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
     btnImage.addActionListener(new java.awt.event.ActionListener() {
@@ -951,7 +961,7 @@ public class PrisonerView extends javax.swing.JFrame {
     jPanel1.add(cboPrison);
     cboPrison.setBounds(820, 260, 190, 40);
 
-    jLabel9.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlydoituongdacbiet/view/Lovepik_com-500330964-blue-blazed-background.jpg"));
+    jLabel9.setIcon(new ImageIcon("src/main/java/com/mycompany/quanlytraigiam/view/Lovepik_com-500330964-blue-blazed-background.jpg"));
     jLabel9.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
     jPanel1.add(jLabel9);
     jLabel9.setBounds(-60, 0, 1640, 890);
@@ -1165,7 +1175,15 @@ public class PrisonerView extends javax.swing.JFrame {
             showMessage(e.toString());
         }
     }
-    
+    //Lấy dữ liệu tên trại giam đẩy vào comboBox chọn trại giam
+    private void loadPrisonNamesToComboBox() {
+    List<String> prisonNames = PrisonXML.getAllPrisonNames();
+    cboPrison.removeAllItems(); // Xóa dữ liệu cũ nếu có
+    for (String name : prisonNames) {
+        cboPrison.addItem(name); // Thêm từng tên trại giam vào ComboBox
+    }
+}
+
     /**
      * hiển thị list prisoner vào bảng tablePrisoner
      * 
