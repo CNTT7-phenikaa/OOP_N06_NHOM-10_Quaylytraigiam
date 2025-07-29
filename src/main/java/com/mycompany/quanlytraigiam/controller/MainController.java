@@ -10,6 +10,7 @@ import com.mycompany.quanlytraigiam.view.LoginView;
 import com.mycompany.quanlytraigiam.view.MainView;
 import com.mycompany.quanlytraigiam.view.PrisonerView;
 import com.mycompany.quanlytraigiam.view.PrisonView;
+import com.mycompany.quanlytraigiam.view.VisitView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -23,6 +24,7 @@ public class MainController
     private LoginView loginView;
     private PrisonerView managerView;
     private PrisonView prisonView;
+    private VisitView visitView;
     private MainView mainView;
     
     public MainController(MainView view)
@@ -30,6 +32,7 @@ public class MainController
         this.mainView = view;
         view.addChoosePrisonerListener(new ChoosePrisonerListener());
         view.addChoosePrisonListener(new ChoosePrisonListener());
+        view.addChooseVisitListener(new ChooseVisitListener());
     }
     public void showMainView() 
     {
@@ -53,6 +56,17 @@ public class MainController
             prisonView = new PrisonView();
             PrisonController prisonController = new PrisonController(prisonView);
             prisonController.showPrisonView();
+            mainView.setVisible(false);
+        }
+    }
+    
+    class ChooseVisitListener implements ActionListener 
+    {
+        public void actionPerformed(ActionEvent e) 
+        {
+            visitView = new VisitView();
+            VisitController visitController = new VisitController(visitView);
+            visitController.showVisitView();
             mainView.setVisible(false);
         }
     }

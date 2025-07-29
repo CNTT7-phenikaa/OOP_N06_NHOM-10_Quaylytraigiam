@@ -7,11 +7,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
-@XmlRootElement(name = "visits") 
+@XmlRootElement(name = "Visits") 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class VisitsXML {
 
-    @XmlElement(name = "visit") // Tên của mỗi phần tử trong danh sách
+//    @XmlElement(name = "visit") // Tên của mỗi phần tử trong danh sách
 
     private List<Visit> visits;
 

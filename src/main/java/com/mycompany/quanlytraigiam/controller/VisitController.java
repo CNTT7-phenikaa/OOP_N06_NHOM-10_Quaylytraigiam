@@ -282,7 +282,7 @@ public class VisitController {
 
     // Listener khi chọn một hàng trong bảng
 
-    class ListVisitSelectionListener implements ListSelectionListener {
+    public class ListVisitSelectionListener implements ListSelectionListener {
 
         @Override
 

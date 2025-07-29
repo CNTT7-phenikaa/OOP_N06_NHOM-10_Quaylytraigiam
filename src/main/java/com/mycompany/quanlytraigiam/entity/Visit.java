@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
  *
  * @author Admin
  */
-@XmlRootElement(name = "visit") // Tên của thẻ XML đại diện cho một Visit
+@XmlRootElement(name = "Visit") // Tên của thẻ XML đại diện cho một Visit
 
 @XmlAccessorType(XmlAccessType.FIELD) // Truy cập trực tiếp các trường (field)
 

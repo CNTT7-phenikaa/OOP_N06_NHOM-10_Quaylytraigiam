@@ -531,8 +531,8 @@ public class VisitView extends JFrame {
 
     // ... thêm các getter khác nếu bạn muốn dùng chúng cho chức năng tìm kiếm phức tạp hơn
 
-    public void addListSelectionListener(VisitController.ListVisitSelectionListener listVisitSelectionListener) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void addListSelectionListener(ListSelectionListener listener) {
+        visitTable.getSelectionModel().addListSelectionListener(listener);
     }
 
     public Object getSelectedInmateId() {

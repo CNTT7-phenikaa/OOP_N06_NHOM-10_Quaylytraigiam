@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Visits>
+    <visits>
+        <inmateId>1</inmateId>
+        <prisonerName>Nguyễn Hạnh Dung</prisonerName>
+        <visitorName>Nguyễn Văn A</visitorName>
+        <relationship>anh trai</relationship>
+        <visitDate>29/07/2025</visitDate>
+        <visitTime>15h30</visitTime>
+        <notes></notes>
+    </visits>
+</Visits>
