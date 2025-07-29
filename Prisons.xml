@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Prisons>
     <Prison>
-        <id>2</id>
-        <maTraiGiam>MTG02</maTraiGiam>
-        <tenTraiGiam>Trại giam Thanh Xuân</tenTraiGiam>
-        <diaChi>xã Mỹ Hưng, huyện Thanh Oai</diaChi>
-        <soDienThoai>0978123456</soDienThoai>
-        <email>xyz@gmail.com</email>
-        <sucChuaToiDa>450</sucChuaToiDa>
-        <soLuongPhamNhanHienTai>180</soLuongPhamNhanHienTai>
-        <ngayThanhLap>2020-03-15T07:00:00+07:00</ngayThanhLap>
-        <quanLiTruong>Nguyễn Văn B</quanLiTruong>
+        <id>7</id>
+        <maTraiGiam>MTG05</maTraiGiam>
+        <tenTraiGiam>Trại giam Hòa Sơn</tenTraiGiam>
+        <diaChi>Đường số 5, xã Hòa Liên, huyện Hòa Vang, Đà Nẵng</diaChi>
+        <soDienThoai>0987654321</soDienThoai>
+        <email>traigiamxuannguyen@gmail.com</email>
+        <sucChuaToiDa>1000</sucChuaToiDa>
+        <soLuongPhamNhanHienTai>585</soLuongPhamNhanHienTai>
+        <ngayThanhLap>1986-02-11T00:59:11.724+07:00</ngayThanhLap>
+        <quanLiTruong>Trần Văn Binh</quanLiTruong>
     </Prison>
     <Prison>
         <id>4</id>
@@ -25,18 +25,6 @@
         <quanLiTruong>Trần Văn C</quanLiTruong>
     </Prison>
     <Prison>
-        <id>5</id>
-        <maTraiGiam>MTG01</maTraiGiam>
-        <tenTraiGiam>Trại giam Suối Hai</tenTraiGiam>
-        <diaChi>huyện Ba Vì, Hà Nội</diaChi>
-        <soDienThoai>0356153002</soDienThoai>
-        <email>henry@digityze.asia</email>
-        <sucChuaToiDa>300</sucChuaToiDa>
-        <soLuongPhamNhanHienTai>200</soLuongPhamNhanHienTai>
-        <ngayThanhLap>2025-07-23T20:15:39.834+07:00</ngayThanhLap>
-        <quanLiTruong>Vũ Văn D</quanLiTruong>
-    </Prison>
-    <Prison>
         <id>6</id>
         <maTraiGiam>MGT03</maTraiGiam>
         <tenTraiGiam>Trại giam Xuân Nguyên</tenTraiGiam>
@@ -49,15 +37,27 @@
         <quanLiTruong>Phạm Văn A</quanLiTruong>
     </Prison>
     <Prison>
-        <id>7</id>
-        <maTraiGiam>MTG05</maTraiGiam>
-        <tenTraiGiam>Trại giam Hòa Sơn</tenTraiGiam>
-        <diaChi>Đường số 5, xã Hòa Liên, huyện Hòa Vang, Đà Nẵng</diaChi>
-        <soDienThoai>0987654321</soDienThoai>
-        <email>traigiamxuannguyen@gmail.com</email>
-        <sucChuaToiDa>1000</sucChuaToiDa>
-        <soLuongPhamNhanHienTai>585</soLuongPhamNhanHienTai>
-        <ngayThanhLap>1986-02-11T00:59:11.724+07:00</ngayThanhLap>
-        <quanLiTruong>Trần Văn Binh</quanLiTruong>
+        <id>2</id>
+        <maTraiGiam>MTG02</maTraiGiam>
+        <tenTraiGiam>Trại giam Thanh Xuân</tenTraiGiam>
+        <diaChi>xã Mỹ Hưng, huyện Thanh Oai</diaChi>
+        <soDienThoai>0978123456</soDienThoai>
+        <email>xyz@gmail.com</email>
+        <sucChuaToiDa>450</sucChuaToiDa>
+        <soLuongPhamNhanHienTai>180</soLuongPhamNhanHienTai>
+        <ngayThanhLap>2020-03-15T07:00:00+07:00</ngayThanhLap>
+        <quanLiTruong>Nguyễn Văn B</quanLiTruong>
+    </Prison>
+    <Prison>
+        <id>5</id>
+        <maTraiGiam>MTG01</maTraiGiam>
+        <tenTraiGiam>Trại giam Suối Hai</tenTraiGiam>
+        <diaChi>huyện Ba Vì, Hà Nội</diaChi>
+        <soDienThoai>0356153002</soDienThoai>
+        <email>henry@digityze.asia</email>
+        <sucChuaToiDa>300</sucChuaToiDa>
+        <soLuongPhamNhanHienTai>200</soLuongPhamNhanHienTai>
+        <ngayThanhLap>2025-07-23T20:15:39.834+07:00</ngayThanhLap>
+        <quanLiTruong>Vũ Văn D</quanLiTruong>
     </Prison>
 </Prisons>

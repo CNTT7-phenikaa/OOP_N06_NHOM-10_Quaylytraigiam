@@ -239,7 +239,7 @@ public class PrisonView extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // Code">                          
     private void initComponents() {
 
         btnGroupSex = new javax.swing.ButtonGroup();
@@ -410,8 +410,8 @@ public class PrisonView extends javax.swing.JFrame {
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Quản lý dân cư trong khu vực");
-        setName("Quản lý dân cư trong khu vực");
+        setTitle("Hệ Thống Quản Lý Trại giam");
+        setName("Hệ Thống Quản Lý Trại giam");
         setSize(new java.awt.Dimension(1276, 681));
 
         jPanel1.setLayout(null);
@@ -477,9 +477,6 @@ public class PrisonView extends javax.swing.JFrame {
         ImageIcon scaledIcon = new ImageIcon(scaledImage); // tạo icon mới từ ảnh đã resize
         jLabel14.setIcon(scaledIcon); // gán vào jLabel
         jLabel14.setOpaque(false);
-
-        jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 16));
-        jLabel12.setText("Tổng số hộ dân:");
 
         FieldSumFamily.setFont(new java.awt.Font("Times New Roman", 1, 16));
         FieldSumFamily.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -1483,10 +1480,6 @@ public class PrisonView extends javax.swing.JFrame {
 
     public void addBackListener(ActionListener listener) {
         btnBack.addActionListener(listener);
-    }
-
-    public void showTotalPrisons(int total) {
-        JOptionPane.showMessageDialog(this, "Tong so trai giam: " + total);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

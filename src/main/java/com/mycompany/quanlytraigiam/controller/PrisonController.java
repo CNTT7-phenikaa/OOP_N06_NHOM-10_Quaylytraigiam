@@ -41,7 +41,6 @@ public class PrisonController {
         List<Prison> prisonList = managerPrison.getListPrisons();
         prisonView.setVisible(true);
         prisonView.showListPrisons(prisonList);
-        prisonView.showTotalPrisons(prisonList.size());
     }
 
     class UndoListener implements ActionListener {
@@ -60,7 +59,6 @@ public class PrisonController {
                 managerPrison.addPrison(prison);
                 prisonView.showPrison(prison);
                 prisonView.showListPrisons(managerPrison.getListPrisons());
-                prisonView.showTotalPrisons(managerPrison.getListPrisons().size());
                 prisonView.showMessage("Thêm trại giam thành công!");
             }
         }
@@ -73,7 +71,6 @@ public class PrisonController {
                 managerPrison.updatePrison(prison);
                 prisonView.showPrison(prison);
                 prisonView.showListPrisons(managerPrison.getListPrisons());
-                prisonView.showTotalPrisons(managerPrison.getListPrisons().size());
                 prisonView.showMessage("Cập nhật trại giam thành công!");
             }
         }
@@ -87,7 +84,6 @@ public class PrisonController {
                 if (result) {
                     prisonView.clearPrisonInfo();
                     prisonView.showListPrisons(managerPrison.getListPrisons());
-                    prisonView.showTotalPrisons(managerPrison.getListPrisons().size());
                     prisonView.showMessage("Xóa trại giam thành công!");
                 } else {
                     prisonView.showMessage("Không tìm thấy trại giam để xóa!");
