@@ -3,83 +3,131 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package com.mycompany.quanlytraigiam.entity;
-
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElement; 
 /**
  *
  * @author Admin
  */
+@XmlRootElement(name = "visit") // Tên của thẻ XML đại diện cho một Visit
+
+@XmlAccessorType(XmlAccessType.FIELD) // Truy cập trực tiếp các trường (field)
+
 public class Visit {    
+
     private String inmateId;
+
     private String prisonerName;
+
     private String visitorName;
+
     private String relationship;
-    private String visitDate;
-    private String visitTime;
+
+    private String visitDate; // Format: dd/MM/yyyy
+
+    private String visitTime; // Format: HH:mm
+
     private String notes;
-    public Visit (String inmateID, String visitorName, String relationship, String visitDate, String visitTime, String notes )
+
+
+
+    public Visit () {
+
+        // Constructor mặc định cần thiết cho JAXB
+
+    }
+
+
+
+    public Visit (String inmateID, String prisonerName, String visitorName, String relationship, String visitDate, String visitTime, String notes )
+
     {
+
         this.inmateId = inmateID;
-        this.prisonerName  = prisonerName;
+
+        this.prisonerName = prisonerName;
+
         this.visitorName = visitorName;
+
         this.relationship = relationship;
+
         this.visitDate = visitDate;
+
         this.visitTime = visitTime;
+
         this.notes = notes;
+
     }
-    public String getInmateID(String inmateID)                     {return inmateID;}
-    public String getPrisonerName(String prisonerName)             {return prisonerName;}
-    public String getVisitorName(String visitorName)               {return visitorName;}
-    public String getLastPrisonerName()
-    {
-        String fullPrisonerName = this.getPrisonerName();
-        int lastSpaceIndex = fullPrisonerName.lastIndexOf(" ");
-        String lastPrisonerName = fullPrisonerName.substring(lastSpaceIndex + 1);
-        return lastPrisonerName;
-    }
-    public String getLastName()
-    {
-        String fullVisitorName = this.getVisitorName();
-        int lastSpaceIndex = fullVisitorName.lastIndexOf(" ");
-        String lastVisitorName = fullVisitorName.substring(lastSpaceIndex + 1);
-        return lastVisitorName;
-    }
-    public String getFirstPrisonerName()
-    {
-        return this.getPrisonerName().replace(this.getLastName(), "");
-    }
-    public String getFirstVisitorName()
-    {
-        return this.getVisitorName().replace(this.getLastName(), "");
-    }
-    public String getRelationship(String relationship)             {return relationship;}
-    public String getVisitDate(String visitDate)                   {return  visitDate;}
-    public String getVisitTime(String visitTime)                   {return visitTime;}
-    public String getNotes(String notes)                           {return notes;}
+
+
+
+    // Standard Getters (đảm bảo không có tham số)
+
+    public String getInmateId() { return inmateId; }
+
+    public String getPrisonerName() { return prisonerName; }
+
+    public String getVisitorName() { return visitorName; }
+
+    public String getRelationship() { return relationship; }
+
+    public String getVisitDate() { return visitDate; }
+
+    public String getVisitTime() { return visitTime; }
+
+    public String getNotes() { return notes; }
+
     
-    
-    public void setInmateID(String inmateID){ this.inmateId = inmateID;}
+
+    // Standard Setters
+
+    public void setInmateId(String inmateId){ this.inmateId = inmateId;}
+
     public void setPrisonerName(String prisonerName){this.prisonerName = prisonerName;}
+
     public void setVisitorName(String visitorName) {this.visitorName = visitorName;}
+
     public void setRelationship(String relationship){this.relationship = relationship;}
+
     public void setVisitDate(String visitDate) {this.visitDate = visitDate;}
+
     public void setVisitTime(String visitTime){this.visitTime = visitTime;}
+
     public void setNotes(String notes){this.notes = notes;}
 
-    private String getPrisonerName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
-    private String getVisitorName() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-@Override 
+
+    @Override 
+
     public String toString(){
-        return prisonerName + " " + visitorName + " " + relationship + " " + visitDate + " " + visitTime;
+
+        return "Visit{" +
+
+               "inmateId='" + inmateId + '\'' +
+
+               ", prisonerName='" + prisonerName + '\'' +
+
+               ", visitorName='" + visitorName + '\'' +
+
+               ", relationship='" + relationship + '\'' +
+
+               ", visitDate='" + visitDate + '\'' +
+
+               ", visitTime='" + visitTime + '\'' +
+
+               ", notes='" + notes + '\'' +
+
+               '}';
+
     }
+
+    public Object getInmateID() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
-
-
-    
 
    
 
