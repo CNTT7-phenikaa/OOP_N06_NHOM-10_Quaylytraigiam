@@ -82,6 +82,7 @@ public class PrisonView extends javax.swing.JFrame {
         });
         tablePrison.setModel(model);
         customizeTableAppearance();
+        showCountListPrisons(list);
     }
 
     private void customizeTableAppearance() {
