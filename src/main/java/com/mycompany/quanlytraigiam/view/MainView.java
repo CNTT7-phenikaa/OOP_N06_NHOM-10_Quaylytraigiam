@@ -5,6 +5,7 @@
 package com.mycompany.quanlytraigiam.view;
 import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 
 /**
@@ -12,7 +13,9 @@ import javax.swing.ImageIcon;
  * @author PC
  */
 public class MainView extends javax.swing.JFrame {
-
+    private JButton btnPrisonerManagement;
+    private JButton btnPrisonManagement;
+    private JButton btnVisitManagement;
     /**
      * Creates new form MainView
      */
@@ -21,7 +24,7 @@ public class MainView extends javax.swing.JFrame {
         initComponents();
 
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
