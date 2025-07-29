@@ -137,6 +137,7 @@ public class PrisonController {
             // Hiển thị danh sách sau khi sắp xếp
             List<Prison> sortedList = managerPrison.getListPrisons();
             prisonView.showListPrisons(sortedList);
+            prisonView.showTotalPrisons(sortedList.size());
         }
     }
 
@@ -179,8 +180,11 @@ public class PrisonController {
             // Hiển thị kết quả
             if (!result.isEmpty()) {
                 prisonView.showListPrisons(result);
+                prisonView.showTotalPrisons(result.size());
                 prisonView.showMessage("Tìm thấy " + result.size() + " kết quả!");
             } else {
+                prisonView.showListPrisons(result); 
+                prisonView.showTotalPrisons(0); 
                 prisonView.showMessage("Không tìm thấy kết quả phù hợp!");
             }
         }
@@ -199,6 +203,7 @@ public class PrisonController {
             prisonView.closeSearchDialog(); // Đóng dialog
             prisonView.cancelSearch(); // Hủy tìm kiếm (nếu có)
             prisonView.showListPrisons(managerPrison.getListPrisons()); // Hiển thị lại danh sách ban đầu
+            prisonView.showTotalPrisons(managerPrison.getListPrisons().size());
         }
     }
 

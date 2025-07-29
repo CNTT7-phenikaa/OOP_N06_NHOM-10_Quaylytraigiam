@@ -232,8 +232,8 @@ public class PrisonView extends javax.swing.JFrame {
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
     }
-    public void showTotalPrisons(int total) {
-        labelTotalPrisons.setText(String.valueOf(total));
+    public void showTotalPrisons(int count) {
+        labelTotalPrisons.setText("Tổng số trại giam: " + count);
     }
 
     /**
@@ -821,7 +821,7 @@ public class PrisonView extends javax.swing.JFrame {
 
         pack();
     }
-
+           
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
     }// GEN-LAST:event_btnAddActionPerformed
