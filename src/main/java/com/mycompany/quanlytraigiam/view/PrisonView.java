@@ -52,6 +52,7 @@ public class PrisonView extends javax.swing.JFrame {
     private javax.swing.JButton btnUndo;
     private javax.swing.JButton btnBack;
     private javax.swing.JTextField FieldSearchMain;
+    private javax.swing.JLabel labelTotalPrisons;
 
     public PrisonView() {
         initComponents(); //
@@ -230,6 +231,9 @@ public class PrisonView extends javax.swing.JFrame {
 
     public void showMessage(String message) {
         JOptionPane.showMessageDialog(this, message, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+    }
+    public void showTotalPrisons(int total) {
+        labelTotalPrisons.setText(String.valueOf(total));
     }
 
     /**
@@ -486,6 +490,9 @@ public class PrisonView extends javax.swing.JFrame {
 
         jLabel17.setFont(new java.awt.Font("Times New Roman", 1, 16));
         jLabel17.setText("Tổng số trại giam:");
+        
+        labelTotalPrisons = new javax.swing.JLabel();
+        labelTotalPrisons.setText("0");
 
         FieldSum.setFont(new java.awt.Font("Times New Roman", 1, 16));
         FieldSum.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 0, new java.awt.Color(0, 51, 102)));
