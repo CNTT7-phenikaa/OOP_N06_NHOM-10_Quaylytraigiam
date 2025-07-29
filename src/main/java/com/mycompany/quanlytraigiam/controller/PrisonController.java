@@ -1,8 +1,13 @@
+/*
+ * Lớp PrisonController đã được nâng cấp để:
+ * 1. Làm việc với MainView.
+ * 2. Sửa lại logic "Quay lại" để hiển thị đúng cửa sổ chính đã có.
+ */
 package com.mycompany.quanlytraigiam.controller;
 
 import com.mycompany.quanlytraigiam.action.ManagerPrison;
 import com.mycompany.quanlytraigiam.entity.Prison;
-import com.mycompany.quanlytraigiam.view.MainView;
+import com.mycompany.quanlytraigiam.view.MainView; // SỬA ĐỔI: Import MainView
 import com.mycompany.quanlytraigiam.view.PrisonView;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,25 +21,32 @@ import javax.swing.event.ListSelectionListener;
 
 public class PrisonController {
     private PrisonView prisonView;
-    private MainView mainView;
+    private MainView mainView; // SỬA ĐỔI: Sử dụng MainView
     private ManagerPrison managerPrison;
 
-    public PrisonController(PrisonView view) {
+    // SỬA ĐỔI: Hàm khởi tạo nhận vào cả PrisonView và MainView
+    public PrisonController(PrisonView view, MainView mainView) {
         this.prisonView = view;
+        this.mainView = mainView;
         this.managerPrison = new ManagerPrison();
 
-        view.addUndoListener(new UndoListener());
+        // Gắn tất cả các listener cần thiết
         view.addAddPrisonListener(new AddPrisonListener());
-        view.addListPrisonSelectionListener(new ListPrisonSelectionListener());
         view.addEditPrisonListener(new EditPrisonListener());
-        view.addClearListener(new ClearPrisonListener());
         view.addDeletePrisonListener(new DeletePrisonListener());
+        view.addClearListener(new ClearPrisonListener());
         view.addSortPrisonListener(new SortPrisonListener());
         view.addSearchListener(new SearchPrisonListener());
         view.addSearchDialogListener(new SearchPrisonDialogListener());
         view.addCancelSearchPrisonListener(new CancelSearchPrisonListener());
         view.addCancelDialogListener(new CancelDialogListener());
-        view.addBackListener(new BackListener());
+        
+        // Gắn listener cho cả hai nút quay lại
+        BackListener backListener = new BackListener();
+        view.addBackListener(backListener);
+        view.addUndoListener(backListener); // Hai nút cùng làm một chức năng
+        
+        view.addListPrisonSelectionListener(new ListPrisonSelectionListener());
     }
 
     public void showPrisonView() {
@@ -44,14 +56,15 @@ public class PrisonController {
         prisonView.showTotalPrisons(prisonList.size());
     }
 
-    class UndoListener implements ActionListener {
+    // SỬA ĐỔI: Logic quay lại màn hình chính
+    class BackListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            mainView = new MainView();
-            MainController mainController = new MainController(mainView);
-            mainController.showMainView();
-            prisonView.setVisible(false);
+            prisonView.dispose(); // Đóng cửa sổ hiện tại
+            mainView.setVisible(true); // Hiển thị lại cửa sổ chính đã có
         }
     }
+    
+    // Lưu ý: Lớp UndoListener đã bị xóa vì chức năng của nó giống hệt BackListener
 
     class AddPrisonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -100,11 +113,13 @@ public class PrisonController {
 
     class ListPrisonSelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
-            List<Prison> prisonList = managerPrison.getListPrisons();
-            try {
-                prisonView.fillPrisonFromSelectedRow(prisonList);
-            } catch (ParseException ex) {
-                Logger.getLogger(PrisonController.class.getName()).log(Level.SEVERE, null, ex);
+            if (!e.getValueIsAdjusting()) { // Chỉ xử lý khi việc chọn đã hoàn tất
+                List<Prison> prisonList = managerPrison.getListPrisons();
+                try {
+                    prisonView.fillPrisonFromSelectedRow(prisonList);
+                } catch (ParseException ex) {
+                    Logger.getLogger(PrisonController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
@@ -118,23 +133,15 @@ public class PrisonController {
     class SortPrisonListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             int sortOption = prisonView.getSelectedSortOption();
-
             switch (sortOption) {
-                case 1: // Sắp xếp theo tên
-                    managerPrison.sortByName();
-                    break;
-                case 2: // Sắp xếp theo sức chứa
-                    managerPrison.sortByCapacity();
-                    break;
-                case 3: // Sắp xếp theo tên quản lý
-                    managerPrison.sortByWarden();
-                    break;
-                default:
+                case 1 -> managerPrison.sortByName();
+                case 2 -> managerPrison.sortByCapacity();
+                case 3 -> managerPrison.sortByWarden();
+                default -> {
                     prisonView.showMessage("Vui lòng chọn tiêu chí sắp xếp");
                     return;
+                }
             }
-
-            // Hiển thị danh sách sau khi sắp xếp
             List<Prison> sortedList = managerPrison.getListPrisons();
             prisonView.showListPrisons(sortedList);
             prisonView.showTotalPrisons(sortedList.size());
@@ -151,41 +158,27 @@ public class PrisonController {
         public void actionPerformed(ActionEvent e) {
             int searchOption = prisonView.getSelectedSearchOption();
             String keyword = prisonView.getSearchKeyword();
-            System.out.println("Nút Tìm kiếm được nhấn vào lúc: " + searchOption);
             if (keyword == null || keyword.trim().isEmpty()) {
                 prisonView.showMessage("Vui lòng nhập từ khóa tìm kiếm!");
                 return;
             }
-
-            List<Prison> result = new ArrayList<>();
-
+            List<Prison> result;
             switch (searchOption) {
-                case 1: // Tìm theo mã trại giam
-                    result = managerPrison.searchById(keyword);
-                    break;
-                case 2: // Tìm theo tên trại giam
-                    result = managerPrison.searchByName(keyword);
-                    break;
-                case 3: // Tìm theo địa chỉ
-                    result = managerPrison.searchByAddress(keyword);
-                    break;
-                case 4: // Tìm theo quản lý trưởng
-                    result = managerPrison.searchByWarden(keyword);
-                    break;
-                default:
+                case 1 -> result = managerPrison.searchById(keyword);
+                case 2 -> result = managerPrison.searchByName(keyword);
+                case 3 -> result = managerPrison.searchByAddress(keyword);
+                case 4 -> result = managerPrison.searchByWarden(keyword);
+                default -> {
                     prisonView.showMessage("Vui lòng chọn tiêu chí tìm kiếm!");
                     return;
+                }
             }
-
-            // Hiển thị kết quả
-            if (!result.isEmpty()) {
-                prisonView.showListPrisons(result);
-                prisonView.showTotalPrisons(result.size());
-                prisonView.showMessage("Tìm thấy " + result.size() + " kết quả!");
-            } else {
-                prisonView.showListPrisons(result); 
-                prisonView.showTotalPrisons(0); 
+            prisonView.showListPrisons(result);
+            prisonView.showTotalPrisons(result.size());
+            if (result.isEmpty()) {
                 prisonView.showMessage("Không tìm thấy kết quả phù hợp!");
+            } else {
+                prisonView.showMessage("Tìm thấy " + result.size() + " kết quả!");
             }
         }
     }
@@ -200,19 +193,10 @@ public class PrisonController {
 
     class CancelDialogListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            prisonView.closeSearchDialog(); // Đóng dialog
-            prisonView.cancelSearch(); // Hủy tìm kiếm (nếu có)
-            prisonView.showListPrisons(managerPrison.getListPrisons()); // Hiển thị lại danh sách ban đầu
+            prisonView.closeSearchDialog();
+            prisonView.cancelSearch();
+            prisonView.showListPrisons(managerPrison.getListPrisons());
             prisonView.showTotalPrisons(managerPrison.getListPrisons().size());
-        }
-    }
-
-    class BackListener implements ActionListener {
-        public void actionPerformed(ActionEvent e) {
-            mainView = new MainView();
-            MainController mainController = new MainController(mainView);
-            mainController.showMainView();
-            prisonView.setVisible(false);
         }
     }
 }

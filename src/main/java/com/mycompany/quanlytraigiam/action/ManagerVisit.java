@@ -1,255 +1,112 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Lớp ManagerVisit đã được sửa lỗi và cải tiến để tương thích với Visit.java mới.
  */
 package com.mycompany.quanlytraigiam.action;
 
 import com.mycompany.quanlytraigiam.entity.Visit;
-import com.mycompany.quanlytraigiam.entity.VisitsXML; // Import VisitsXML
-import com.mycompany.quanlytraigiam.utils.FileUtils; // Import FileUtils
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.mycompany.quanlytraigiam.entity.VisitsXML;
+import com.mycompany.quanlytraigiam.utils.FileUtils;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-
-/**
- *
- * @author Admin
- */
-
-
+import java.util.stream.Collectors;
 
 public class ManagerVisit {
 
-    private static final String VISIT_FILE_NAME = "Visits.xml"; // Tên file XML để lưu trữ
-
+    private static final String VISIT_FILE_NAME = "Visits.xml";
     private List<Visit> visits;
-
-
+    private int nextId; // Biến để quản lý ID tự tăng
 
     public ManagerVisit() {
-
-        this.visits = readVisitList(); // Load visits from file on initialization
-
-        if (this.visits == null) {
-
-            this.visits = new ArrayList<>();
-
-        }
-
+        this.visits = readVisitList();
+        initializeIdGenerator();
     }
 
-
-
-    // Phương thức đọc danh sách thăm nuôi từ file XML
+    private void initializeIdGenerator() {
+        if (visits.isEmpty()) {
+            nextId = 1;
+        } else {
+            // Tìm ID lớn nhất trong danh sách và +1 để làm ID tiếp theo
+            nextId = visits.stream().mapToInt(Visit::getVisitId).max().orElse(0) + 1;
+        }
+    }
 
     private List<Visit> readVisitList() {
-
         VisitsXML visitsXML = (VisitsXML) FileUtils.readXMLFile(VISIT_FILE_NAME, VisitsXML.class);
-
-        if (visitsXML != null && visitsXML.getVisits() != null) {
-
-            return visitsXML.getVisits();
-
-        }
-
-        return new ArrayList<>();
-
+        return (visitsXML != null && visitsXML.getVisits() != null) ? visitsXML.getVisits() : new ArrayList<>();
     }
-
-
-
-    // Phương thức ghi danh sách thăm nuôi vào file XML
 
     private void writeVisitList() {
-
         VisitsXML visitsXML = new VisitsXML();
-
         visitsXML.setVisits(visits);
-
         FileUtils.writeXMLtoFile(VISIT_FILE_NAME, visitsXML);
-
     }
 
-
-
-    public void addVisit(Visit V) {
-
-        visits.add(V);
-
-        writeVisitList(); // Save changes to file
-
+    public void addVisit(Visit v) {
+        v.setVisitId(nextId++); // Gán ID mới và tăng biến đếm
+        visits.add(v);
+        writeVisitList();
     }
-
-
 
     public List<Visit> getVisits() {
-
-        return new ArrayList<>(visits); // Trả về bản sao để tránh sửa đổi trực tiếp
-
+        return new ArrayList<>(visits);
     }
-
-
 
     public void updateVisit(Visit updatedVisit) {
-
-        boolean found = false;
-
         for (int i = 0; i < visits.size(); i++) {
-
-            // Sử dụng một cách duy nhất để xác định một Visit cụ thể,
-
-            // ví dụ: InmateId, VisitDate, VisitTime kết hợp
-
-            if (visits.get(i).getInmateId().equals(updatedVisit.getInmateId()) &&
-
-                visits.get(i).getVisitDate().equals(updatedVisit.getVisitDate()) &&
-
-                visits.get(i).getVisitTime().equals(updatedVisit.getVisitTime())) {
-
+            // SỬA LỖI: Dùng visitId để cập nhật, đây là cách duy nhất đáng tin cậy
+            if (visits.get(i).getVisitId() == updatedVisit.getVisitId()) {
                 visits.set(i, updatedVisit);
-
-                found = true;
-
-                break;
-
+                writeVisitList();
+                return; // Thoát ngay khi cập nhật thành công
             }
-
         }
-
-        if (found) {
-
-            writeVisitList(); // Save changes to file
-
-        }
-
     }
 
-
-
-    public void deleteVisit(String inmateId, String visitDate, String visitTime) {
-
-        boolean removed = visits.removeIf(v -> v.getInmateId().equals(inmateId) &&
-
-                                             v.getVisitDate().equals(visitDate) &&
-
-                                             v.getVisitTime().equals(visitTime));
-
+    public void deleteVisit(int visitId) {
+        // SỬA LỖI: Dùng visitId để xóa
+        boolean removed = visits.removeIf(v -> v.getVisitId() == visitId);
         if (removed) {
-
-            writeVisitList(); // Save changes to file
-
+            writeVisitList();
         }
-
     }
-
-    
-
-    // Tìm kiếm theo từ khóa chung
 
     public List<Visit> searchVisits(String keyword) {
-
-        List<Visit> result = new ArrayList<>();
-
-        String lowerCaseKeyword = keyword.toLowerCase();
-
-        for (Visit visit : visits) {
-
-            if (visit.getPrisonerName().toLowerCase().contains(lowerCaseKeyword) ||
-
-                visit.getVisitorName().toLowerCase().contains(lowerCaseKeyword) ||
-
-                visit.getInmateId().toLowerCase().contains(lowerCaseKeyword) ||
-
-                visit.getRelationship().toLowerCase().contains(lowerCaseKeyword) ||
-
-                visit.getVisitDate().toLowerCase().contains(lowerCaseKeyword) ||
-
-                visit.getVisitTime().toLowerCase().contains(lowerCaseKeyword) ||
-
-                visit.getNotes().toLowerCase().contains(lowerCaseKeyword)) {
-
-                result.add(visit);
-
-            }
-
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getVisits();
         }
+        String lowerCaseKeyword = keyword.toLowerCase();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-        return result;
-
+        return visits.stream().filter(visit -> {
+            // SỬA LỖI: Chuyển đổi ngày/giờ thành chuỗi trước khi tìm kiếm
+            String visitDateStr = visit.getVisitDate().format(dateFormatter);
+            String visitTimeStr = (visit.getVisitTime() != null) ? visit.getVisitTime().format(timeFormatter) : "";
+            
+            return visit.getPrisonerName().toLowerCase().contains(lowerCaseKeyword) ||
+                   visit.getVisitorName().toLowerCase().contains(lowerCaseKeyword) ||
+                   visit.getInmateId().toLowerCase().contains(lowerCaseKeyword) ||
+                   visit.getRelationship().toLowerCase().contains(lowerCaseKeyword) ||
+                   visit.getNotes().toLowerCase().contains(lowerCaseKeyword) ||
+                   visitDateStr.contains(lowerCaseKeyword) ||
+                   visitTimeStr.contains(lowerCaseKeyword);
+        }).collect(Collectors.toList());
     }
-
-    
-
-    // Sắp xếp theo mã phạm nhân
 
     public void sortVisitsByInmateId() {
-
-        Collections.sort(visits, Comparator.comparing(Visit::getInmateId));
-
+        visits.sort(Comparator.comparing(Visit::getInmateId));
     }
-
-
-
-    // Sắp xếp theo ngày thăm (cần SimpleDateFormat để so sánh ngày tháng)
 
     public void sortVisitsByVisitDate() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-        Collections.sort(visits, (v1, v2) -> {
-
-            try {
-
-                Date date1 = sdf.parse(v1.getVisitDate());
-
-                Date date2 = sdf.parse(v2.getVisitDate());
-
-                return date1.compareTo(date2);
-
-            } catch (ParseException e) {
-
-                e.printStackTrace();
-
-                return 0; // Xử lý lỗi hoặc log lỗi nếu ngày không hợp lệ
-
-            }
-
-        });
-
+        // SỬA LỖI: Sắp xếp trực tiếp trên đối tượng LocalDate, không cần parse
+        visits.sort(Comparator.comparing(Visit::getVisitDate));
     }
-
-
-
-    // Sắp xếp theo thời gian thăm
 
     public void sortVisitsByVisitTime() {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-
-        Collections.sort(visits, (v1, v2) -> {
-
-            try {
-
-                Date time1 = sdf.parse(v1.getVisitTime());
-
-                Date time2 = sdf.parse(v2.getVisitTime());
-
-                return time1.compareTo(time2);
-
-            } catch (ParseException e) {
-
-                e.printStackTrace();
-
-                return 0;
-
-            }
-
-        });
-
+        // SỬA LỖI: Sắp xếp trực tiếp trên đối tượng LocalTime
+        // Dùng nullsLast để các lượt thăm không có giờ sẽ bị đẩy xuống cuối
+        visits.sort(Comparator.comparing(Visit::getVisitTime, Comparator.nullsLast(Comparator.naturalOrder())));
     }
-
 }

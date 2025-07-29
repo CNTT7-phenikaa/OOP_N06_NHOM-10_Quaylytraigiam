@@ -1,52 +1,43 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Lớp PrisonerController đã được nâng cấp để:
+ * 1. Làm việc với MainView.
+ * 2. Sửa lại logic "Quay lại" để hiển thị đúng cửa sổ chính đã có.
  */
 package com.mycompany.quanlytraigiam.controller;
 
 import com.mycompany.quanlytraigiam.action.ManagerPrisoner;
 import com.mycompany.quanlytraigiam.entity.Prisoner;
-import com.mycompany.quanlytraigiam.view.LoginView;
-import com.mycompany.quanlytraigiam.view.MainView;
+import com.mycompany.quanlytraigiam.view.MainView; // SỬA ĐỔI: Import MainView
 import com.mycompany.quanlytraigiam.view.PrisonerView;
-import java.util.List;
-//////import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author PC
- */
-public class PrisonerController 
-{
-    private SimpleDateFormat fDate=new SimpleDateFormat("dd/MM/yyyy");
+public class PrisonerController {
     private ManagerPrisoner managerPrisoner;
-    private PrisonerView PrisonerView;
-    private LoginView loginView;
-    private MainView mainView;
-    public PrisonerController(PrisonerView view) 
-    {
-        this.PrisonerView = view;
-        managerPrisoner = new ManagerPrisoner();
+    private PrisonerView prisonerView; // Đổi tên biến cho nhất quán (chữ 'p' viết thường)
+    private MainView mainView; // SỬA ĐỔI: Sử dụng MainView
+
+    // SỬA ĐỔI: Hàm khởi tạo nhận vào cả PrisonerView và MainView
+    public PrisonerController(PrisonerView view, MainView mainView) {
+        this.prisonerView = view;
+        this.mainView = mainView;
+        this.managerPrisoner = new ManagerPrisoner();
+
+        // Gắn tất cả các listener
         view.addAddPrisonerListener(new AddPrisonerListener());
         view.addEditPrisonerListener(new EditPrisonerListener());
         view.addClearListener(new ClearPrisonerListener());
         view.addDeletePrisonerListener(new DeletePrisonerListener());
         view.addListPrisonerSelectionListener(new ListPrisonerSelectionListener());
         view.addSortByNameListener(new SortPrisonerNameListener());
-        //view.addSearchAddressListener(new SearchAddressPrisonerViewListener());
-        //view.addSearchTypeListener(new SearchTypePrisonerViewListener());
         view.addSearchListener(new SearchPrisonerViewListener());
         view.addSearchDialogListener(new SearchPrisonerListener());
         view.addSortByYearListener(new SortPrisonerYearListener());
@@ -61,228 +52,178 @@ public class PrisonerController
         view.addStatisticAgeListener(new StatisticPrisonerAgeListener());
         view.addStatisticUnderListener(new StatisticClearListener());
     }
-    //Hàm hiển thị giao diện PrisonerView với dữ liệu 
-    public void showPrisonerView() 
-    {
+
+    public void showPrisonerView() {
         List<Prisoner> prisonerList = managerPrisoner.getListPrisoners();
-        PrisonerView.setVisible(true);
-        PrisonerView.showListPrisoners(prisonerList);
-        PrisonerView.showCountListPrisoners(prisonerList);
+        prisonerView.setVisible(true);
+        prisonerView.showListPrisoners(prisonerList);
+        prisonerView.showCountListPrisoners(prisonerList);
     }
-    //Xử lý sự kiện thêm phạm nhân
-    class AddPrisonerListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            Prisoner prisoner = PrisonerView.getPrisonerInfo();
-            if (prisoner != null) 
-            {
+    
+    // SỬA ĐỔI: Logic quay lại màn hình chính
+    class UndoListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.dispose(); // Đóng cửa sổ hiện tại
+            mainView.setVisible(true); // Hiển thị lại cửa sổ chính đã có
+        }
+    }
+
+    class AddPrisonerListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            Prisoner prisoner = prisonerView.getPrisonerInfo();
+            if (prisoner != null) {
                 managerPrisoner.add(prisoner);
-                PrisonerView.showPrisoner(prisoner);
-                PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
-                PrisonerView.showCountListPrisoners(managerPrisoner.getListPrisoners());
-                PrisonerView.showMessage("Thêm thành công!");
+                prisonerView.showPrisoner(prisoner);
+                prisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
+                prisonerView.showCountListPrisoners(managerPrisoner.getListPrisoners());
+                prisonerView.showMessage("Thêm thành công!");
             }
         }
     }
-    //Xử lý phần sửa thông tin phạm nhân
-    class EditPrisonerListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            Prisoner prisoner = PrisonerView.getPrisonerInfo();
-            if (prisoner != null) 
-            {
+
+    class EditPrisonerListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            Prisoner prisoner = prisonerView.getPrisonerInfo();
+            if (prisoner != null) {
                 try {
                     managerPrisoner.edit(prisoner);
                 } catch (ParseException ex) {
                     Logger.getLogger(PrisonerController.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                PrisonerView.showPrisoner(prisoner);
-                PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
-                PrisonerView.showCountListPrisoners(managerPrisoner.getListPrisoners());
-                PrisonerView.showMessage("Cập nhật thành công!");
+                prisonerView.showPrisoner(prisoner);
+                prisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
+                prisonerView.showCountListPrisoners(managerPrisoner.getListPrisoners());
+                prisonerView.showMessage("Cập nhật thành công!");
             }
-        }
-    }
-    //Xử lý phần xóa phạm nhân
-    class DeletePrisonerListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            Prisoner prisoner = PrisonerView.getPrisonerInfo();
-            if (prisoner != null) 
-            {
-                managerPrisoner.delete(prisoner);
-                PrisonerView.clearPrisonerInfo();
-                PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
-                PrisonerView.showCountListPrisoners(managerPrisoner.getListPrisoners());
-                PrisonerView.showMessage("Xóa thành công!");
-            }
-        }
-    }
-    
-    //Xử lý chọn ảnh phạm nhân
-    class ImagePrisonerListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            PrisonerView.PrisonerImage();
-        }
-    }
-    /**
-     * Lớp ClearPrisonerListener 
-     * chứa cài đặt cho sự kiện click button "Clear"
-     * 
-     */
-    class ClearPrisonerListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            PrisonerView.clearPrisonerInfo();
         }
     }
 
-    
-   //Sắp xếp phạm nhân theo tên
-    class SortPrisonerNameListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            managerPrisoner.sortPrisonerByName();
-            PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
-        }
-    }
-    //Sắp xếp phạm nhân theo năm sinh
-    class SortPrisonerYearListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            managerPrisoner.sortPrisonerByBirthDay();
-            PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
-        }
-    }
-    //Sắp xếp phạm nhân theo ID
-    class SortPrisonerIDListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            managerPrisoner.sortPrisonerByID();
-            PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
-        }
-    }
-    //Sắp xếp theo ngày nhập trại
-    class SortPrisonerOpeningDateListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            managerPrisoner.sortPrisonerByOpeningDate();
-            PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
-        }
-    }
-    //Xử lý mở giao diện tình kiếm phạm nhân
-    class SearchPrisonerViewListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            PrisonerView.searchNamePrisonerInfo();
-        }
-    }
-    //Mở phần giao diện thống kê
-    class StatisticViewListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            PrisonerView.displayStatisticView();
-        }
-    }
-    //Xử lý logic tìm kiếm phạm nhân
-    class SearchPrisonerListener implements ActionListener{
-        public void actionPerformed(ActionEvent e){
-            List<Prisoner> temp = new ArrayList<>();
-            int check = PrisonerView.getChooseSelectSearch();
-            String search = PrisonerView.validateSearch();
-            if(check == 1){
-                // Tìm kiếm theo tên
-                temp = managerPrisoner.searchPrisonerName(search);
-            }else if(check == 2){
-                // Tìm kiếm theo địa chỉ
-                temp = managerPrisoner.searchPrisonerAddress(search);
-            }else if(check == 3){
-                // Tìm kiếm theo năm sinh
-                temp = managerPrisoner.searchPrisonerYear(search);
+    class DeletePrisonerListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            Prisoner prisoner = prisonerView.getPrisonerInfo();
+            if (prisoner != null) {
+                managerPrisoner.delete(prisoner);
+                prisonerView.clearPrisonerInfo();
+                prisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
+                prisonerView.showCountListPrisoners(managerPrisoner.getListPrisoners());
+                prisonerView.showMessage("Xóa thành công!");
             }
-            if(!temp.isEmpty())PrisonerView.showListPrisoners(temp);
-            else PrisonerView.showMessage("Không tìm thấy kết quả!");
         }
     }
-    //Xử lý phần hủy tìm kiếm
-    class CancelDialogSearchPrisonerListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            PrisonerView.cancelDialogSearchPrisonerInfo();
+    
+    class ImagePrisonerListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.PrisonerImage();
+        }
+    }
+
+    class ClearPrisonerListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.clearPrisonerInfo();
+        }
+    }
+   
+    class SortPrisonerNameListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            managerPrisoner.sortPrisonerByName();
+            prisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
+        }
+    }
+
+    class SortPrisonerYearListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            managerPrisoner.sortPrisonerByBirthDay();
+            prisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
+        }
+    }
+
+    class SortPrisonerIDListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            managerPrisoner.sortPrisonerByID();
+            prisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
+        }
+    }
+
+    class SortPrisonerOpeningDateListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            managerPrisoner.sortPrisonerByOpeningDate();
+            prisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
+        }
+    }
+
+    class SearchPrisonerViewListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.searchNamePrisonerInfo();
+        }
+    }
+
+    class StatisticViewListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.displayStatisticView();
+        }
+    }
+
+    class SearchPrisonerListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            List<Prisoner> temp;
+            int check = prisonerView.getChooseSelectSearch();
+            String search = prisonerView.validateSearch();
+            switch (check) {
+                case 1 -> temp = managerPrisoner.searchPrisonerName(search);
+                case 2 -> temp = managerPrisoner.searchPrisonerAddress(search);
+                case 3 -> temp = managerPrisoner.searchPrisonerYear(search);
+                default -> temp = new ArrayList<>();
+            }
+            if (!temp.isEmpty()) {
+                prisonerView.showListPrisoners(temp);
+            } else {
+                prisonerView.showMessage("Không tìm thấy kết quả!");
+            }
+        }
+    }
+
+    class CancelDialogSearchPrisonerListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.cancelDialogSearchPrisonerInfo();
         }
     }
  
-    class CancelSearchPrisonerListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            PrisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
-            PrisonerView.cancelSearchPrisoner();
+    class CancelSearchPrisonerListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.showListPrisoners(managerPrisoner.getListPrisoners());
+            prisonerView.cancelSearchPrisoner();
         }
     }
-    //Quay về giao diện chính
-    class UndoListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            mainView = new MainView();
-            MainController mainController = new MainController(mainView);
-            mainController.showMainView();
-            PrisonerView.setVisible(false);
-        }
-    }
-    /**
-     * Lớp ListPrisonerSelectionListener 
-     * chứa cài đặt cho sự kiện chọn Prisoner trong bảng Prisoner
-     */
-    class ListPrisonerSelectionListener implements ListSelectionListener 
-    {
-        public void valueChanged(ListSelectionEvent e) 
-        {
-            try {
-                PrisonerView.fillPrisonerFromSelectedRow();
-            } catch (ParseException ex) {
-                Logger.getLogger(PrisonerController.class.getName()).log(Level.SEVERE, null, ex);
+
+    class ListPrisonerSelectionListener implements ListSelectionListener {
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                try {
+                    prisonerView.fillPrisonerFromSelectedRow();
+                } catch (ParseException ex) {
+                    Logger.getLogger(PrisonerController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }
-    //Xử lý thống kê phạm nhân theo loại án
-    class StatisticPrisonerTypeListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            PrisonerView.displayStatisticView();
-            PrisonerView.showStatisticTypePrisoners(managerPrisoner.getListPrisoners());
+
+    class StatisticPrisonerTypeListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.displayStatisticView();
+            prisonerView.showStatisticTypePrisoners(managerPrisoner.getListPrisoners());
         }
     }
-    //Xử lý thống kê phạm nhân theo tuổi
-    class StatisticPrisonerAgeListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            PrisonerView.displayStatisticView();
-            PrisonerView.showStatisticAgePrisoners(managerPrisoner.getListPrisoners());
+
+    class StatisticPrisonerAgeListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.displayStatisticView();
+            prisonerView.showStatisticAgePrisoners(managerPrisoner.getListPrisoners());
         }
     }
-    //Ẩn giao diện thống kê
-    class StatisticClearListener implements ActionListener 
-    {
-        public void actionPerformed(ActionEvent e) 
-        {
-            PrisonerView.UnderViewPrisoner();
+
+    class StatisticClearListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            prisonerView.UnderViewPrisoner();
         }
     }
 }

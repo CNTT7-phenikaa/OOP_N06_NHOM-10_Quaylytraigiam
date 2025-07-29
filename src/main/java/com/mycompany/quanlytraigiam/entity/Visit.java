@@ -1,133 +1,138 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Lớp Visit đã được sửa lỗi và cải tiến.
+ * 1. Thêm visitId làm khóa chính duy nhất.
+ * 2. Thay đổi kiểu dữ liệu của ngày/giờ thành LocalDate/LocalTime.
+ * 3. Xóa phương thức getInmateID() bị lỗi.
  */
 package com.mycompany.quanlytraigiam.entity;
+
+// Cần import thêm các lớp này
+import com.mycompany.quanlytraigiam.utils.LocalDateAdapter;
+import com.mycompany.quanlytraigiam.utils.LocalTimeAdapter;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlElement; 
-/**
- *
- * @author Admin
- */
-@XmlRootElement(name = "Visit") // Tên của thẻ XML đại diện cho một Visit
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-@XmlAccessorType(XmlAccessType.FIELD) // Truy cập trực tiếp các trường (field)
+@XmlRootElement(name = "visit") // Đổi lại thành "visit" cho nhất quán
+@XmlAccessorType(XmlAccessType.FIELD)
+public class Visit {
 
-public class Visit {    
+    @XmlElement
+    private int visitId; // KHÓA CHÍNH: ID duy nhất cho mỗi lượt thăm
 
+    @XmlElement
     private String inmateId;
 
+    @XmlElement
     private String prisonerName;
 
+    @XmlElement
     private String visitorName;
 
+    @XmlElement
     private String relationship;
 
-    private String visitDate; // Format: dd/MM/yyyy
+    @XmlElement
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class) // Adapter cho LocalDate
+    private LocalDate visitDate;
 
-    private String visitTime; // Format: HH:mm
+    @XmlElement
+    @XmlJavaTypeAdapter(value = LocalTimeAdapter.class) // Adapter cho LocalTime
+    private LocalTime visitTime;
 
+    @XmlElement
     private String notes;
 
-
-
-    public Visit () {
-
-        // Constructor mặc định cần thiết cho JAXB
-
+    // Constructor mặc định cần thiết cho JAXB
+    public Visit() {
     }
 
-
-
-    public Visit (String inmateID, String prisonerName, String visitorName, String relationship, String visitDate, String visitTime, String notes )
-
-    {
-
-        this.inmateId = inmateID;
-
+    // Constructor đầy đủ để tạo đối tượng
+    public Visit(int visitId, String inmateId, String prisonerName, String visitorName, String relationship, LocalDate visitDate, LocalTime visitTime, String notes) {
+        this.visitId = visitId;
+        this.inmateId = inmateId;
         this.prisonerName = prisonerName;
-
         this.visitorName = visitorName;
-
         this.relationship = relationship;
-
         this.visitDate = visitDate;
-
         this.visitTime = visitTime;
-
         this.notes = notes;
-
     }
 
+    // --- Getters và Setters ---
 
-
-    // Standard Getters (đảm bảo không có tham số)
-
-    public String getInmateId() { return inmateId; }
-
-    public String getPrisonerName() { return prisonerName; }
-
-    public String getVisitorName() { return visitorName; }
-
-    public String getRelationship() { return relationship; }
-
-    public String getVisitDate() { return visitDate; }
-
-    public String getVisitTime() { return visitTime; }
-
-    public String getNotes() { return notes; }
-
-    
-
-    // Standard Setters
-
-    public void setInmateId(String inmateId){ this.inmateId = inmateId;}
-
-    public void setPrisonerName(String prisonerName){this.prisonerName = prisonerName;}
-
-    public void setVisitorName(String visitorName) {this.visitorName = visitorName;}
-
-    public void setRelationship(String relationship){this.relationship = relationship;}
-
-    public void setVisitDate(String visitDate) {this.visitDate = visitDate;}
-
-    public void setVisitTime(String visitTime){this.visitTime = visitTime;}
-
-    public void setNotes(String notes){this.notes = notes;}
-
-
-
-    @Override 
-
-    public String toString(){
-
-        return "Visit{" +
-
-               "inmateId='" + inmateId + '\'' +
-
-               ", prisonerName='" + prisonerName + '\'' +
-
-               ", visitorName='" + visitorName + '\'' +
-
-               ", relationship='" + relationship + '\'' +
-
-               ", visitDate='" + visitDate + '\'' +
-
-               ", visitTime='" + visitTime + '\'' +
-
-               ", notes='" + notes + '\'' +
-
-               '}';
-
+    public int getVisitId() {
+        return visitId;
     }
 
-    public Object getInmateID() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void setVisitId(int visitId) {
+        this.visitId = visitId;
     }
 
+    public String getInmateId() {
+        return inmateId;
+    }
+
+    public void setInmateId(String inmateId) {
+        this.inmateId = inmateId;
+    }
+
+    public String getPrisonerName() {
+        return prisonerName;
+    }
+
+    public void setPrisonerName(String prisonerName) {
+        this.prisonerName = prisonerName;
+    }
+
+    public String getVisitorName() {
+        return visitorName;
+    }
+
+    public void setVisitorName(String visitorName) {
+        this.visitorName = visitorName;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
+    public LocalDate getVisitDate() {
+        return visitDate;
+    }
+
+    public void setVisitDate(LocalDate visitDate) {
+        this.visitDate = visitDate;
+    }
+
+    public LocalTime getVisitTime() {
+        return visitTime;
+    }
+
+    public void setVisitTime(LocalTime visitTime) {
+        this.visitTime = visitTime;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    @Override
+    public String toString() {
+        return "Visit{" + "visitId=" + visitId + ", inmateId='" + inmateId + '\'' + ", prisonerName='" + prisonerName + '\'' + '}';
+    }
+
+    // PHƯƠNG THỨC getInmateID() GÂY LỖI ĐÃ ĐƯỢC XÓA HOÀN TOÀN
 }
-
-   
-
