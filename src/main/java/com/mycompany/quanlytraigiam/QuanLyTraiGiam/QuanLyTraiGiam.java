@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 public class QuanLyTraiGiam 
 {
     public static void main(String[] args) {
+        System.setProperty("com.sun.xml.bind.v2.runtime.reflect.opt.OptimizedAccessorFactory.noOptimization", "true");
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 LoginView view = new LoginView();

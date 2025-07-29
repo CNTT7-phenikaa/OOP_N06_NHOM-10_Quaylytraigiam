@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>C:\Users\DELL\Documents\NetBeansProjects\BTLOOP\OOP_N06_NHOM-10_Quaylytraigiam\out\artifacts\QuanLyTraiGiam_jar\QuanLyTraiGiam-1.0-SNAPSHOT-jar-with-dependencies.jar</jar>
+  <outfile>C:\Users\DELL\Documents\NetBeansProjects\BTLOOP\OOP_N06_NHOM-10_Quaylytraigiam\out\artifacts\QuanLyTraiGiam_jar\QuanLyTraiGiam.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl></downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon></icon>
+  <jre>
+    <path>%JAVA_HOME%;%PATH%</path>
+    <requiresJdk>false</requiresJdk>
+    <requires64Bit>false</requires64Bit>
+    <minVersion>8</minVersion>
+    <maxVersion></maxVersion>
+  </jre>
+</launch4jConfig>

@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Visits>
     <visits>
+        <visitId>4</visitId>
         <inmateId>1</inmateId>
-        <prisonerName>Nguyễn Hạnh Dung</prisonerName>
-        <visitorName>Nguyễn Văn A</visitorName>
+        <prisonerName>Nguyễn Văn Duy</prisonerName>
+        <visitorName>Nguyễn Văn Hướng</visitorName>
         <relationship>anh trai</relationship>
-        <visitDate>29/07/2025</visitDate>
-        <visitTime>15h30</visitTime>
+        <visitDate>2025-02-04</visitDate>
+        <visitTime>09:00</visitTime>
+        <notes>Gửi đồ ăn cho phạm nhân</notes>
+    </visits>
+    <visits>
+        <visitId>5</visitId>
+        <inmateId>4</inmateId>
+        <prisonerName>Nguyễn Hạnh Dung</prisonerName>
+        <visitorName>Nguyễn Thị Tâm</visitorName>
+        <relationship>Mẹ</relationship>
+        <visitDate>2025-07-17</visitDate>
+        <visitTime>14:00</visitTime>
+        <notes></notes>
+    </visits>
+    <visits>
+        <visitId>6</visitId>
+        <inmateId>6</inmateId>
+        <prisonerName>Lương Tú Đạt</prisonerName>
+        <visitorName>Lương Hải Anh</visitorName>
+        <relationship>Em gái</relationship>
+        <visitDate>2025-07-03</visitDate>
+        <visitTime>15:30</visitTime>
         <notes></notes>
     </visits>
 </Visits>
